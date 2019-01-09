@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.MotorSub;
+import frc.robot.commands.Run;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +23,7 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static MotorSub m_subsystem = new MotorSub();
   public static OI m_oi;
 
   Command m_autonomousCommand;
@@ -36,9 +36,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    // TODO: Run is a placeholder until we have a better command to run during auto.
+    m_chooser.setDefaultOption("Default Auto", new Run());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    // XXX: I forget if these go here or in robotPeriodic, but this helps
+    // debugging commands. This should show running commands and which
+    // command each subsystem is using. I'm not sure about this, so comment
+    // them out if the robot doesn't work.
+    SmartDashboard.putData(Scheduler.getInstance());
+    SmartDashboard.putData(m_subsystem);
+
+    // You can also add Commands to the SmartDashboard and they should show
+    // a button that lets you start them.
+    SmartDashboard.putData(new Run());
   }
 
   /**
