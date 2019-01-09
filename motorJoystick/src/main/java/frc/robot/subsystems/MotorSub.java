@@ -22,7 +22,7 @@ import frc.robot.commands.Run;
 public class MotorSub extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public TalonSRX motor = new TalonSRX(RobotMap.motor);
+  private TalonSRX motor = new TalonSRX(RobotMap.motor);
 
   @Override
   public void initDefaultCommand() {
