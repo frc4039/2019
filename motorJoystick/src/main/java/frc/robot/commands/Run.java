@@ -9,16 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.MotorSub;
 
 public class Run extends Command {
-
-  public MotorSub MotorSub = new MotorSub();
-  
   public Run() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(MotorSub);
+    requires(Robot.m_subsystem);
   }
 
   // We don't need to override initialize() anymore because execute() is
@@ -28,7 +24,7 @@ public class Run extends Command {
   @Override
   protected void execute() {
     // This will call the function every robot tick.
-    MotorSub.run(Robot.m_oi.getStickY());
+    Robot.m_subsystem.run(Robot.m_oi.getStickY());
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -40,7 +36,7 @@ public class Run extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    MotorSub.stop();
+    Robot.m_subsystem.stop();
   }
 
   // If you don't implement interupted(), it will default to just calling end()
