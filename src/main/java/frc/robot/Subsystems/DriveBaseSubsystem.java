@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
