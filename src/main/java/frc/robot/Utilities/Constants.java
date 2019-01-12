@@ -39,15 +39,23 @@ public class Constants {
 	public static final double kPathFollowingMaxAccel = 100.0; // inches per second^2
 	public static final double kPathFollowingMaxVel = 140.0; // inches per second
 
-	public static final double kPathFollowingProfileKp = 5.0;   //Used to be 5 when tuning our paths
+/* 	public static final double kPathFollowingProfileKp = 5.0;   //Used to be 5 when tuning our paths
 	public static final double kPathFollowingProfileKi = 0.03;
 	public static final double kPathFollowingProfileKv = 0.2;
 	public static final double kPathFollowingProfileKffv = 1.0;
 	public static final double kPathFollowingProfileKffa = 0.05;
 	public static final double kPathFollowingGoalPosTolerance = 1;
 	public static final double kPathFollowingGoalVelTolerance = 18.0;
-	public static final double kPathStopSteeringDistance = 9.0;
+	public static final double kPathStopSteeringDistance = 9.0; */
 
+	public static final double kPathFollowingProfileKp = 1.0;   //Used to be 5 when tuning our paths
+	public static final double kPathFollowingProfileKi = 0;
+	public static final double kPathFollowingProfileKv = 0.05;
+	public static final double kPathFollowingProfileKffv = 0;
+	public static final double kPathFollowingProfileKffa = 0;
+	public static final double kPathFollowingGoalPosTolerance = 1;
+	public static final double kPathFollowingGoalVelTolerance = 18.0;
+	public static final double kPathStopSteeringDistance = 9.0; 
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
@@ -87,16 +95,22 @@ public class Constants {
 
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
-	public static final double kDriveHighGearVelocityKp = 1;
+/* 	public static final double kDriveHighGearVelocityKp = 1;
 	public static final double kDriveHighGearVelocityKi = 0.005;
 	public static final double kDriveHighGearVelocityKd = 1.6;
 	public static final double kDriveHighGearVelocityKf = 0.165;
 	public static final int kDriveHighGearVelocityIZone = 0;
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
+	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps */
+
+
+	public static final double kDriveHighGearVelocityKp = 0.5;
+	public static final double kDriveHighGearVelocityKi = 0;
+	public static final double kDriveHighGearVelocityKd = 1;
+	public static final double kDriveHighGearVelocityKf = 0.165;
+	public static final int kDriveHighGearVelocityIZone = 0;
+	public static final double kDriveHighGearVelocityRampRate = 0.02;
 	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps
-
-
-
 
 
 
