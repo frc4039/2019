@@ -63,10 +63,10 @@ public class Constants {
 ///////change
 	public static final int kLeftDriveMasterId = 9;
 	public static final int kLeftDriveSlaveId = 8;
-	public static final int kLeftDriveSlaveId2 = 3; //
+	public static final int kLeftDriveSlaveId2 = 11; //
 	public static final int kRightDriveMasterId = 7;
 	public static final int kRightDriverSlaveId = 6;
-	public static final int kRightDriverSlaveId2 = 6; //
+	public static final int kRightDriverSlaveId2 = 10; //
 
 	// Drive
 	public static final int kLeftDriveMasterPDPChannel = 14; //left front
