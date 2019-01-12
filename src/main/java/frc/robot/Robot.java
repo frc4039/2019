@@ -84,6 +84,8 @@ public class Robot extends CustomRobot {
 
 			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(Util.limit(y + x, 1), Util.limit(y - x, 1)));
 			threadRateControl.doRateControl(20);
+
+			System.out.println(driveBaseSubsystem.getLeftDistanceInches());
 		}
 	}
 
