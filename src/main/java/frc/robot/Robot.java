@@ -58,7 +58,7 @@ public class Robot extends CustomRobot {
 		autoModeExecuter = new AutoModeExecuter();
 
 
-		AutoModeBase autoMode = new NewMode();
+		AutoModeBase autoMode = new BasicMode();
 
 
 		if (autoMode != null)

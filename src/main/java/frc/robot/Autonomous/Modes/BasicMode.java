@@ -14,7 +14,11 @@ public class BasicMode extends AutoModeBase {
 
 	@Override
 	protected void routine() throws AutoModeEndedException {
-		PathContainer pathContainer = new SamplePath();
+
+		PathContainer pathContainer = new StraightPath();
+		runAction(new ResetPoseFromPathAction(pathContainer));
+
+		/* PathContainer pathContainer = new SamplePath();
 		runAction(new ResetPoseFromPathAction(pathContainer));
 
 		runAction(new DrivePathAction(pathContainer));
@@ -23,6 +27,6 @@ public class BasicMode extends AutoModeBase {
 
 		runAction(new DrivePathAction(new SecondPath()));
 
-		runAction(new WaitAction(15));
+		runAction(new WaitAction(15)); */
 	}
 }
