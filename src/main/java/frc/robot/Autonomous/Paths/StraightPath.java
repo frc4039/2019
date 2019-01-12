@@ -10,15 +10,15 @@ public class StraightPath implements PathContainer {
 	@Override
 	public Path buildPath() {
 		ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
-		sWaypoints.add(new Waypoint(20,276,0,0));
-		sWaypoints.add(new Waypoint(123,278,0,60));
+		sWaypoints.add(new Waypoint(20,278,0,0));
+		sWaypoints.add(new Waypoint(120,278,0,60));
 
 		return PathBuilder.buildPathFromWaypoints(sWaypoints);
 	}
 
 	@Override
 	public RigidTransform2d getStartPose() {
-		return new RigidTransform2d(new Translation2d(20, 276), Rotation2d.fromDegrees(0));
+		return new RigidTransform2d(new Translation2d(20, 278), Rotation2d.fromDegrees(0));
 	}
 
 	@Override
