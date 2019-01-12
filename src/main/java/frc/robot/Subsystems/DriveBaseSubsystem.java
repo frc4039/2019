@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.sun.org.apache.xpath.internal.functions.FuncFalse;
+
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.NavX;
@@ -112,8 +114,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	@Override
 	public void init() {
-		mLeftMaster.setSensorPhase(true);
-		mRightMaster.setSensorPhase(true);
+		mLeftMaster.setSensorPhase(false);
+		mRightMaster.setSensorPhase(false);
 
 		mLeftMaster.setInverted(true);
 		leftDriveSlave1.setInverted(true);
