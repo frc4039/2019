@@ -48,6 +48,8 @@ public class Constants {
 	public static final double kPathFollowingGoalVelTolerance = 18.0;
 	public static final double kPathStopSteeringDistance = 9.0; */
 
+	//test comment
+
 	public static final double kPathFollowingProfileKp = 1.0;   //Used to be 5 when tuning our paths
 	public static final double kPathFollowingProfileKi = 0;
 	public static final double kPathFollowingProfileKv = 0.05;
