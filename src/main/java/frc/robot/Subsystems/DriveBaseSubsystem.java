@@ -112,8 +112,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	@Override
 	public void init() {
-		mLeftMaster.setSensorPhase(true);
-		mRightMaster.setSensorPhase(true);
+		mLeftMaster.setSensorPhase(false);
+		mRightMaster.setSensorPhase(false);
 
 		mLeftMaster.setInverted(true);
 		leftDriveSlave1.setInverted(true);
@@ -234,7 +234,6 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(left_inches_per_sec * scale)));
 		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(right_inches_per_sec * scale)));
-
 		//ConsoleReporter.report("Requested Drive Velocity Left2Cube/Right2Cube: " + left_inches_per_sec + "/" + right_inches_per_sec);
 		//ConsoleReporter.report("Actual Drive Velocity Left2Cube/Right2Cube: " + getLeftVelocityInchesPerSec() + "/" + getRightVelocityInchesPerSec());
 	}

@@ -18,6 +18,7 @@ public class BasicMode extends AutoModeBase {
 		PathContainer pathContainer = new StraightPath();
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
+		runAction(new WaitAction(15));
 
 		/* PathContainer pathContainer = new SamplePath();
 		runAction(new ResetPoseFromPathAction(pathContainer));
