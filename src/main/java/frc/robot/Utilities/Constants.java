@@ -13,7 +13,8 @@ public class Constants {
 	/* ROBOT PHYSICAL CONSTANTS */
 
 	// Wheels
-	public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
+	public static final double kDriveWheelDiameterInches = 6.25;
+	//public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
 	//public static final double kDriveWheelDiameterInches = 5;	//Comp bot measured val
 	public static final double kTrackWidthInches = 25.5;
 	public static final double kTrackScrubFactor = 1.0; // 0.924 ?
@@ -51,7 +52,7 @@ public class Constants {
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
-	public static final double kSensorUnitsPerRotation = 4096.0;
+	public static final double kSensorUnitsPerRotation = 30720.0;
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
 
