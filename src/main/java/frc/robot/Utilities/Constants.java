@@ -51,7 +51,8 @@ public class Constants {
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
-	public static final double kSensorUnitsPerRotation = 4096.0;
+	//public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
+	public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
 
