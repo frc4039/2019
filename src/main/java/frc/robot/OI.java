@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.Commands.SpinMotor;
+import frc.robot.Utilities.Controller;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -26,12 +27,17 @@ public class OI {
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
   public XboxController driverXbox;
+  public Controller operatorController;
 
   public OI(){
-    driverXbox = new XboxController(1);
+    
+    //xboxbutton.whileHeld(new SpinMotor());
+    operatorController = new Controller(1);
+    operatorController.bButton.whenPressed(new SpinMotor());
+
     Joystick stick = new Joystick(0);
     Button button = new JoystickButton(stick, 4);
-    button.whenPressed(new SpinMotor());
+    button.whileHeld(new SpinMotor());
     
   }
    
