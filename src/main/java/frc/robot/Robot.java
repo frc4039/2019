@@ -34,7 +34,7 @@ public class Robot extends CustomRobot {
 	private AutoModeExecuter autoModeExecuter;
 
 	private CustomJoystick driveJoystickThrottle;
-
+	public static OI oi = new OI();
 
 	@Override
 	public void robotInit() {

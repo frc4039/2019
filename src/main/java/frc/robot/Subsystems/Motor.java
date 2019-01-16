@@ -11,8 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Commands.SpinMotor;
+import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.Commands.SpinMotor;
 
 /**
  * Add your docs here.
@@ -20,6 +21,7 @@ import frc.robot.RobotMap;
 public class Motor extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  public static OI oi = new OI();
   VictorSPX motor1 = new VictorSPX(RobotMap.motor1);
   
 public void SpinForward() {
