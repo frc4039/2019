@@ -22,8 +22,8 @@ public class Motor extends Subsystem {
   // here. Call these from Commands.
   
   
-  private TalonSRX leftFront = new TalonSRX(RobotMap.motor1);
-  private TalonSRX rightFront = new TalonSRX(RobotMap.motor2);
+  private TalonSRX leftFront = new TalonSRX(RobotMap.frontLeftDrive);
+  private TalonSRX rightFront = new TalonSRX(RobotMap.frontRightDrive);
   
   public void TestSpin(){
     leftFront.set(ControlMode.PercentOutput, 0.5);
