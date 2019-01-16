@@ -26,18 +26,21 @@ public class OI {
   // number it is.
   // Joystick stick = new Joystick(port);
   // Button button = new JoystickButton(stick, buttonNumber);
-  public XboxController driverXbox;
-  public Controller operatorController;
+  public XboxController operatorController;
+  //public Controller operatorController;
 
   public OI(){
     
     //xboxbutton.whileHeld(new SpinMotor());
-    operatorController = new Controller(1);
-    operatorController.bButton.whenPressed(new SpinMotor());
+    //operatorController = new XboxController(1);
+    //operatorController.getXButton.whileHeld(new SpinMotor());
 
     Joystick stick = new Joystick(0);
-    Button button = new JoystickButton(stick, 4);
-    button.whileHeld(new SpinMotor());
+    Button button1 = new JoystickButton(stick, 1);
+    Button button2 = new JoystickButton(stick, 2);
+    button1.whileHeld(new SpinMotor());
+    button2.whenPressed(new SpinMotor());
+  
     
   }
    
