@@ -237,7 +237,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(left_inches_per_sec * scale)));
 		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(right_inches_per_sec * scale)));
 		
-		System.out.printf("%f", Util.convertRPMToNativeUnits(inchesPerSecondToRpm(19));
+		System.out.println(Util.convertRPMToNativeUnits(inchesPerSecondToRpm(19));
+		System.out.println();
 		//ConsoleReporter.report("Requested Drive Velocity Left2Cube/Right2Cube: " + left_inches_per_sec + "/" + right_inches_per_sec);
 		//ConsoleReporter.report("Actual Drive Velocity Left2Cube/Right2Cube: " + getLeftVelocityInchesPerSec() + "/" + getRightVelocityInchesPerSec());
 	}
