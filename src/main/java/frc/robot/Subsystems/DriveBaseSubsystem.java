@@ -198,10 +198,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
 
-		//mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
-		//mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
-		mLeftMaster.set(ControlMode.Velocity, 3072);
-		mRightMaster.set(ControlMode.Velocity, 3072);
+		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
+		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
 	}
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
@@ -237,7 +235,10 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(left_inches_per_sec * scale)));
 		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(right_inches_per_sec * scale)));
 		
-		System.out.println(Util.convertRPMToNativeUnits(inchesPerSecondToRpm(19));
+		System.out.println(Util.convertRPMToNativeUnits(inchesPerSecondToRpm(left_inches_per_sec));
+		System.out.println();
+		System.out.println(left_inches_per_sec);
+		System.out.println();
 		System.out.println();
 		//ConsoleReporter.report("Requested Drive Velocity Left2Cube/Right2Cube: " + left_inches_per_sec + "/" + right_inches_per_sec);
 		//ConsoleReporter.report("Actual Drive Velocity Left2Cube/Right2Cube: " + getLeftVelocityInchesPerSec() + "/" + getRightVelocityInchesPerSec());
