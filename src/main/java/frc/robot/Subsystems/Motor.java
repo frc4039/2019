@@ -33,6 +33,6 @@ public class Motor extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    //setDefaultCommand(new SpinMotor());
+    setDefaultCommand(new SpinMotor());
   }
 }

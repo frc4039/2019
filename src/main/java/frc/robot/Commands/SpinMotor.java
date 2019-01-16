@@ -14,11 +14,11 @@ import frc.robot.Subsystems.Motor;
 
 public class SpinMotor extends Command {
   
-  public static Motor Motor = new Motor();
+  public static Motor motor = new Motor();
   public static OI oi = new OI();
   public SpinMotor() {
     // Use requires() here to declare subsystem dependencies
-    requires(Motor);
+    requires(motor);
   }
 
   // Called just before this Command runs the first time
@@ -29,7 +29,7 @@ public class SpinMotor extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Motor.TestSpin();
+    motor.TestSpin();
     
   }
 

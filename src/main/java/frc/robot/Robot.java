@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.BasicMode;
@@ -20,13 +23,11 @@ import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
 import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
-import edu.wpi.first.cameraserver.CameraServer;
 
-public class Robot extends CustomRobot {
+public class Robot extends TimedRobot {
 	private Controllers robotControllers;
 
 	private Looper mLooper;
-
 
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private RobotStateEstimator robotStateEstimator;
@@ -53,9 +54,26 @@ public class Robot extends CustomRobot {
 		mLooper.register(robotStateEstimator);
 
 	}
+	@Override
+	public void robotPeriodic() {
+	  
+	}
+  
+	/**
+	 * This function is called once each time the robot enters Disabled mode.
+	 * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+	 */
+	@Override
+	public void disabledInit() {
+	}
+  
+	@Override
+	public void disabledPeriodic() {
+	}
 
 	@Override
-	public void autonomous() {
+	public void autonomousPeriodic() {
 		mLooper.start(true);
 		driveBaseSubsystem.setBrakeMode(true);
 		autoModeExecuter = new AutoModeExecuter();
@@ -77,10 +95,10 @@ public class Robot extends CustomRobot {
 	}
 
 	@Override
-	public void operatorControl() {
+	public void teleopPeriodic() {
 		exitAuto();
 		mLooper.start(false);
-
+		Scheduler.getInstance().run();
 		while (isOperatorControl() && isEnabled()) {
 			double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 			double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
@@ -91,13 +109,13 @@ public class Robot extends CustomRobot {
 	}
 
 	@Override
-	public void disabled() {
+	public void teleopInit() {
 		exitAuto();
 
 		mLooper.stop();
 
 		threadRateControl.start(true);
-
+		Scheduler.getInstance().run();
 		while (isDisabled()) {
 			driveBaseSubsystem.setBrakeMode(false);
 			threadRateControl.doRateControl(100);
@@ -115,7 +133,12 @@ public class Robot extends CustomRobot {
 		}
 	}
 
+	
+  
+	/**
+	 * This function is called periodically during test mode.
+	 */
 	@Override
-	public void test() {
+	public void testPeriodic() {
 	}
 }
