@@ -31,7 +31,7 @@ public class OI {
     driverXbox = new XboxController(1);
     Joystick stick = new Joystick(0);
     Button button = new JoystickButton(stick, 4);
-    button.whileHeld(new SpinMotor());
+    button.whenPressed(new SpinMotor());
     
   }
    
