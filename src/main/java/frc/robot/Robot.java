@@ -10,15 +10,17 @@ package frc.robot;
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.BasicMode;
-import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
-import frc.robot.Utilities.*;
+import frc.robot.Utilities.Constants;
+import frc.robot.Utilities.Controllers;
+import frc.robot.Utilities.DriveMotorValues;
+import frc.robot.Utilities.QuickMaths;
+import frc.robot.Utilities.ThreadRateControl;
 import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
 import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
-
-import java.util.ArrayList;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class Robot extends CustomRobot {
 	private Controllers robotControllers;
@@ -38,6 +40,7 @@ public class Robot extends CustomRobot {
 
 	@Override
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
 		robotControllers = Controllers.getInstance();
 		mLooper = new Looper();
 

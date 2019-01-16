@@ -39,7 +39,7 @@ public class OI {
     Button button1 = new JoystickButton(stick, 1);
     Button button2 = new JoystickButton(stick, 2);
     button1.whileHeld(new SpinMotor());
-    button2.whenPressed(new SpinMotor());
+   // button2.whileHeld(new SpinMotor());
   
     
   }

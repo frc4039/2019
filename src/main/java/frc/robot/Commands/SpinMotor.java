@@ -29,7 +29,7 @@ public class SpinMotor extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Motor.SpinForward();
+    Motor.TestSpin();
     
   }
 
@@ -42,7 +42,7 @@ public class SpinMotor extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Motor.SpinStop();
+    
   }
 
   // Called when another command which requires one or more of the same

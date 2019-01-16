@@ -21,17 +21,15 @@ public class Motor extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   
-  TalonSRX motor1 = new TalonSRX(RobotMap.motor1);
   
-public void SpinForward() {
-  motor1.set(ControlMode.PercentOutput, 0.5);
-}
-public void SpinBack(){
-  motor1.set(ControlMode.PercentOutput, -0.5);
-}
-public void SpinStop(){
-  motor1.set(ControlMode.PercentOutput, 0);
-}
+  private TalonSRX leftFront = new TalonSRX(RobotMap.motor1);
+  private TalonSRX rightFront = new TalonSRX(RobotMap.motor2);
+  
+  public void TestSpin(){
+    leftFront.set(ControlMode.PercentOutput, 0.5);
+    rightFront.set(ControlMode.PercentOutput, 0.5);
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
