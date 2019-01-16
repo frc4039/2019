@@ -1,20 +1,34 @@
 package frc.robot.Subsystems;
 
+//hi
+import java.util.concurrent.locks.ReentrantLock;
+
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import frc.robot.Utilities.*;
+
+import frc.robot.Utilities.Constants;
+import frc.robot.Utilities.Controllers;
+import frc.robot.Utilities.CustomSubsystem;
+import frc.robot.Utilities.DriveControlState;
+import frc.robot.Utilities.DriveMotorValues;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.NavX;
 import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
-import frc.robot.Utilities.TrajectoryFollowingMotion.*;
-//hi
-import java.util.concurrent.locks.ReentrantLock;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Kinematics;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Lookahead;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Path;
+import frc.robot.Utilities.TrajectoryFollowingMotion.PathFollower;
+import frc.robot.Utilities.TrajectoryFollowingMotion.PathFollowerRobotState;
+import frc.robot.Utilities.TrajectoryFollowingMotion.RigidTransform2d;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Rotation2d;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Twist2d;
+import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
 	private static DriveBaseSubsystem instance = null;
@@ -129,7 +143,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 			setSucceeded &= mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.kTimeoutMs) == ErrorCode.OK;
 			setSucceeded &= mLeftMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, Constants.kTimeoutMs) == ErrorCode.OK;
-			setSucceeded &= mLeftMaster.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
+			//setSucceeded &= mLeftMaster.con figVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
 
 			setSucceeded &= mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.kTimeoutMs) == ErrorCode.OK;
 			setSucceeded &= mRightMaster.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, Constants.kTimeoutMs) == ErrorCode.OK;
