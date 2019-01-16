@@ -198,8 +198,10 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
 
-		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
-		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
+		//mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
+		//mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
+		mLeftMaster.set(ControlMode.Velocity, 3072);
+		mRightMaster.set(ControlMode.Velocity, 3072);
 	}
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
