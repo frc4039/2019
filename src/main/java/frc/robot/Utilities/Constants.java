@@ -53,6 +53,7 @@ public class Constants {
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
 	public static final double kSensorUnitsPerRotation = 30720.0;
+	//public static final double kSensorUnitsPerRotation = 4096.0;
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
 
