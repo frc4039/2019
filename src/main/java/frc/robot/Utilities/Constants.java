@@ -13,10 +13,11 @@ public class Constants {
 	/* ROBOT PHYSICAL CONSTANTS */
 
 	// Wheels
-	public static final double kDriveWheelDiameterInches = 6.25;
+	public static final double kDriveWheelDiameterInches = 6.125;
 	//public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
 	//public static final double kDriveWheelDiameterInches = 5;	//Comp bot measured val
-	public static final double kTrackWidthInches = 25.5;
+	public static final double kTrackWidthInches = 23.5;
+	//public static final double kTrackWidthInches = 25.5;
 	public static final double kTrackScrubFactor = 1.0; // 0.924 ?
 
 	// Geometry
@@ -89,15 +90,21 @@ public class Constants {
 
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
-	public static final double kDriveHighGearVelocityKp = 1;
+	public static final double kDriveHighGearVelocityKp = 0.004;
+	public static final double kDriveHighGearVelocityKi = 0.0002;
+	public static final double kDriveHighGearVelocityKd = 0.02;
+	public static final double kDriveHighGearVelocityKf = 0.03175;
+	public static final int kDriveHighGearVelocityIZone = 1000;
+	public static final double kDriveHighGearVelocityRampRate = 0.1;
+	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps
+
+/* 	public static final double kDriveHighGearVelocityKp = 1;
 	public static final double kDriveHighGearVelocityKi = 0.005;
 	public static final double kDriveHighGearVelocityKd = 1.6;
 	public static final double kDriveHighGearVelocityKf = 0.165;
 	public static final int kDriveHighGearVelocityIZone = 0;
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
-	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps
-
-
+	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps */
 
 
 
