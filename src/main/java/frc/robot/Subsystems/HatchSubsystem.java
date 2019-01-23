@@ -63,6 +63,10 @@ public class HatchSubsystem extends Subsystem {
         mHatchMotor = robotControllers.getHatchMotor();
     }
 
+    public void init(){
+        //initialize here
+    }
+
     /* @Override
     public void outputToSmartDashboard() {
         SmartDashboard.putNumber("Hatch Gripper Current", mHatchGripper.getOutputCurrent());
@@ -80,6 +84,7 @@ public class HatchSubsystem extends Subsystem {
 
     private final Loop mLoop = new Loop() {
         private double mCurrentStateStartTime;
+
 
         @Override
         public void onFirstStart(double timestamp) {
@@ -101,10 +106,10 @@ public class HatchSubsystem extends Subsystem {
 
         @Override
         public void onLoop(double timestamp, boolean isAuto) {
-
             synchronized (HatchSubsystem.this) {
                 SystemState newState = mSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
+                
                 switch (mSystemState) {
                 case ACQUIRING:
                     newState = handleAcquiring(timeInState);
@@ -145,7 +150,6 @@ public class HatchSubsystem extends Subsystem {
 
         //code to hold gripper in acquiring position 
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-
         switch (mWantedState) {
         case ACQUIRE:
             //code to keep gripper in acquiring position
@@ -162,7 +166,7 @@ public class HatchSubsystem extends Subsystem {
     private SystemState handleHolding(double timeInState) {
 
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-
+       
         switch (mWantedState) {
         case HOLD:
             //code to keep gripper in holding position

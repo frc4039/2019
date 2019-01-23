@@ -52,9 +52,11 @@ public class OI implements Runnable {
 		//Hatch Control
 		if (operatorJoystick.getRawButton(Constants.HATCH_SCORE)) {
 			hatchSubsystem.setWantedState(WantedState.ACQUIRE);
-		} else {
+		} else if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
 			hatchSubsystem.setWantedState(WantedState.HOLD);
-		}
+		} //else {
+		//	hatchSubsystem.setWantedState(WantedState.HOLD);
+		//}
 		///////////////////////////////
 
 	

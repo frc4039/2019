@@ -12,6 +12,7 @@ import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.BasicMode;
 import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
+import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
@@ -26,6 +27,7 @@ public class Robot extends CustomRobot {
 	private OI oI;
 
 	private DriveBaseSubsystem driveBaseSubsystem;
+	private HatchSubsystem hatchSubsystem;
 
 	private RobotStateEstimator robotStateEstimator;
 
@@ -41,7 +43,13 @@ public class Robot extends CustomRobot {
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		driveBaseSubsystem.init();
 		driveBaseSubsystem.registerEnabledLoops(mLooper);
+
+		hatchSubsystem = HatchSubsystem.getInstance();
+		hatchSubsystem.init();
+		hatchSubsystem.registerEnabledLoops(mLooper);
+
 		robotStateEstimator = RobotStateEstimator.getInstance();
+		
 		mLooper.register(robotStateEstimator);
 
 	}
@@ -72,6 +80,7 @@ public class Robot extends CustomRobot {
 	public void operatorControl() {
 		exitAuto();
 		mLooper.start(false);
+		threadRateControl.start(true);
 
 		while (isOperatorControl() && isEnabled()) {
 			oI.run();
