@@ -6,10 +6,10 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.Utilities.Constants;
-import frc.robot.Utilities.Controllers;
+// import frc.robot.Utilities.Controllers;
 
 public class CustomTalonSRX extends TalonSRX {
-	private int pdpChannel;
+	//private int pdpChannel;
 	private int currentSelectedSlot = 0;
 	//TODO: Rewrite to support up to 4 slots, as Omar says the talons have 4 slots
 	private double[] mCLRampRate = {0, 0};
@@ -18,7 +18,7 @@ public class CustomTalonSRX extends TalonSRX {
 
 	public CustomTalonSRX(int deviceId, int pdpChannel) {
 		super(deviceId);
-		this.pdpChannel = pdpChannel;
+		//this.pdpChannel = pdpChannel;
 	}
 
 //	@Override

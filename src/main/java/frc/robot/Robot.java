@@ -13,36 +13,31 @@ import frc.robot.Autonomous.Modes.BasicMode;
 import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Utilities.*;
-import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
-import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
+//import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Robot extends CustomRobot {
-	private Controllers robotControllers;
 
 	private Looper mLooper;
 
+	private OI oI;
 
 	private DriveBaseSubsystem driveBaseSubsystem;
+
 	private RobotStateEstimator robotStateEstimator;
 
 	private ThreadRateControl threadRateControl = new ThreadRateControl();
 
 	private AutoModeExecuter autoModeExecuter;
 
-	private CustomJoystick driveJoystickThrottle;
-
-
 	@Override
 	public void robotInit() {
-		robotControllers = Controllers.getInstance();
 		mLooper = new Looper();
 
-		driveJoystickThrottle = robotControllers.getDriveJoystickThrottle();
-
+		oI = OI.getInstance();
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		driveBaseSubsystem.init();
 		driveBaseSubsystem.registerEnabledLoops(mLooper);
@@ -79,10 +74,7 @@ public class Robot extends CustomRobot {
 		mLooper.start(false);
 
 		while (isOperatorControl() && isEnabled()) {
-			double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
-			double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
-
-			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(Util.limit(y + x, 1), Util.limit(y - x, 1)));
+			oI.run();
 			threadRateControl.doRateControl(20);
 		}
 	}

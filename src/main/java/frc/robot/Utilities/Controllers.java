@@ -22,6 +22,7 @@ public class Controllers {
 	private Controllers() {
 
 		driveJoystickThrottle = new CustomJoystick(0);
+		operatorJoystick = new CustomJoystick(1);
 
 		leftDrive1 = CANSpeedControllerBuilder.createFastMasterTalonSRX(Constants.kLeftDriveMasterId, Constants.kLeftDriveMasterPDPChannel);
 		leftDrive2 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kLeftDriveSlaveId, Constants.kLeftDriveSlave1PDPChannel, leftDrive1);
@@ -31,16 +32,16 @@ public class Controllers {
 		rightDrive2 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId, Constants.kRightDriveSlave1PDPChannel, rightDrive1);
 		rightDrive3 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId2, Constants.kRightDriveSlave2PDPChannel, rightDrive1);
 
+		hatchMotor1 = CANSpeedControllerBuilder.createDefaultVictorSPX(Constants.kHatchMotorId);
+
 		try {
 			navX = new NavX(SPI.Port.kMXP);
 		} catch (Exception ex) {
 
 		}
 
-
 		canifierLED = new CANifier(Constants.kCANifierLEDId);
-
-
+		
 	}
 
 
@@ -50,13 +51,23 @@ public class Controllers {
 	private CustomTalonSRX rightDrive1;
 	private BaseMotorController rightDrive2;
 	private BaseMotorController rightDrive3;
-
-	private NavX navX;
-
-	private CANifier canifierLED;
+	private BaseMotorController hatchMotor1;
 
 	private CustomJoystick driveJoystickThrottle;
+	private CustomJoystick operatorJoystick;
 
+	private NavX navX;
+	private CANifier canifierLED;
+
+
+	////Subsystem Motors
+
+	public BaseMotorController getHatchMotor() {
+		return hatchMotor1;
+	}
+
+
+	////Drive Motors
 
 	public CustomTalonSRX getLeftDrive1() {
 		return leftDrive1;
@@ -82,6 +93,20 @@ public class Controllers {
 		return rightDrive3;
 	}
 
+
+	////Joystics and stuff
+
+	public CustomJoystick getDriveJoystickThrottle() {
+		return driveJoystickThrottle;
+	}
+
+	public CustomJoystick getOperatorJoystick() {
+		return operatorJoystick;
+	}
+
+
+	////Sensors and stuff
+
 	public NavX	getNavX() {
 		return navX;
 	}
@@ -90,8 +115,6 @@ public class Controllers {
 		return canifierLED;
 	}
 
-	public CustomJoystick getDriveJoystickThrottle() {
-		return driveJoystickThrottle;
-	}
+
 
 }

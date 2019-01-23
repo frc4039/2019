@@ -2,15 +2,35 @@ package frc.robot.Utilities;
 
 public class Constants {
 
-	public static final int kLEDThreadPriority = Thread.MIN_PRIORITY;
-	public static final int kCANifierLEDId = 30;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	////  Operator Buttons
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+	//Driver control buttons
 	public static final int DRIVE_X_AXIS = 0;
 	public static final int DRIVE_Y_AXIS = 1;
 	public static final double kJoystickDeadband = 0.08;
 
 
-	/* ROBOT PHYSICAL CONSTANTS */
+	//Operator controller buttons
+	public static final int HATCH_SCORE = 1;
+	public static final int HATCH_PICKUP = 2;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Hatch Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kHatchAcquiringPosition = 8888.8; //this is made up
+	public static final double kHatchHoldingPosition = 7777.7; //this is also made up
+	public static final double kHatchEjectPosition = 6666.6; //definitely made up
+
+	public static final double kHatchEjectTime = 5555.5; //please just change these asap
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Robot Drive Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Wheels
 	public static final double kDriveWheelDiameterInches = 6.125;
@@ -34,9 +54,7 @@ public class Constants {
 	public static final double kDeltaLookAhead = kMaxLookAhead - kMinLookAhead;
 	public static final double kDeltaLookAheadSpeed = kMaxLookAheadSpeed - kMinLookAheadSpeed;
 
-	public static final double kInertiaSteeringGain = 0.0; // angular velocity command is multiplied by this gain *
-	// our speed
-	// in inches per sec
+	public static final double kInertiaSteeringGain = 0.0; // angular velocity command is multiplied by this gain * our speed in inches per sec
 	public static final double kSegmentCompletionTolerance = 1; // inches
 	public static final double kPathFollowingMaxAccel = 100.0; // inches per second^2
 	public static final double kPathFollowingMaxVel = 140.0; // inches per second
@@ -50,7 +68,6 @@ public class Constants {
 	public static final double kPathFollowingGoalVelTolerance = 18.0;
 	public static final double kPathStopSteeringDistance = 9.0;
 
-
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
 	public static final double kSensorUnitsPerRotation = 30720.0;
@@ -58,35 +75,7 @@ public class Constants {
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
 
-
-	public static final int kTimeoutMs = 20;
-	public static final int kTimeoutMsFast = 10;
-	public static final int kTalonRetryCount = 3;
-
-///////change
-	public static final int kLeftDriveMasterId = 9;
-	public static final int kLeftDriveSlaveId = 8;
-	public static final int kLeftDriveSlaveId2 = 11; //
-	public static final int kRightDriveMasterId = 7;
-	public static final int kRightDriverSlaveId = 6;
-	public static final int kRightDriverSlaveId2 = 10; //
-
-	// Drive
-	public static final int kLeftDriveMasterPDPChannel = 14; //left front
-	public static final int kLeftDriveMasterPDPBreakerRating = 40;
-	public static final int kLeftDriveSlave1PDPChannel = 15; //left back
-	public static final int kLeftDriveSlave1PDPBreakerRating = 40;
-	public static final int kLeftDriveSlave2PDPChannel = 0;
-	public static final int kLeftDriveSlave2PDPBreakerRating = 40;
-	public static final int kRightDriveMasterPDPChannel = 13; //right front
-	public static final int kRightDriveMasterPDPBreakerRating = 40;
-	public static final int kRightDriveSlave1PDPChannel = 12; //right back
-	public static final int kRightDriveSlave1PDPBreakerRating = 40;
-	public static final int kRightDriveSlave2PDPChannel = 1;
-	public static final int kRightDriveSlave2PDPBreakerRating = 40;
-
-
-	/* CONTROL LOOP GAINS */
+		/* CONTROL LOOP GAINS */
 
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
@@ -106,13 +95,47 @@ public class Constants {
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
 	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps */
 
+	public static final int kTimeoutMs = 20;
+	public static final int kTimeoutMsFast = 10;
+	public static final int kTalonRetryCount = 3;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Motor Controller IDS
+	//// Don't change unless robot is rewired
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Hatch
+	public static final int kHatchMotorId = 4; //not the real value, needs to be changed
 
+	// Drive
+	public static final int kLeftDriveMasterId = 9;
+	public static final int kLeftDriveSlaveId = 8;
+	public static final int kLeftDriveSlaveId2 = 11; // doesn't exist yet
+	public static final int kRightDriveMasterId = 7;
+	public static final int kRightDriverSlaveId = 6;
+	public static final int kRightDriverSlaveId2 = 10; // doesn't exist yet
 
+	// Drive
+	public static final int kLeftDriveMasterPDPChannel = 14; //left front
+	public static final int kLeftDriveMasterPDPBreakerRating = 40;
+	public static final int kLeftDriveSlave1PDPChannel = 15; //left back
+	public static final int kLeftDriveSlave1PDPBreakerRating = 40;
+	public static final int kLeftDriveSlave2PDPChannel = 0;  //doesn't exist yet
+	public static final int kLeftDriveSlave2PDPBreakerRating = 40;
+	public static final int kRightDriveMasterPDPChannel = 13; //right front
+	public static final int kRightDriveMasterPDPBreakerRating = 40;
+	public static final int kRightDriveSlave1PDPChannel = 12; //right back
+	public static final int kRightDriveSlave1PDPBreakerRating = 40;
+	public static final int kRightDriveSlave2PDPChannel = 1;  //doesn't exist yet
+	public static final int kRightDriveSlave2PDPBreakerRating = 40;
 
-	////////NOT USED THIS YEAR
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Not used, but 195 or 254 used them and now if you take them out it breaks our code        ////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
+	//195 LEDs
+	public static final int kLEDThreadPriority = Thread.MIN_PRIORITY;
+	public static final int kCANifierLEDId = 30;
 
 	// Goal tracker constants
 	public static final double kMaxGoalTrackAge = 1.0;
