@@ -3,15 +3,21 @@ package frc.robot.Subsystems;
 //import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 
 import frc.robot.Utilities.Constants;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Controllers;
+import frc.robot.Utilities.Drivers.CustomTalonSRX;
+import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.*;
 
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The gear grabber subsystem consists of one BAG motor used to intake and exhaust gears and one pancake piston used to
@@ -30,6 +36,16 @@ public class HatchSubsystem extends Subsystem {
 
     private static HatchSubsystem mInstance;
 
+    private static ReentrantLock _subsystemMutex = new ReentrantLock();
+
+    //private final Solenoid mWristSolenoid;
+    private CustomTalonSRX mHatchMotor;
+    private WantedState mWantedState;
+    private SystemState mSystemState;
+    //private double mThresholdStart;
+
+    private boolean mPrevBrakeModeVal;
+
     public static HatchSubsystem getInstance() {
         if (mInstance == null) {
             mInstance = new HatchSubsystem();
@@ -47,24 +63,46 @@ public class HatchSubsystem extends Subsystem {
         HOLDING // gripper fully seperated
     }
 
-    //private final Solenoid mWristSolenoid;
-    private BaseMotorController mHatchMotor;
-    private WantedState mWantedState;
-    private SystemState mSystemState;
-    //private double mThresholdStart;
-
     private HatchSubsystem() {
         //mWristSolenoid = Constants.makeSolenoidForId(Constants.kGearWristSolenoid);
         //mHatchGripper.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, 15);
         //mHatchGripper.changeControlMode(CANTalon.TalonControlMode.Voltage);
 
         Controllers robotControllers = Controllers.getInstance();
-        
         mHatchMotor = robotControllers.getHatchMotor();
+
+        mPrevBrakeModeVal = false;
+		setBrakeMode(true);
     }
 
     public void init(){
-        //initialize here
+        mHatchMotor.setSensorPhase(false);
+
+		mHatchMotor.setInverted(true);
+
+		setBrakeMode(true);
+
+		boolean setSucceeded;
+		int retryCounter = 0;
+
+		do {
+			setSucceeded = true;
+
+			setSucceeded &= mHatchMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.kTimeoutMs) == ErrorCode.OK;
+			setSucceeded &= mHatchMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, Constants.kTimeoutMs) == ErrorCode.OK;
+			setSucceeded &= mHatchMotor.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
+
+			
+			setSucceeded &= mHatchMotor.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
+
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+
+		setSucceeded &= TalonHelper.setPIDGains(mHatchMotor, 0, Constants.kHatchPositionKp, Constants.kHatchPositionKi, Constants.kHatchPositionKd, Constants.kHatchPositionKf, Constants.kHatchPositionRampRate, Constants.kHatchPositionIZone);
+		setSucceeded &= TalonHelper.setPIDGains(mHatchMotor, 1, Constants.kHatchPositionKp, Constants.kHatchPositionKi, Constants.kHatchPositionKd, Constants.kHatchPositionKf, Constants.kHatchPositionRampRate, Constants.kHatchPositionIZone);
+		
+        mHatchMotor.selectProfileSlot(0, 0);
+        
+        subsystemZero();
     }
 
     /* @Override
@@ -150,15 +188,16 @@ public class HatchSubsystem extends Subsystem {
 
         //code to hold gripper in acquiring position 
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+
         switch (mWantedState) {
         case ACQUIRE:
             //code to keep gripper in acquiring position
             //this probably isn't necessary, can likely just set new systemstate
-            mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+            //mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
             return SystemState.ACQUIRING;
         default:
             //code to move gripper to holding
-            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
             return SystemState.HOLDING;
         }
     }
@@ -171,18 +210,18 @@ public class HatchSubsystem extends Subsystem {
         case HOLD:
             //code to keep gripper in holding position
             //this probably isn't necessary, can likely just set new systemstate
-            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
             
             return SystemState.HOLDING;
 
         default:
             
             //code to eject gear, then move to acquiring position
-            if (timeInState < Constants.kHatchEjectTime) {
-                mHatchMotor.set(ControlMode.Position, Constants.kHatchEjectPosition);
-            } else {
-                mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-            }
+            // if (timeInState < Constants.kHatchEjectTime) {
+            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchEjectPosition);
+            // } else {
+            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+            // }
 
             return SystemState.ACQUIRING;
         }
@@ -217,15 +256,38 @@ public class HatchSubsystem extends Subsystem {
         //nothing
     }
 
+    public void setBrakeMode(boolean brakeMode) {
+		if (mPrevBrakeModeVal != brakeMode) {
+			_subsystemMutex.lock();
+			mHatchMotor.setNeutralMode(brakeMode ? NeutralMode.Brake : NeutralMode.Coast);
+			mPrevBrakeModeVal = brakeMode;
+			_subsystemMutex.unlock();
+		}
+    }
+    
+	public void subsystemZero() {
+
+		boolean setSucceeded;
+		int retryCounter = 0;
+
+		do {
+			setSucceeded = true;
+
+			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+
+//		if (retryCounter >= Constants.kTalonRetryCount || !setSucceeded)
+//			ConsoleReporter.report("Failed to zero DriveBaseSubsystem!!!", MessageLevel.DEFCON1);
+	}
 
     //this will only work if we use a TalonSRX, Victors can't monitor current
-/*     public boolean checkSystem() {
+     /* public boolean checkSystem() {
         System.out.println("Testing Hatch Motor.--------------------------------");
         final double kCurrentThres = 0.5;
 
         mHatchMotor.set(ControlMode.VoltageOutput, -6.0f);
         Timer.delay(4.0);
-        //final double current = mHatchMotor.getOutputCurrent(); //doesn't work on Victors?
+        final double current = mHatchMotor.getOutputCurrent();
         mHatchMotor.set(ControlMode.VoltageOutput, 0.0);
 
         System.out.println("Hatch Motor Current: " + current);
@@ -235,6 +297,6 @@ public class HatchSubsystem extends Subsystem {
             return false;
         }
         return true;
-    } */
+    }   */
 
 }

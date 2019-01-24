@@ -32,7 +32,7 @@ public class Controllers {
 		rightDrive2 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId, Constants.kRightDriveSlave1PDPChannel, rightDrive1);
 		rightDrive3 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId2, Constants.kRightDriveSlave2PDPChannel, rightDrive1);
 
-		hatchMotor1 = CANSpeedControllerBuilder.createDefaultVictorSPX(Constants.kHatchMotorId);
+		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 
 		try {
 			navX = new NavX(SPI.Port.kMXP);
@@ -51,7 +51,8 @@ public class Controllers {
 	private CustomTalonSRX rightDrive1;
 	private BaseMotorController rightDrive2;
 	private BaseMotorController rightDrive3;
-	private BaseMotorController hatchMotor1;
+
+	private CustomTalonSRX hatchMotor;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -62,8 +63,8 @@ public class Controllers {
 
 	////Subsystem Motors
 
-	public BaseMotorController getHatchMotor() {
-		return hatchMotor1;
+	public CustomTalonSRX getHatchMotor() {
+		return hatchMotor;
 	}
 
 

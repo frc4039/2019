@@ -3,7 +3,7 @@ package frc.robot.Utilities;
 public class Constants {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	////  Operator Buttons
+	////  Driver/Operator Buttons
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -16,16 +16,24 @@ public class Constants {
 	//Operator controller buttons
 	public static final int HATCH_SCORE = 1; 	//A
 	public static final int HATCH_PICKUP = 2;	//B
+	public static final int HATCH_ZERO = 3; 	//X
  
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 8888.8; //this is made up
-	public static final double kHatchHoldingPosition = 7777.7; //this is also made up
-	public static final double kHatchEjectPosition = 6666.6; //definitely made up
+	public static final double kHatchAcquiringPosition = 80; //this is made up
+	public static final double kHatchHoldingPosition = -440; //this is also made up
+	public static final double kHatchEjectPosition = 0; //definitely made up
 
-	public static final double kHatchEjectTime = 5555.5; //please just change these asap
+	public static final double kHatchEjectTime = 2; //please just change these asap
+
+	public static final double kHatchPositionKp = 7.0;
+	public static final double kHatchPositionKi = 0.0;
+	public static final double kHatchPositionKd = 70.0;
+	public static final double kHatchPositionKf = 0.0;
+	public static final double kHatchPositionRampRate = 0.0;
+	public static final int kHatchPositionIZone = 0;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,18 +113,19 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Hatch
-	public static final int kHatchMotorId = 4; //not the real value, needs to be changed
+	public static final int kHatchMotorId = 9; //not the real value, needs to be changed
+
+	public static final int kHatchMotorPDPChannel = 14; //not the real value, also needs to be changed
 
 	// Drive
-	public static final int kLeftDriveMasterId = 9;
+	public static final int kLeftDriveMasterId = 5;  //9
 	public static final int kLeftDriveSlaveId = 8;
 	public static final int kLeftDriveSlaveId2 = 11; // doesn't exist yet
 	public static final int kRightDriveMasterId = 7;
 	public static final int kRightDriverSlaveId = 6;
 	public static final int kRightDriverSlaveId2 = 10; // doesn't exist yet
 
-	// Drive
-	public static final int kLeftDriveMasterPDPChannel = 14; //left front
+	public static final int kLeftDriveMasterPDPChannel = 11; //14 //left front
 	public static final int kLeftDriveMasterPDPBreakerRating = 40;
 	public static final int kLeftDriveSlave1PDPChannel = 15; //left back
 	public static final int kLeftDriveSlave1PDPBreakerRating = 40;
