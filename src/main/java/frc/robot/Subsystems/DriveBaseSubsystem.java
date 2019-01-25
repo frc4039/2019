@@ -13,7 +13,6 @@ import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.TrajectoryFollowingMotion.*;
-//hi
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
@@ -234,7 +233,6 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(left_inches_per_sec * scale)));
 		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(right_inches_per_sec * scale)));
-
 		//ConsoleReporter.report("Requested Drive Velocity Left2Cube/Right2Cube: " + left_inches_per_sec + "/" + right_inches_per_sec);
 		//ConsoleReporter.report("Actual Drive Velocity Left2Cube/Right2Cube: " + getLeftVelocityInchesPerSec() + "/" + getRightVelocityInchesPerSec());
 	}
