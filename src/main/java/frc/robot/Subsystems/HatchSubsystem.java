@@ -92,9 +92,6 @@ public class HatchSubsystem extends Subsystem {
 			setSucceeded &= mHatchMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, Constants.kTimeoutMs) == ErrorCode.OK;
 			setSucceeded &= mHatchMotor.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
 
-			
-			setSucceeded &= mHatchMotor.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
-
 		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
 
 		setSucceeded &= TalonHelper.setPIDGains(mHatchMotor, 0, Constants.kHatchPositionKp, Constants.kHatchPositionKi, Constants.kHatchPositionKd, Constants.kHatchPositionKf, Constants.kHatchPositionRampRate, Constants.kHatchPositionIZone);
@@ -102,7 +99,7 @@ public class HatchSubsystem extends Subsystem {
 		
         mHatchMotor.selectProfileSlot(0, 0);
         
-        subsystemZero();
+        zeroSensors();
     }
 
     /* @Override
@@ -117,6 +114,15 @@ public class HatchSubsystem extends Subsystem {
 
     @Override
     public void zeroSensors() {
+        
+        boolean setSucceeded;
+		int retryCounter = 0;
+
+		do {
+			setSucceeded = true;
+
+			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
 
     }
 
@@ -267,7 +273,7 @@ public class HatchSubsystem extends Subsystem {
     
 	public void subsystemZero() {
 
-		boolean setSucceeded;
+        boolean setSucceeded;
 		int retryCounter = 0;
 
 		do {
