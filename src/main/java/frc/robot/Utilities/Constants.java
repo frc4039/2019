@@ -41,18 +41,18 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Wheels
-	public static final double kDriveWheelDiameterInches = 6.125;
+	public static final double kDriveWheelDiameterInches = 6.1875;
 	//public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
 	//public static final double kDriveWheelDiameterInches = 5;	//Comp bot measured val
-	public static final double kTrackWidthInches = 23.5;
+	public static final double kTrackWidthInches = 25.75;
 	//public static final double kTrackWidthInches = 25.5;
 	public static final double kTrackScrubFactor = 1.0; // 0.924 ?
 
 	// Geometry
-	public static final double kCenterToFrontBumperDistance = 18.75;
-	public static final double kCenterToIntakeDistance = 18.75;
-	public static final double kCenterToRearBumperDistance = 18.75;
-	public static final double kCenterToSideBumperDistance = 16.375;
+	public static final double kCenterToFrontBumperDistance = 17;
+	public static final double kCenterToIntakeDistance = 17;
+	public static final double kCenterToRearBumperDistance = 17;
+	public static final double kCenterToSideBumperDistance = 12;
 
 	// Path following constants
 	public static final double kMinLookAhead = 12.0; // inches
@@ -78,8 +78,8 @@ public class Constants {
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
-	//public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
-	public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
+	public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
+	//public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
 
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
@@ -114,29 +114,30 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Hatch
-	public static final int kHatchMotorId = 9; //not the real value, needs to be changed
+	public static final int kHatchMotorId = 8; //not the real value, needs to be changed
 
-	public static final int kHatchMotorPDPChannel = 14; //not the real value, also needs to be changed
+	public static final int kHatchMotorPDPChannel = 4;
+	public static final int kHatchMotorPDPBreakerRating = 30;
 
 	// Drive
-	public static final int kLeftDriveMasterId = 5;  //9
-	public static final int kLeftDriveSlaveId = 8;
-	public static final int kLeftDriveSlaveId2 = 11; // doesn't exist yet
-	public static final int kRightDriveMasterId = 7;
+	public static final int kLeftDriveMasterId = 2;
+	public static final int kLeftDriveSlaveId = 3;
+	public static final int kLeftDriveSlaveId2 = 4;
+	public static final int kRightDriveMasterId = 5;
 	public static final int kRightDriverSlaveId = 6;
-	public static final int kRightDriverSlaveId2 = 10; // doesn't exist yet
+	public static final int kRightDriverSlaveId2 = 7;
 
-	public static final int kLeftDriveMasterPDPChannel = 11; //14 //left front
+	public static final int kLeftDriveMasterPDPChannel = 14; 
 	public static final int kLeftDriveMasterPDPBreakerRating = 40;
-	public static final int kLeftDriveSlave1PDPChannel = 15; //left back
+	public static final int kLeftDriveSlave1PDPChannel = 13; 
 	public static final int kLeftDriveSlave1PDPBreakerRating = 40;
-	public static final int kLeftDriveSlave2PDPChannel = 0;  //doesn't exist yet
+	public static final int kLeftDriveSlave2PDPChannel = 12;  
 	public static final int kLeftDriveSlave2PDPBreakerRating = 40;
-	public static final int kRightDriveMasterPDPChannel = 13; //right front
+	public static final int kRightDriveMasterPDPChannel = 15; 
 	public static final int kRightDriveMasterPDPBreakerRating = 40;
-	public static final int kRightDriveSlave1PDPChannel = 12; //right back
+	public static final int kRightDriveSlave1PDPChannel = 3; 
 	public static final int kRightDriveSlave1PDPBreakerRating = 40;
-	public static final int kRightDriveSlave2PDPChannel = 1;  //doesn't exist yet
+	public static final int kRightDriveSlave2PDPChannel = 2;
 	public static final int kRightDriveSlave2PDPBreakerRating = 40;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
