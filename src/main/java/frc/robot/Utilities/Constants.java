@@ -116,7 +116,7 @@ public class Constants {
 	// Hatch
 	public static final int kHatchMotorId = 8; //not the real value, needs to be changed
 
-	public static final int kHatchMotorPDPChannel = 4;
+	public static final int kHatchMotorPDPChannel = 11;
 	public static final int kHatchMotorPDPBreakerRating = 30;
 
 	// Drive
