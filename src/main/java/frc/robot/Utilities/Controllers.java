@@ -22,14 +22,17 @@ public class Controllers {
 	private Controllers() {
 
 		driveJoystickThrottle = new CustomJoystick(0);
+		operatorJoystick = new CustomJoystick(1);
 
 		leftDrive1 = CANSpeedControllerBuilder.createFastMasterTalonSRX(Constants.kLeftDriveMasterId, Constants.kLeftDriveMasterPDPChannel);
-		leftDrive2 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kLeftDriveSlaveId, Constants.kLeftDriveSlave1PDPChannel, leftDrive1);
-		leftDrive3 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kLeftDriveSlaveId2, Constants.kLeftDriveSlave2PDPChannel, leftDrive1);
+		leftDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kLeftDriveSlaveId, leftDrive1);
+		leftDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kLeftDriveSlaveId2, leftDrive1);
 
 		rightDrive1 = CANSpeedControllerBuilder.createFastMasterTalonSRX(Constants.kRightDriveMasterId, Constants.kRightDriveMasterPDPChannel);
-		rightDrive2 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId, Constants.kRightDriveSlave1PDPChannel, rightDrive1);
-		rightDrive3 = CANSpeedControllerBuilder.createPermanentSlaveTalonSRX(Constants.kRightDriverSlaveId2, Constants.kRightDriveSlave2PDPChannel, rightDrive1);
+		rightDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId, rightDrive1);
+		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId2, rightDrive1);
+
+		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 
 		try {
 			navX = new NavX(SPI.Port.kMXP);
@@ -37,10 +40,8 @@ public class Controllers {
 
 		}
 
-
 		canifierLED = new CANifier(Constants.kCANifierLEDId);
-
-
+		
 	}
 
 
@@ -51,12 +52,23 @@ public class Controllers {
 	private BaseMotorController rightDrive2;
 	private BaseMotorController rightDrive3;
 
-	private NavX navX;
-
-	private CANifier canifierLED;
+	private CustomTalonSRX hatchMotor;
 
 	private CustomJoystick driveJoystickThrottle;
+	private CustomJoystick operatorJoystick;
 
+	private NavX navX;
+	private CANifier canifierLED;
+
+
+	////Subsystem Motors
+
+	public CustomTalonSRX getHatchMotor() {
+		return hatchMotor;
+	}
+
+
+	////Drive Motors
 
 	public CustomTalonSRX getLeftDrive1() {
 		return leftDrive1;
@@ -82,6 +94,20 @@ public class Controllers {
 		return rightDrive3;
 	}
 
+
+	////Joystics and stuff
+
+	public CustomJoystick getDriveJoystickThrottle() {
+		return driveJoystickThrottle;
+	}
+
+	public CustomJoystick getOperatorJoystick() {
+		return operatorJoystick;
+	}
+
+
+	////Sensors and stuff
+
 	public NavX	getNavX() {
 		return navX;
 	}
@@ -90,8 +116,6 @@ public class Controllers {
 		return canifierLED;
 	}
 
-	public CustomJoystick getDriveJoystickThrottle() {
-		return driveJoystickThrottle;
-	}
+
 
 }

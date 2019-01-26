@@ -2,8 +2,8 @@ package frc.robot.Utilities.Drivers;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlFrame;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+// import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -11,30 +11,30 @@ import frc.robot.Utilities.Constants;
 
 public class CANSpeedControllerBuilder {
 	private static class Configuration {
-		public double MAX_OUTPUT = 1;
-		public double NOMINAL_OUTPUT = 0;
-		public NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
-		public boolean ENABLE_CURRENT_LIMIT = false;
-		public boolean ENABLE_SOFT_LIMIT = false;
-		//public boolean ENABLE_LIMIT_SWITCH = false;
-		public int CURRENT_LIMIT = 0;
-		public boolean INVERTED = false;
+		// public double MAX_OUTPUT = 1;
+		// public double NOMINAL_OUTPUT = 0;
+		// public NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
+		// public boolean ENABLE_CURRENT_LIMIT = false;
+		// public boolean ENABLE_SOFT_LIMIT = false;
+		// public boolean ENABLE_LIMIT_SWITCH = false;
+		// public int CURRENT_LIMIT = 0;
+		// public boolean INVERTED = false;
 
 		public int CONTROL_FRAME_PERIOD_MS = 10;
 		public int STATUS_FRAME_GENERAL_1_MS = 10;
 		public int STATUS_FRAME_FEEDBACK0_2_MS = 20;
-		public int STATUS_FRAME_QUADRATURE_3_MS = 160;
-		public int STATUS_FRAME_ANALOG_4_MS = 160;
-		public int STATUS_FRAME_PULSE_8_MS = 160;
-		public int STATUS_FRAME_TARGET_10_MS = 0;
-		public int STATUS_FRAME_UART_11_MS = 250;
-		public int STATUS_FRAME_FEEDBACK1_12_MS = 250;
-		public int STATUS_FRAME_PIDF0_13_MS = 160;
-		public int STATUS_FRAME_PIDF1_14_MS = 250;
-		public int STATUS_FRAME_FIRMWARE_15_MS = 160;
+		// public int STATUS_FRAME_QUADRATURE_3_MS = 160;
+		// public int STATUS_FRAME_ANALOG_4_MS = 160;
+		// public int STATUS_FRAME_PULSE_8_MS = 160;
+		// public int STATUS_FRAME_TARGET_10_MS = 0;
+		// public int STATUS_FRAME_UART_11_MS = 250;
+		// public int STATUS_FRAME_FEEDBACK1_12_MS = 250;
+		// public int STATUS_FRAME_PIDF0_13_MS = 160;
+		// public int STATUS_FRAME_PIDF1_14_MS = 250;
+		// public int STATUS_FRAME_FIRMWARE_15_MS = 160;
 
-		//public VelocityMeasPeriod VELOCITY_MEASUREMENT_PERIOD = VelocityMeasPeriod::Period_100Ms;
-		//public int VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 64;
+		// public VelocityMeasPeriod VELOCITY_MEASUREMENT_PERIOD = VelocityMeasPeriod::Period_100Ms;
+		// public int VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 64;
 	}
 	
 	private static Configuration kDefaultConfiguration = new Configuration();
@@ -53,6 +53,10 @@ public class CANSpeedControllerBuilder {
 
 	public static CustomTalonSRX createDefaultTalonSRX(int id, int pdpChannel) {
 		return createTalonSRX(id, pdpChannel, kDefaultConfiguration);
+	}
+
+	public static VictorSPX createDefaultVictorSPX(int id) {
+		return createVictorSPX(id, kDefaultConfiguration);
 	}
 
 	public static TalonSRX createMasterTalonSRX(int id) {
@@ -91,7 +95,7 @@ public class CANSpeedControllerBuilder {
 		return talon;
 	}
 
-	@Deprecated
+	//@Deprecated
 	public static VictorSPX createPermanentVictorSlaveToTalonSRX(int id, TalonSRX masterTalon) {
 		VictorSPX victor = new VictorSPX(id);
 		victor.follow(masterTalon);
@@ -108,6 +112,12 @@ public class CANSpeedControllerBuilder {
 		CustomTalonSRX talon = new CustomTalonSRX(id, pdpChannel);
 		configTalon(talon, config);
 		return talon;
+	}
+
+	public static VictorSPX createVictorSPX(int id, Configuration config) {
+		VictorSPX victor = new VictorSPX(id);
+		configVictor(victor, config);
+		return victor;
 	}
 
 	private static boolean configTalon(TalonSRX talon, Configuration config) {
@@ -149,4 +159,20 @@ public class CANSpeedControllerBuilder {
 		return setSucceeded;
 	}
 
+
+	private static boolean configVictor(VictorSPX victor, Configuration config) {
+		boolean setSucceeded;
+		int retryCounter = 0;
+
+		do {
+			setSucceeded = true;
+			setSucceeded &= victor.clearStickyFaults(Constants.kTimeoutMs) == ErrorCode.OK;
+
+			setSucceeded &= victor.setControlFramePeriod(ControlFrame.Control_3_General, config.CONTROL_FRAME_PERIOD_MS) == ErrorCode.OK;
+			setSucceeded &= victor.setStatusFramePeriod(StatusFrame.Status_1_General, config.STATUS_FRAME_GENERAL_1_MS, Constants.kTimeoutMs) == ErrorCode.OK;
+			setSucceeded &= victor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, config.STATUS_FRAME_FEEDBACK0_2_MS, Constants.kTimeoutMs) == ErrorCode.OK;
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+	
+		return setSucceeded;
+	}
 }
