@@ -45,6 +45,7 @@ public class HatchSubsystem extends Subsystem {
     //private double mThresholdStart;
 
     private boolean mPrevBrakeModeVal;
+    private boolean mHomeSuccess;
 
     public static HatchSubsystem getInstance() {
         if (mInstance == null) {
@@ -80,7 +81,9 @@ public class HatchSubsystem extends Subsystem {
 
 		mHatchMotor.setInverted(true);
 
-		setBrakeMode(true);
+        setBrakeMode(true);
+        
+        mHomeSuccess = false;
 
 		boolean setSucceeded;
 		int retryCounter = 0;
@@ -191,43 +194,37 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private SystemState handleAcquiring(double timeInState) {
+        System.out.println("acquiring");
 
         //code to hold gripper in acquiring position 
-        mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+        //if (timeInState < Constants.kHatchEjectTime && mHomeSuccess == false) {
+        //   subsystemHome();
+        //} else {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+        //}
 
         switch (mWantedState) {
         case ACQUIRE:
-            //code to keep gripper in acquiring position
-            //this probably isn't necessary, can likely just set new systemstate
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+
             return SystemState.ACQUIRING;
         default:
-            //code to move gripper to holding
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+
             return SystemState.HOLDING;
         }
     }
 
     private SystemState handleHolding(double timeInState) {
 
+        System.out.println("holding");
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-       
+        // if (timeInState < Constants.kHatchEjectTime) {
+           
         switch (mWantedState) {
         case HOLD:
-            //code to keep gripper in holding position
-            //this probably isn't necessary, can likely just set new systemstate
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
             
             return SystemState.HOLDING;
 
-        default:
-            
-            //code to eject gear, then move to acquiring position
-            // if (timeInState < Constants.kHatchEjectTime) {
-            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchEjectPosition);
-            // } else {
-            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-            // }
+        default:            
 
             return SystemState.ACQUIRING;
         }
@@ -271,16 +268,17 @@ public class HatchSubsystem extends Subsystem {
 		}
     }
     
-	public void subsystemZero() {
+	public void subsystemHome() {
+        System.out.println("entered subsystemHome");
+        mHomeSuccess = false;
 
-        boolean setSucceeded;
-		int retryCounter = 0;
-
-		do {
-			setSucceeded = true;
-
-			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
-		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+        mHatchMotor.set(ControlMode.PercentOutput, 0.05);
+        if (mHatchMotor.getOutputCurrent() > 5) {
+            System.out.println("Current greater than 5");
+            zeroSensors();
+            mHomeSuccess = true;
+        }
+        
 
 //		if (retryCounter >= Constants.kTalonRetryCount || !setSucceeded)
 //			ConsoleReporter.report("Failed to zero DriveBaseSubsystem!!!", MessageLevel.DEFCON1);
