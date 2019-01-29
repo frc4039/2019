@@ -22,11 +22,12 @@ public class Constants {
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 80; //this is made up
-	public static final double kHatchHoldingPosition = -440; //this is also made up
-	public static final double kHatchEjectPosition = 0; //definitely made up
+	public static final double kHatchAcquiringPosition = 450; 
+	public static final double kHatchHoldingPosition = 0; 
+	public static final double kHatchEjectPosition = 0; 
 
-	public static final double kHatchEjectTime = 2; //please just change these asap
+	public static final double kHatchEjectTime = 2.5;
+	public static final double kHatchHomeTime = 2.5;
 
 	public static final double kHatchPositionKp = 7.0;
 	public static final double kHatchPositionKi = 0.0;
