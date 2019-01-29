@@ -17,6 +17,9 @@ public class Constants {
 	public static final int HATCH_SCORE = 1; 	//A
 	public static final int HATCH_PICKUP = 2;	//B
 	public static final int HATCH_ZERO = 3; 	//X
+	public static final int CARGO_ROLLER = 4;   //Y? Will double check
+	public static final int CARGO_SHOOTER = 5;  //Left bumper?
+	public static final int INTAKE_OUT = 6;     //Right bumper?
  
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -34,6 +37,22 @@ public class Constants {
 	public static final double kHatchPositionKf = 0.0;
 	public static final double kHatchPositionRampRate = 0.0;
 	public static final int kHatchPositionIZone = 0;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Cargo Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kCargoIntakeDownPosition = 80; //this is made up
+	public static final double kCargoIntakeUpPosition = -440; //this is also made up
+
+	// PID stuff? Idk what to do with it?
+	//public static final double kHatchPositionKp = 7.0; // all of these are made up
+	//public static final double kHatchPositionKi = 0.0;
+	//public static final double kHatchPositionKd = 70.0;
+	//public static final double kHatchPositionKf = 0.0;
+	//public static final double kHatchPositionRampRate = 0.0;
+	//public static final int kHatchPositionIZone = 0;
+
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,8 +134,13 @@ public class Constants {
 
 	// Hatch
 	public static final int kHatchMotorId = 9; //not the real value, needs to be changed
-
 	public static final int kHatchMotorPDPChannel = 14; //not the real value, also needs to be changed
+
+	// Cargo
+	public static final int kCargoLowIntakeMotorId = 10; // wrong
+	public static final int kCargoHighIntakeMotorId = 11; // wrong
+	public static final int kCargoLowIntakeMotorPDPChannel = 16; // wrong
+	public static final int kCargoHighIntakeMotorPDPChannel = 17; // wrong
 
 	// Drive
 	public static final int kLeftDriveMasterId = 2; // left back

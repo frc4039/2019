@@ -5,6 +5,7 @@ package frc.robot;
 //import frc.robot.Actions.TurnToHeadingAction;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.HatchSubsystem.WantedState;
+import frc.robot.Subsystems.CargoSubsystem;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -61,6 +62,24 @@ public class OI implements Runnable {
 		//}
 		///////////////////////////////
 
+		///////////////////////////////
+		//Cargo Control
+		if (operatorJoystick.getRawButton(Constants.CARGO_ROLLER)) {
+			CargoSubsystem.rollersIn();
+		} else {
+			CargoSubsystem.stop();
+		}
+		if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
+			CargoSubsystem.runShooter();
+		} else {
+			CargoSubsystem.stop();
+		}
+		if (operatorJoystick.getRawButton(Constants.INTAKE_OUT)) {
+			CargoSubsystem.intakeOut();
+		} else {
+			CargoSubsystem.intakeIn();
+		}
+		///////////////////////////////
 	
 
 		///////////////////////////////

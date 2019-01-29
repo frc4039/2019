@@ -2,6 +2,9 @@ package frc.robot.Utilities;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
@@ -53,6 +56,8 @@ public class Controllers {
 	private BaseMotorController rightDrive3;
 
 	private CustomTalonSRX hatchMotor;
+	private VictorSPX cargoIntakeMotor;
+	private VictorSPX cargoShooterMotor;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -67,6 +72,14 @@ public class Controllers {
 		return hatchMotor;
 	}
 
+	public VictorSPX getCargoIntakeMotor()
+	{
+		return cargoIntakeMotor;
+	}
+	public VictorSPX getCargoShooterMotor()
+	{
+		return cargoShooterMotor;
+	}
 
 	////Drive Motors
 
@@ -115,7 +128,5 @@ public class Controllers {
 	public CANifier getCANifierLED() {
 		return canifierLED;
 	}
-
-
 
 }
