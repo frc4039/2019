@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.NavX;
@@ -13,6 +14,7 @@ import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.TrajectoryFollowingMotion.*;
+
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
@@ -114,9 +116,13 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.setSensorPhase(false);
 		mRightMaster.setSensorPhase(false);
 
-		mLeftMaster.setInverted(true);
-		leftDriveSlave1.setInverted(true);
-		leftDriveSlave2.setInverted(true);
+		mLeftMaster.setInverted(false);
+		leftDriveSlave1.setInverted(false);
+		leftDriveSlave2.setInverted(false);
+
+		mRightMaster.setInverted(true);
+		rightDriveSlave1.setInverted(true);
+		rightDriveSlave2.setInverted(true);
 
 		setBrakeMode(true);
 
