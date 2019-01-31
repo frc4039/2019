@@ -68,13 +68,12 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Drivebase control
+
 		double x = Math.pow(QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband), 3);
 		double y = Math.pow(QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband), 3);
 
 
 		driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(Util.limit(y + x, 1), Util.limit(y - x, 1)));
-		
-		
 
 		///////////////////////////////
 

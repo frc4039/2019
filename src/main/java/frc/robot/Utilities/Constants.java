@@ -29,6 +29,23 @@ public class Constants {
 	public static final double kHatchEjectTime = 2.5;
 	public static final double kHatchHomeTime = 2.5;
 
+
+	//Operator controller buttons
+	public static final int HATCH_SCORE = 1; 	//A
+	public static final int HATCH_PICKUP = 2;	//B
+	public static final int HATCH_ZERO = 3; 	//X
+ 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Hatch Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kHatchAcquiringPosition = 450; 
+	public static final double kHatchHoldingPosition = 0; 
+	public static final double kHatchEjectPosition = 0; 
+
+	public static final double kHatchEjectTime = 2.5;
+	public static final double kHatchHomeTime = 2.5;
+
 	public static final double kHatchPositionKp = 7.0;
 	public static final double kHatchPositionKi = 0.0;
 	public static final double kHatchPositionKd = 70.0;
