@@ -40,11 +40,12 @@ public class HatchSubsystem extends Subsystem {
 
     //private final Solenoid mWristSolenoid;
     private CustomTalonSRX mHatchMotor;
-    private WantedState mWantedState;
-    private SystemState mSystemState;
+    private HatchWantedState mWantedState;
+    private HatchSystemState mSystemState;
     //private double mThresholdStart;
 
     private boolean mPrevBrakeModeVal;
+    private boolean mHomeSuccess;
 
     public static HatchSubsystem getInstance() {
         if (mInstance == null) {
@@ -53,12 +54,14 @@ public class HatchSubsystem extends Subsystem {
         return mInstance;
     }
 
-    public enum WantedState {
+    public enum HatchWantedState {
+        HOME,
         ACQUIRE,    //default
         HOLD
     }
 
-    private enum SystemState {
+    private enum HatchSystemState {
+        HOMING,
         ACQUIRING,// gripper fully closed
         HOLDING // gripper fully seperated
     }
@@ -80,7 +83,9 @@ public class HatchSubsystem extends Subsystem {
 
 		mHatchMotor.setInverted(true);
 
-		setBrakeMode(true);
+        setBrakeMode(true);
+        
+        mHomeSuccess = false;
 
 		boolean setSucceeded;
 		int retryCounter = 0;
@@ -109,7 +114,7 @@ public class HatchSubsystem extends Subsystem {
 
     @Override
     public void stop() {
-        setWantedState(WantedState.HOLD);
+        setWantedState(HatchWantedState.HOLD);
     }
 
     @Override
@@ -122,7 +127,7 @@ public class HatchSubsystem extends Subsystem {
 			setSucceeded = true;
 
 			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
-		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount); 
 
     }
 
@@ -133,8 +138,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onFirstStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = SystemState.HOLDING;
-                mWantedState = WantedState.HOLD;
+                mSystemState = HatchSystemState.HOMING;
+                mWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -142,8 +147,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = SystemState.HOLDING;
-                mWantedState = WantedState.HOLD;
+                mSystemState = HatchSystemState.HOMING;
+                mWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -151,7 +156,7 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onLoop(double timestamp, boolean isAuto) {
             synchronized (HatchSubsystem.this) {
-                SystemState newState = mSystemState;
+                HatchSystemState newState = mSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
                 switch (mSystemState) {
@@ -160,6 +165,9 @@ public class HatchSubsystem extends Subsystem {
                     break;
                 case HOLDING:
                     newState = handleHolding(timeInState);
+                    break;
+                case HOMING:
+                    newState = handleHoming(timeInState);
                     break;
                 default:
                     System.out.println("Unexpected hatch system state: " + mSystemState);
@@ -178,8 +186,8 @@ public class HatchSubsystem extends Subsystem {
 
         @Override
         public void onStop(double timestamp) {
-            mWantedState = WantedState.HOLD;
-            mSystemState = SystemState.HOLDING;
+            mWantedState = HatchWantedState.HOLD;
+            mSystemState = HatchSystemState.HOLDING;
             // Set the states to what the robot falls into when disabled.
             stop();
         }
@@ -190,46 +198,75 @@ public class HatchSubsystem extends Subsystem {
         enabledLooper.register(mLoop);
     }
 
-    private SystemState handleAcquiring(double timeInState) {
+    private HatchSystemState handleAcquiring(double timeInState) {
 
-        //code to hold gripper in acquiring position 
+        
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-
+        
         switch (mWantedState) {
         case ACQUIRE:
-            //code to keep gripper in acquiring position
-            //this probably isn't necessary, can likely just set new systemstate
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-            return SystemState.ACQUIRING;
+
+            return HatchSystemState.ACQUIRING;
+        case HOLD:
+
+            return HatchSystemState.HOLDING;
         default:
-            //code to move gripper to holding
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-            return SystemState.HOLDING;
+
+            return HatchSystemState.HOMING;
         }
     }
 
-    private SystemState handleHolding(double timeInState) {
+    private HatchSystemState handleHoming(double timeInState) {
 
+        if (timeInState < Constants.kHatchHomeTime && mHomeSuccess == false) {
+            subsystemHome(timeInState);
+        } else if (mHomeSuccess == true) {
+            setWantedState(HatchWantedState.HOLD);
+        } else {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+        }
+        
+        switch (mWantedState) {
+        case HOME:
+
+            return HatchSystemState.HOMING;
+        case ACQUIRE:
+
+            return HatchSystemState.ACQUIRING;
+        default:
+
+            return HatchSystemState.HOLDING;
+        }
+    }
+
+    private HatchSystemState handleHolding(double timeInState) {
+        /* if (timeInState < 2) {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+        
+        }
+        if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
+            mHatchMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            mHatchMotor.set(ControlMode.PercentOutput, -0.10);
+            System.out.println("powered");
+            System.out.println(timeInState);
+        } */
+        
+
+        //mHomeSuccess = false;
+        mHomeSuccess = false;
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-       
+           
         switch (mWantedState) {
         case HOLD:
-            //code to keep gripper in holding position
-            //this probably isn't necessary, can likely just set new systemstate
-            //mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
             
-            return SystemState.HOLDING;
+            return HatchSystemState.HOLDING;
+        case ACQUIRE:
 
-        default:
-            
-            //code to eject gear, then move to acquiring position
-            // if (timeInState < Constants.kHatchEjectTime) {
-            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchEjectPosition);
-            // } else {
-            //     mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-            // }
+            return HatchSystemState.ACQUIRING;
+        default:            
 
-            return SystemState.ACQUIRING;
+            return HatchSystemState.HOMING;
         }
     }
 
@@ -249,13 +286,13 @@ public class HatchSubsystem extends Subsystem {
         mWristSolenoid.set(mWristUp);
     } */
 
-    public synchronized void setWantedState(WantedState wanted) {
+    public synchronized void setWantedState(HatchWantedState wanted) {
         mWantedState = wanted;
     }
 
     public synchronized void reset() {
-        mWantedState = WantedState.HOLD;
-        mSystemState = SystemState.HOLDING;
+        mWantedState = HatchWantedState.HOLD;
+        mSystemState = HatchSystemState.HOLDING;
     }
 
     public void outputToSmartDashboard(){
@@ -271,38 +308,33 @@ public class HatchSubsystem extends Subsystem {
 		}
     }
     
-	public void subsystemZero() {
+	public void subsystemHome(double timeInState) {        
 
-        boolean setSucceeded;
-		int retryCounter = 0;
+        mHatchMotor.set(ControlMode.PercentOutput, -0.30);
+        if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
+            zeroSensors();
+            mHatchMotor.set(ControlMode.PercentOutput, 0);
+            mHomeSuccess = true;
+        } else {
+            mHomeSuccess = false;
+        }
+        
 
-		do {
-			setSucceeded = true;
-
-			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
-		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
-
-//		if (retryCounter >= Constants.kTalonRetryCount || !setSucceeded)
-//			ConsoleReporter.report("Failed to zero DriveBaseSubsystem!!!", MessageLevel.DEFCON1);
 	}
 
-    //this will only work if we use a TalonSRX, Victors can't monitor current
-     /* public boolean checkSystem() {
-        System.out.println("Testing Hatch Motor.--------------------------------");
-        final double kCurrentThres = 0.5;
-
-        mHatchMotor.set(ControlMode.VoltageOutput, -6.0f);
-        Timer.delay(4.0);
-        final double current = mHatchMotor.getOutputCurrent();
-        mHatchMotor.set(ControlMode.VoltageOutput, 0.0);
-
-        System.out.println("Hatch Motor Current: " + current);
-
-        if (current < kCurrentThres) {
-            System.out.println("!!!!!!!!!!!! Hatch Motor Current Low !!!!!!!!!!!");
-            return false;
+    public String getSystemState() {
+        
+        switch (mSystemState) {
+            case HOLDING:
+                return "HOLDING";
+            case ACQUIRING:
+                return "ACQUIRING";
+            case HOMING: 
+                return "HOMING";
+            default: 
+                return "UNKNOWN";
         }
-        return true;
-    }   */
+    }
+    
 
 }

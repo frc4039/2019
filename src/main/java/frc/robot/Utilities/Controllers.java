@@ -80,7 +80,7 @@ public class Controllers {
 	private CANifier canifierLED;
 
 
-	////Subsystem Stuff
+////////// Subsystem Motors & Stuff
 
 	public CustomTalonSRX getHatchMotor() {
 		return hatchMotor;
@@ -99,7 +99,7 @@ public class Controllers {
 		return cargoIntakeSolenoid;
 	}
 
-	////Drive Motors
+////////// Drive Motors
 
 	public CustomTalonSRX getLeftDrive1() {
 		return leftDrive1;
@@ -126,7 +126,7 @@ public class Controllers {
 	}
 
 
-	////Joystics and stuff
+////////// Joysticks
 
 	public CustomJoystick getDriveJoystickThrottle() {
 		return driveJoystickThrottle;
@@ -137,7 +137,7 @@ public class Controllers {
 	}
 
 
-	////Sensors and stuff
+////////// Sensors & Stuff
 
 	public Compressor getCompressor() {
 		return compressor;

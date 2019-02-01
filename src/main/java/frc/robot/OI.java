@@ -4,7 +4,7 @@ package frc.robot;
 //import frc.robot.Actions.AutomatedActions;
 //import frc.robot.Actions.TurnToHeadingAction;
 import frc.robot.Subsystems.HatchSubsystem;
-import frc.robot.Subsystems.HatchSubsystem.WantedState;
+import frc.robot.Subsystems.HatchSubsystem.HatchWantedState;
 import frc.robot.Subsystems.CargoSubsystem;
 import frc.robot.Subsystems.CargoSubsystem.CargoWantedState;
 import frc.robot.Subsystems.DriveBaseSubsystem;
@@ -54,15 +54,13 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Hatch Control
-		if (operatorJoystick.getRawButton(Constants.HATCH_SCORE)) {
-			hatchSubsystem.setWantedState(WantedState.ACQUIRE);
-		} else if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
-			hatchSubsystem.setWantedState(WantedState.HOLD);
-		} else if (operatorJoystick.getRawButton(Constants.HATCH_ZERO)) {
-			hatchSubsystem.subsystemZero();
-		}//else {
-		//	hatchSubsystem.setWantedState(WantedState.HOLD);
-		//}
+		if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
+			hatchSubsystem.setWantedState(HatchWantedState.ACQUIRE);
+		} else if (operatorJoystick.getRawButton(Constants.HATCH_SCORE)) {
+			hatchSubsystem.setWantedState(HatchWantedState.HOLD);
+		} else if (operatorJoystick.getRawButton(Constants.HATCH_ZERO)){
+			hatchSubsystem.setWantedState(HatchWantedState.HOME);
+		}
 		///////////////////////////////
 
 		///////////////////////////////
