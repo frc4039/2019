@@ -1,5 +1,7 @@
 package frc.robot.Utilities;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Constants {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,12 +16,15 @@ public class Constants {
 
 
 	//Operator controller buttons
-	public static final int HATCH_SCORE = 1; 	//A
-	public static final int HATCH_PICKUP = 2;	//B
-	public static final int HATCH_ZERO = 3; 	//X
-	public static final int CARGO_ROLLER = 4;   //Y? Will double check
-	public static final int CARGO_SHOOTER = 5;  //Left bumper?
-	public static final int INTAKE_OUT = 6;     //Right bumper?
+	public static final int OPERATOR_Y_AXIS = 0;
+	public static final int HATCH_SCORE = 1; 	 //A
+	public static final int HATCH_PICKUP = 2;	 //B
+	public static final int HATCH_ZERO = 3; 	 //X
+	public static final int CARGO_INTAKE = 5;    //left bumper
+	public static final int CARGO_SHOOTER = 6;   //right bumper
+	//public static final int INTAKE_SOLENOID = 7; 
+	public static final int CARGO_WINDUP = 7;
+	public static final int CARGO_HOLD = 8;  //start
  
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -44,16 +49,12 @@ public class Constants {
 
 	public static final double kCargoIntakeDownPosition = 80; //this is made up
 	public static final double kCargoIntakeUpPosition = -440; //this is also made up
+	
+	public static final int kCargoIntakeSolenoid = 1; //TODO: CHANGE IMMEDIATELY
 
-	// PID stuff? Idk what to do with it?
-	//public static final double kHatchPositionKp = 7.0; // all of these are made up
-	//public static final double kHatchPositionKi = 0.0;
-	//public static final double kHatchPositionKd = 70.0;
-	//public static final double kHatchPositionKf = 0.0;
-	//public static final double kHatchPositionRampRate = 0.0;
-	//public static final int kHatchPositionIZone = 0;
-
-
+	public static final double kCargoShootingSpeed = 1.0; //TODO: CHANGE IMMEDIATELY
+	public static final double kCargoFeedingSpeed = 0.5;  /////////
+	public static final double kCargoIntakingSpeed = 0.5;       /////////
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Robot Drive Constants
@@ -134,22 +135,23 @@ public class Constants {
 
 	// Hatch
 	public static final int kHatchMotorId = 9; //not the real value, needs to be changed
-	public static final int kHatchMotorPDPChannel = 14; //not the real value, also needs to be changed
+	public static final int kHatchMotorPDPChannel = 11;
 
 	// Cargo
-	public static final int kCargoLowIntakeMotorId = 10; // wrong
-	public static final int kCargoHighIntakeMotorId = 11; // wrong
-	public static final int kCargoLowIntakeMotorPDPChannel = 16; // wrong
-	public static final int kCargoHighIntakeMotorPDPChannel = 17; // wrong
+	public static final int kCargoIntakeMotorId = 0;
+	public static final int kCargoShooterMotorId = 1;
+	public static final int kCargoIntakeMotorPDPChannel = 4;
+	public static final int kCargoShooterMotorPDPChannel = 5;
 
 	// Drive
 	public static final int kLeftDriveMasterId = 2; // left back
 	public static final int kLeftDriveSlaveId = 3; // left top
 	public static final int kLeftDriveSlaveId2 = 4; // left front
 	public static final int kRightDriveMasterId = 5; // right back
-	public static final int kRightDriverSlaveId = 6; // right top
-	public static final int kRightDriverSlaveId2 = 7; //right front
+	public static final int kRightDriveSlaveId = 6; // right top
+	public static final int kRightDriveSlaveId2 = 7; //right front
 
+//////// Check again after testing
 	public static final int kLeftDriveMasterPDPChannel = 14; // left back
 	public static final int kLeftDriveMasterPDPBreakerRating = 40;
 	public static final int kLeftDriveSlave1PDPChannel = 13; // left top
@@ -193,5 +195,6 @@ public class Constants {
 	// Parts GE-17203-FLAT and GE-17371 (sheet 7)
 	public static final double kBoilerTargetTopHeight = 88.0;
 	public static final double kBoilerRadius = 7.5;
+
 
 }

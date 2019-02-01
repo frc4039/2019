@@ -6,6 +6,7 @@ package frc.robot;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.HatchSubsystem.WantedState;
 import frc.robot.Subsystems.CargoSubsystem;
+import frc.robot.Subsystems.CargoSubsystem.CargoWantedState;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -16,6 +17,7 @@ public class OI implements Runnable {
 
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
+	private CargoSubsystem cargoSubsystem;
 	//private DriverStation ds;
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -30,6 +32,7 @@ public class OI implements Runnable {
 
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		hatchSubsystem = HatchSubsystem.getInstance();
+		cargoSubsystem = CargoSubsystem.getInstance();
 
 		//driveHelper = new DriveHelper();
 	}
@@ -64,20 +67,25 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Cargo Control
-		if (operatorJoystick.getRawButton(Constants.CARGO_ROLLER)) {
-			CargoSubsystem.rollersIn();
-		} else {
-			CargoSubsystem.stop();
+		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
+			
 		}
-		if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
-			CargoSubsystem.runShooter();
-		} else {
-			CargoSubsystem.stop();
+		else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
+			
 		}
-		if (operatorJoystick.getRawButton(Constants.INTAKE_OUT)) {
-			CargoSubsystem.intakeOut();
-		} else {
-			CargoSubsystem.intakeIn();
+		else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
+		
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
+			
 		}
 		///////////////////////////////
 	

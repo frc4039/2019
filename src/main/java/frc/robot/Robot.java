@@ -13,6 +13,7 @@ import frc.robot.Autonomous.Modes.BasicMode;
 import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
+import frc.robot.Subsystems.CargoSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
@@ -28,6 +29,7 @@ public class Robot extends CustomRobot {
 
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
+	private CargoSubsystem cargoSubsystem;
 
 	private RobotStateEstimator robotStateEstimator;
 
@@ -47,6 +49,10 @@ public class Robot extends CustomRobot {
 		hatchSubsystem = HatchSubsystem.getInstance();
 		hatchSubsystem.init();
 		hatchSubsystem.registerEnabledLoops(mLooper);
+
+		cargoSubsystem = CargoSubsystem.getInstance();
+		cargoSubsystem.init();
+		cargoSubsystem.registerEnabledLoops(mLooper);
 
 		robotStateEstimator = RobotStateEstimator.getInstance();
 		

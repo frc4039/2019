@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -32,10 +34,14 @@ public class Controllers {
 		leftDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kLeftDriveSlaveId2, leftDrive1);
 
 		rightDrive1 = CANSpeedControllerBuilder.createFastMasterTalonSRX(Constants.kRightDriveMasterId, Constants.kRightDriveMasterPDPChannel);
-		rightDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId, rightDrive1);
-		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId2, rightDrive1);
+		rightDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriveSlaveId, rightDrive1);
+		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriveSlaveId2, rightDrive1);
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
+
+		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
+		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
+		cargoIntakeSolenoid = new Solenoid(Constants.kCargoIntakeSolenoid);
 
 		try {
 			navX = new NavX(SPI.Port.kMXP);
@@ -56,8 +62,10 @@ public class Controllers {
 	private BaseMotorController rightDrive3;
 
 	private CustomTalonSRX hatchMotor;
-	private VictorSPX cargoIntakeMotor;
-	private VictorSPX cargoShooterMotor;
+	private VictorSP cargoIntakeMotor;
+	private VictorSP cargoShooterMotor;
+
+	private Solenoid cargoIntakeSolenoid;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -66,19 +74,23 @@ public class Controllers {
 	private CANifier canifierLED;
 
 
-	////Subsystem Motors
+	////Subsystem Stuff
 
 	public CustomTalonSRX getHatchMotor() {
 		return hatchMotor;
 	}
 
-	public VictorSPX getCargoIntakeMotor()
+	public VictorSP getCargoIntakeMotor()
 	{
 		return cargoIntakeMotor;
 	}
-	public VictorSPX getCargoShooterMotor()
+	public VictorSP getCargoShooterMotor()
 	{
 		return cargoShooterMotor;
+	}
+
+	public Solenoid getCargoIntakeSolenoid() {
+		return cargoIntakeSolenoid;
 	}
 
 	////Drive Motors
