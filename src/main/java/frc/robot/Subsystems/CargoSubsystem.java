@@ -45,7 +45,8 @@ public class CargoSubsystem extends Subsystem {
 
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
-    private final Solenoid mCargoIntakeSolenoid;
+    private final Solenoid mCargoIntakeSolenoidOut;
+    private final Solenoid mCargoIntakeSolenoidIn;
     private VictorSP mCargoIntakeMotor;
     private VictorSP mCargoShooterMotor;
 
@@ -101,7 +102,8 @@ public class CargoSubsystem extends Subsystem {
         Controllers robotControllers = Controllers.getInstance();
         mCargoIntakeMotor = robotControllers.getCargoIntakeMotor();
         mCargoShooterMotor = robotControllers.getCargoShooterMotor();
-        mCargoIntakeSolenoid = robotControllers.getCargoIntakeSolenoid();
+        mCargoIntakeSolenoidOut = robotControllers.getCargoIntakeSolenoidOut();
+        mCargoIntakeSolenoidIn = robotControllers.getCargoIntakeSolenoidIn();
 
         operatorJoystick = robotControllers.getOperatorJoystick();
 
@@ -440,13 +442,13 @@ public class CargoSubsystem extends Subsystem {
 
     private void setIntakeOut() {
         kIntakeOut = true;
-        //mCargoIntakeSolenoid.set(kIntakeOut);
+        mCargoIntakeSolenoidOut.set(kIntakeOut);
     }
 
     private void setIntakeUp() {
         kIntakeOut = false;
         kIntakeIn = !kIntakeOut;
-        //mCargoIntakeSolenoid.set(kIntakeIn);
+        mCargoIntakeSolenoidIn.set(kIntakeIn);
     }
 
     public synchronized void setWantedState(CargoWantedState wanted) {

@@ -50,7 +50,8 @@ public class Constants {
 	public static final double kCargoIntakeDownPosition = 80; //this is made up
 	public static final double kCargoIntakeUpPosition = -440; //this is also made up
 	
-	public static final int kCargoIntakeSolenoid = 1; //TODO: CHANGE IMMEDIATELY
+	public static final int kCargoIntakeSolenoidOut = 1; //TODO: CHANGE IMMEDIATELY
+	public static final int kCargoIntakeSolenoidIn = 2; 
 
 	public static final double kCargoShootingSpeed = 1.0; //TODO: CHANGE IMMEDIATELY
 	public static final double kCargoFeedingSpeed = 0.5;  /////////

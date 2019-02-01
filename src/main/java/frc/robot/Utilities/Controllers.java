@@ -41,7 +41,8 @@ public class Controllers {
 
 		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
-		cargoIntakeSolenoid = new Solenoid(Constants.kCargoIntakeSolenoid);
+		cargoIntakeSolenoidOut = new Solenoid(Constants.kCargoIntakeSolenoidOut);
+		cargoIntakeSolenoidIn = new Solenoid(Constants.kCargoIntakeSolenoidIn);
 
 		try {
 			navX = new NavX(SPI.Port.kMXP);
@@ -65,7 +66,8 @@ public class Controllers {
 	private VictorSP cargoIntakeMotor;
 	private VictorSP cargoShooterMotor;
 
-	private Solenoid cargoIntakeSolenoid;
+	private Solenoid cargoIntakeSolenoidOut;
+	private Solenoid cargoIntakeSolenoidIn;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -89,8 +91,12 @@ public class Controllers {
 		return cargoShooterMotor;
 	}
 
-	public Solenoid getCargoIntakeSolenoid() {
-		return cargoIntakeSolenoid;
+	public Solenoid getCargoIntakeSolenoidOut() {
+		return cargoIntakeSolenoidOut;
+	}
+
+	public Solenoid getCargoIntakeSolenoidIn() {
+		return cargoIntakeSolenoidIn;
 	}
 
 	////Drive Motors
