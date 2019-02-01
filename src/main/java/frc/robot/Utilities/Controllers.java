@@ -6,8 +6,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.*;
+
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -15,6 +17,8 @@ import frc.robot.Utilities.Drivers.NavX;
 
 public class Controllers {
 	private static Controllers instance = null;
+
+	private Compressor compressor;
 
 	public static Controllers getInstance() {
 		if (instance == null)
@@ -41,8 +45,9 @@ public class Controllers {
 
 		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
-		cargoIntakeSolenoidOut = new Solenoid(Constants.kCargoIntakeSolenoidOut);
-		cargoIntakeSolenoidIn = new Solenoid(Constants.kCargoIntakeSolenoidIn);
+		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
+
+		compressor = new Compressor();
 
 		try {
 			navX = new NavX(SPI.Port.kMXP);
@@ -66,8 +71,7 @@ public class Controllers {
 	private VictorSP cargoIntakeMotor;
 	private VictorSP cargoShooterMotor;
 
-	private Solenoid cargoIntakeSolenoidOut;
-	private Solenoid cargoIntakeSolenoidIn;
+	private DoubleSolenoid cargoIntakeSolenoid;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -91,12 +95,8 @@ public class Controllers {
 		return cargoShooterMotor;
 	}
 
-	public Solenoid getCargoIntakeSolenoidOut() {
-		return cargoIntakeSolenoidOut;
-	}
-
-	public Solenoid getCargoIntakeSolenoidIn() {
-		return cargoIntakeSolenoidIn;
+	public DoubleSolenoid getCargoIntakeSolenoid() {
+		return cargoIntakeSolenoid;
 	}
 
 	////Drive Motors
@@ -139,6 +139,10 @@ public class Controllers {
 
 	////Sensors and stuff
 
+	public Compressor getCompressor() {
+		return compressor;
+	}
+	
 	public NavX	getNavX() {
 		return navX;
 	}

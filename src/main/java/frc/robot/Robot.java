@@ -88,6 +88,10 @@ public class Robot extends CustomRobot {
 		mLooper.start(false);
 		threadRateControl.start(true);
 
+		Controllers.getInstance().getCompressor().start();
+		Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+		System.out.println(Controllers.getInstance().getCompressor().enabled());
+
 		while (isOperatorControl() && isEnabled()) {
 			oI.run();
 			threadRateControl.doRateControl(20);

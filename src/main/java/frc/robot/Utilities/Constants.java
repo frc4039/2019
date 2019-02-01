@@ -16,25 +16,24 @@ public class Constants {
 
 
 	//Operator controller buttons
-	public static final int OPERATOR_Y_AXIS = 0;
-	public static final int HATCH_SCORE = 1; 	 //A
-	public static final int HATCH_PICKUP = 2;	 //B
-	public static final int HATCH_ZERO = 3; 	 //X
-	public static final int CARGO_INTAKE = 5;    //left bumper
-	public static final int CARGO_SHOOTER = 6;   //right bumper
-	//public static final int INTAKE_SOLENOID = 7; 
-	public static final int CARGO_WINDUP = 7;
-	public static final int CARGO_HOLD = 8;  //start
+	public static final int OPERATOR_Y_AXIS = 0;	//TODO: This is actually the X axis... we need to find the Y axis value....
+	public static final int HATCH_SCORE = 1; 	//A
+	public static final int HATCH_PICKUP = 2;	//B
+	public static final int HATCH_ZERO = 3; 	//X
+	public static final int CARGO_INTAKE = 5;   //left bumper
+	public static final int CARGO_HOLD = 6;   	//right bumper
+	public static final int CARGO_WINDUP = 7;	//select (left tiny button)
+	public static final int CARGO_SHOOTER = 8;  //start (right tiny button)
  
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 80; //this is made up
-	public static final double kHatchHoldingPosition = -440; //this is also made up
-	public static final double kHatchEjectPosition = 0; //definitely made up
+	public static final double kHatchAcquiringPosition = 80; //TODO: these positions may have to be changed
+	public static final double kHatchHoldingPosition = -440; 
+	public static final double kHatchEjectPosition = 0; 
 
-	public static final double kHatchEjectTime = 2; //please just change these asap
+	public static final double kHatchEjectTime = 2; //TODO: Test if this is the best value?
 
 	public static final double kHatchPositionKp = 7.0;
 	public static final double kHatchPositionKi = 0.0;
@@ -47,15 +46,9 @@ public class Constants {
 	//// Cargo Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kCargoIntakeDownPosition = 80; //this is made up
-	public static final double kCargoIntakeUpPosition = -440; //this is also made up
-	
-	public static final int kCargoIntakeSolenoidOut = 1; //TODO: CHANGE IMMEDIATELY
-	public static final int kCargoIntakeSolenoidIn = 2; 
-
-	public static final double kCargoShootingSpeed = 1.0; //TODO: CHANGE IMMEDIATELY
-	public static final double kCargoFeedingSpeed = 0.5;  /////////
-	public static final double kCargoIntakingSpeed = 0.5;       /////////
+	public static final double kCargoShootingSpeed = 1.0; 
+	public static final double kCargoFeedingSpeed = 1.0;  
+	public static final double kCargoIntakingSpeed = 0.5;  
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Robot Drive Constants
@@ -135,14 +128,20 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Hatch
-	public static final int kHatchMotorId = 9; //not the real value, needs to be changed
+	public static final int kHatchMotorId = 9; //TODO: Check if this is correct, then delete this comment.
 	public static final int kHatchMotorPDPChannel = 11;
+
+	public static final int kHatchSolenoidOut = 1; //TODO: In/Out may have to be swapped
+	public static final int kHatchSolenoidIn = 2;
 
 	// Cargo
 	public static final int kCargoIntakeMotorId = 0;
 	public static final int kCargoShooterMotorId = 1;
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	public static final int kCargoShooterMotorPDPChannel = 5;
+
+	public static final int kCargoIntakeSolenoidOut = 3; //TODO: In/Out may have to be swapped
+	public static final int kCargoIntakeSolenoidIn = 4; 
 
 	// Drive
 	public static final int kLeftDriveMasterId = 2; // left back

@@ -1,25 +1,24 @@
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 
-import com.ctre.phoenix.ErrorCode;
+/* import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX; */
 
 import frc.robot.Utilities.Constants;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.Drivers.CustomJoystick;
-import frc.robot.Utilities.Drivers.CustomTalonSRX;
-import frc.robot.Utilities.Drivers.TalonHelper;
+//import frc.robot.Utilities.Drivers.CustomTalonSRX;
+//import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.*;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -45,8 +44,7 @@ public class CargoSubsystem extends Subsystem {
 
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
-    private final Solenoid mCargoIntakeSolenoidOut;
-    private final Solenoid mCargoIntakeSolenoidIn;
+    private final DoubleSolenoid mCargoIntakeSolenoid;
     private VictorSP mCargoIntakeMotor;
     private VictorSP mCargoShooterMotor;
 
@@ -102,8 +100,7 @@ public class CargoSubsystem extends Subsystem {
         Controllers robotControllers = Controllers.getInstance();
         mCargoIntakeMotor = robotControllers.getCargoIntakeMotor();
         mCargoShooterMotor = robotControllers.getCargoShooterMotor();
-        mCargoIntakeSolenoidOut = robotControllers.getCargoIntakeSolenoidOut();
-        mCargoIntakeSolenoidIn = robotControllers.getCargoIntakeSolenoidIn();
+        mCargoIntakeSolenoid = robotControllers.getCargoIntakeSolenoid();
 
         operatorJoystick = robotControllers.getOperatorJoystick();
 
@@ -291,7 +288,7 @@ public class CargoSubsystem extends Subsystem {
 
     protected CargoSystemState handleIntaking(double timeInState) {
         mCargoIntakeMotor.set(Constants.kCargoIntakingSpeed);
-        System.out.println("INTAKING");
+        
         switch (mWantedState) {
             case INTAKE:
                 return CargoSystemState.INTAKING;
@@ -322,7 +319,6 @@ public class CargoSubsystem extends Subsystem {
         ////////////////////////////////////////////////////////////////////////////////////////
         
         setCargoPositionOpenLoop();
-        System.out.println("HOLDING");
 
         ////////////////////////////////////////////////////////////////////////////////////////
         //This switch-case block is how the subsystem transfers to a new SystemState.
@@ -363,7 +359,6 @@ public class CargoSubsystem extends Subsystem {
     {
         mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
         setCargoPositionOpenLoop();
-        System.out.println("WINDING UP");
 
         switch (mWantedState) {
             case WINDUP:
@@ -403,8 +398,7 @@ public class CargoSubsystem extends Subsystem {
         //      so that it can be more secure, and not get knocked out
         mCargoIntakeMotor.set(Constants.kCargoFeedingSpeed);
         mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
-        System.out.println("SHOOTING");
-        System.out.println("test");
+    
         
         //I don't think there's anything else we'd want to do for the HOLDING systemState, but we'll
         //      find out if there is once we test it.
@@ -442,13 +436,20 @@ public class CargoSubsystem extends Subsystem {
 
     private void setIntakeOut() {
         kIntakeOut = true;
-        mCargoIntakeSolenoidOut.set(kIntakeOut);
+        kIntakeIn = !kIntakeOut;
+        mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     private void setIntakeUp() {
         kIntakeOut = false;
         kIntakeIn = !kIntakeOut;
-        mCargoIntakeSolenoidIn.set(kIntakeIn);
+        mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    private void setIntakeNeutral() {
+        kIntakeOut = false;
+        kIntakeIn = false;
+        mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
     public synchronized void setWantedState(CargoWantedState wanted) {
