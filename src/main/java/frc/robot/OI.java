@@ -4,7 +4,9 @@ package frc.robot;
 //import frc.robot.Actions.AutomatedActions;
 //import frc.robot.Actions.TurnToHeadingAction;
 import frc.robot.Subsystems.HatchSubsystem;
-import frc.robot.Subsystems.HatchSubsystem.WantedState;
+import frc.robot.Subsystems.HatchSubsystem.HatchWantedState;
+import frc.robot.Subsystems.CargoSubsystem;
+import frc.robot.Subsystems.CargoSubsystem.CargoWantedState;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -15,6 +17,7 @@ public class OI implements Runnable {
 
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
+	private CargoSubsystem cargoSubsystem;
 	//private DriverStation ds;
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -29,6 +32,7 @@ public class OI implements Runnable {
 
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		hatchSubsystem = HatchSubsystem.getInstance();
+		cargoSubsystem = CargoSubsystem.getInstance();
 
 		//driveHelper = new DriveHelper();
 	}
@@ -51,19 +55,37 @@ public class OI implements Runnable {
 		///////////////////////////////
 		//Hatch Control
 		if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
-			hatchSubsystem.setWantedState(WantedState.ACQUIRE);
+			hatchSubsystem.setWantedState(HatchWantedState.ACQUIRE);
 		} else if (operatorJoystick.getRawButton(Constants.HATCH_SCORE)) {
-			hatchSubsystem.setWantedState(WantedState.HOLD);
+			hatchSubsystem.setWantedState(HatchWantedState.HOLD);
 		} else if (operatorJoystick.getRawButton(Constants.HATCH_ZERO)){
-			hatchSubsystem.setWantedState(WantedState.HOME);
+			hatchSubsystem.setWantedState(HatchWantedState.HOME);
 		}
-		
-		
-		//else {
-		//	hatchSubsystem.setWantedState(WantedState.HOLD);
-		//}
 		///////////////////////////////
 
+		///////////////////////////////
+		//Cargo Control
+		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
+			
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
+			
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
+		
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
+			
+		}
+		///////////////////////////////
 	
 
 		///////////////////////////////

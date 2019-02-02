@@ -14,7 +14,6 @@ import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.TrajectoryFollowingMotion.*;
-
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
@@ -119,7 +118,6 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.setInverted(false);
 		leftDriveSlave1.setInverted(false);
 		leftDriveSlave2.setInverted(false);
-
 		mRightMaster.setInverted(true);
 		rightDriveSlave1.setInverted(true);
 		rightDriveSlave2.setInverted(true);
