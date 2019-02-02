@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -38,11 +39,15 @@ public class HatchSubsystem extends Subsystem {
 
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
+    private final DoubleSolenoid mHatchSolenoid;
     //private final Solenoid mWristSolenoid;
     private CustomTalonSRX mHatchMotor;
-    private WantedState mWantedState;
-    private SystemState mSystemState;
+    private HatchWantedState mWantedState;
+    private HatchSystemState mSystemState;
     //private double mThresholdStart;
+
+    public static boolean kHatchEject = false;
+    public static boolean kHatchRetract = !kHatchEject;
 
     private boolean mPrevBrakeModeVal;
     private boolean mHomeSuccess;
@@ -54,13 +59,13 @@ public class HatchSubsystem extends Subsystem {
         return mInstance;
     }
 
-    public enum WantedState {
+    public enum HatchWantedState {
         HOME,
         ACQUIRE,    //default
         HOLD
     }
 
-    private enum SystemState {
+    private enum HatchSystemState {
         HOMING,
         ACQUIRING,// gripper fully closed
         HOLDING // gripper fully seperated
@@ -73,6 +78,7 @@ public class HatchSubsystem extends Subsystem {
 
         Controllers robotControllers = Controllers.getInstance();
         mHatchMotor = robotControllers.getHatchMotor();
+        mHatchSolenoid = robotControllers.getHatchSolenoid();
 
         mPrevBrakeModeVal = false;
 		setBrakeMode(true);
@@ -114,7 +120,7 @@ public class HatchSubsystem extends Subsystem {
 
     @Override
     public void stop() {
-        setWantedState(WantedState.HOLD);
+        setWantedState(HatchWantedState.HOLD);
     }
 
     @Override
@@ -138,8 +144,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onFirstStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = SystemState.HOMING;
-                mWantedState = WantedState.HOME;
+                mSystemState = HatchSystemState.HOMING;
+                mWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -147,8 +153,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = SystemState.HOMING;
-                mWantedState = WantedState.HOME;
+                mSystemState = HatchSystemState.HOMING;
+                mWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -156,7 +162,7 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onLoop(double timestamp, boolean isAuto) {
             synchronized (HatchSubsystem.this) {
-                SystemState newState = mSystemState;
+                HatchSystemState newState = mSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
                 switch (mSystemState) {
@@ -186,8 +192,8 @@ public class HatchSubsystem extends Subsystem {
 
         @Override
         public void onStop(double timestamp) {
-            mWantedState = WantedState.HOLD;
-            mSystemState = SystemState.HOLDING;
+            mWantedState = HatchWantedState.HOLD;
+            mSystemState = HatchSystemState.HOLDING;
             // Set the states to what the robot falls into when disabled.
             stop();
         }
@@ -198,30 +204,34 @@ public class HatchSubsystem extends Subsystem {
         enabledLooper.register(mLoop);
     }
 
-    private SystemState handleAcquiring(double timeInState) {
+    private HatchSystemState handleAcquiring(double timeInState) {
 
         
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+
+        if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
+            setRetract();
+        }
         
         switch (mWantedState) {
         case ACQUIRE:
 
-            return SystemState.ACQUIRING;
+            return HatchSystemState.ACQUIRING;
         case HOLD:
 
-            return SystemState.HOLDING;
+            return HatchSystemState.HOLDING;
         default:
 
-            return SystemState.HOMING;
+            return HatchSystemState.HOMING;
         }
     }
 
-    private SystemState handleHoming(double timeInState) {
+    private HatchSystemState handleHoming(double timeInState) {
 
         if (timeInState < Constants.kHatchHomeTime && mHomeSuccess == false) {
             subsystemHome(timeInState);
         } else if (mHomeSuccess == true) {
-            setWantedState(WantedState.HOLD);
+            setWantedState(HatchWantedState.HOLD);
         } else {
             mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
         }
@@ -229,28 +239,17 @@ public class HatchSubsystem extends Subsystem {
         switch (mWantedState) {
         case HOME:
 
-            return SystemState.HOMING;
+            return HatchSystemState.HOMING;
         case ACQUIRE:
 
-            return SystemState.ACQUIRING;
+            return HatchSystemState.ACQUIRING;
         default:
 
-            return SystemState.HOLDING;
+            return HatchSystemState.HOLDING;
         }
     }
 
-    private SystemState handleHolding(double timeInState) {
-        /* if (timeInState < 2) {
-            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-        
-        }
-        if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
-            mHatchMotor.set(ControlMode.PercentOutput, 0);
-        } else {
-            mHatchMotor.set(ControlMode.PercentOutput, -0.10);
-            System.out.println("powered");
-            System.out.println(timeInState);
-        } */
+    private HatchSystemState handleHolding(double timeInState) {
         
 
         //mHomeSuccess = false;
@@ -260,13 +259,14 @@ public class HatchSubsystem extends Subsystem {
         switch (mWantedState) {
         case HOLD:
             
-            return SystemState.HOLDING;
+            return HatchSystemState.HOLDING;
         case ACQUIRE:
 
-            return SystemState.ACQUIRING;
+            setEject();
+            return HatchSystemState.ACQUIRING;
         default:            
 
-            return SystemState.HOMING;
+            return HatchSystemState.HOMING;
         }
     }
 
@@ -286,13 +286,31 @@ public class HatchSubsystem extends Subsystem {
         mWristSolenoid.set(mWristUp);
     } */
 
-    public synchronized void setWantedState(WantedState wanted) {
+    private void setEject() {
+        kHatchEject = true;
+        kHatchRetract = !kHatchEject;
+        mHatchSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    private void setRetract() {
+        kHatchEject = false;
+        kHatchRetract = !kHatchEject;
+        mHatchSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    private void setNeutral() {
+        kHatchEject = false;
+        kHatchRetract = false;
+        mHatchSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+
+    public synchronized void setWantedState(HatchWantedState wanted) {
         mWantedState = wanted;
     }
 
     public synchronized void reset() {
-        mWantedState = WantedState.HOLD;
-        mSystemState = SystemState.HOLDING;
+        mWantedState = HatchWantedState.HOLD;
+        mSystemState = HatchSystemState.HOLDING;
     }
 
     public void outputToSmartDashboard(){
@@ -304,7 +322,7 @@ public class HatchSubsystem extends Subsystem {
 			_subsystemMutex.lock();
 			mHatchMotor.setNeutralMode(brakeMode ? NeutralMode.Brake : NeutralMode.Coast);
 			mPrevBrakeModeVal = brakeMode;
-			_subsystemMutex.unlock();
+			_subsystemMutex.unlock();                                         
 		}
     }
     
