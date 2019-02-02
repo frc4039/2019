@@ -12,8 +12,24 @@ public class Constants {
 	//Driver control buttons
 	public static final int DRIVE_X_AXIS = 0;
 	public static final int DRIVE_Y_AXIS = 1;
-	public static final double kJoystickDeadband = 0.08;
+	public static final double kJoystickDeadband = 0.15;
 
+
+	//Operator controller buttons
+	public static final int HATCH_SCORE = 1; 	//A
+	public static final int HATCH_PICKUP = 2;	//B
+	public static final int HATCH_ZERO = 3; 	//X
+ 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Hatch Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kHatchAcquiringPosition = 450; 
+	public static final double kHatchHoldingPosition = 0; 
+	public static final double kHatchEjectPosition = 0; 
+
+	public static final double kHatchEjectTime = 2.5;
+	public static final double kHatchHomeTime = 2.5;
 
 	//Operator controller buttons
 	public static final int OPERATOR_Y_AXIS = 0;	//TODO: This is actually the X axis... we need to find the Y axis value....
@@ -56,18 +72,18 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Wheels
-	public static final double kDriveWheelDiameterInches = 6.125;
+	public static final double kDriveWheelDiameterInches = 6.1875;
 	//public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
 	//public static final double kDriveWheelDiameterInches = 5;	//Comp bot measured val
-	public static final double kTrackWidthInches = 23.5;
+	public static final double kTrackWidthInches = 25.75;
 	//public static final double kTrackWidthInches = 25.5;
 	public static final double kTrackScrubFactor = 1.0; // 0.924 ?
 
 	// Geometry
-	public static final double kCenterToFrontBumperDistance = 18.75;
-	public static final double kCenterToIntakeDistance = 18.75;
-	public static final double kCenterToRearBumperDistance = 18.75;
-	public static final double kCenterToSideBumperDistance = 16.375;
+	public static final double kCenterToFrontBumperDistance = 17;
+	public static final double kCenterToIntakeDistance = 17;
+	public static final double kCenterToRearBumperDistance = 17;
+	public static final double kCenterToSideBumperDistance = 12;
 
 	// Path following constants
 	public static final double kMinLookAhead = 12.0; // inches
@@ -93,8 +109,8 @@ public class Constants {
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
-	//public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
-	public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
+	public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
+	//public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
 
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
@@ -111,6 +127,14 @@ public class Constants {
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
 	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps
 
+/* 	public static final double kDriveHighGearVelocityKp = 1;
+	public static final double kDriveHighGearVelocityKi = 0.005;
+	public static final double kDriveHighGearVelocityKd = 1.6;
+	public static final double kDriveHighGearVelocityKf = 0.165;
+	public static final int kDriveHighGearVelocityIZone = 0;
+	public static final double kDriveHighGearVelocityRampRate = 0.1;
+	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps */
+
 	public static final int kTimeoutMs = 20;
 	public static final int kTimeoutMsFast = 10;
 	public static final int kTalonRetryCount = 3;
@@ -123,6 +147,7 @@ public class Constants {
 	// Hatch
 	public static final int kHatchMotorId = 8;
 	public static final int kHatchMotorPDPChannel = 11;
+	public static final int kHatchMotorPDPBreakerRating = 30;
 
 	public static final int kHatchSolenoidOut = 1;
 	public static final int kHatchSolenoidIn = 2;
@@ -153,9 +178,9 @@ public class Constants {
 	public static final int kLeftDriveSlave2PDPBreakerRating = 40;
 	public static final int kRightDriveMasterPDPChannel = 15; // right back
 	public static final int kRightDriveMasterPDPBreakerRating = 40;
-	public static final int kRightDriveSlave1PDPChannel = 2; // right top
+	public static final int kRightDriveSlave1PDPChannel = 3; // right top
 	public static final int kRightDriveSlave1PDPBreakerRating = 40;
-	public static final int kRightDriveSlave2PDPChannel = 3; // right front
+	public static final int kRightDriveSlave2PDPChannel = 2; // right front
 	public static final int kRightDriveSlave2PDPBreakerRating = 40;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
