@@ -173,6 +173,7 @@ public class CargoSubsystem extends Subsystem {
         
         switch (mWantedState) {
             case INTAKE:
+                setIntakeOut();
                 return CargoSystemState.INTAKING;
             case HOLD:
                 setIntakeUp();
@@ -295,9 +296,6 @@ public class CargoSubsystem extends Subsystem {
 			_subsystemMutex.unlock();
 		}*/
     }
-
-// TODO: Change ^^^^
- 
 
     public void setCargoPositionOpenLoop() {
 

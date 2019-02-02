@@ -61,11 +61,6 @@ public class OI implements Runnable {
 		} else if (operatorJoystick.getRawButton(Constants.HATCH_ZERO)){
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
-		
-		
-		//else {
-		//	hatchSubsystem.setWantedState(WantedState.HOLD);
-		//}
 		///////////////////////////////
 		//Cargo Control
 		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
@@ -90,6 +85,29 @@ public class OI implements Runnable {
 		}
 		///////////////////////////////
 
+		///////////////////////////////
+		//Cargo Control
+		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
+			
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
+			
+		}
+		else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP))
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
+		
+		}
+		else
+		{
+			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
+			
+		}
+		///////////////////////////////
 	
 
 		///////////////////////////////
@@ -111,4 +129,3 @@ public class OI implements Runnable {
 	}
 
 }
-

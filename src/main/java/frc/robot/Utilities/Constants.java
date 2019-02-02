@@ -1,5 +1,7 @@
 package frc.robot.Utilities;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Constants {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,11 +29,11 @@ public class Constants {
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 450; 
+	public static final double kHatchAcquiringPosition = 450;
 	public static final double kHatchHoldingPosition = 0; 
 	public static final double kHatchEjectPosition = 0; 
 
-	public static final double kHatchEjectTime = 2.5;
+	public static final double kHatchEjectTime = 1.0;
 	public static final double kHatchHomeTime = 2.5;
 
 	public static final double kHatchPositionKp = 7.0;
@@ -41,6 +43,13 @@ public class Constants {
 	public static final double kHatchPositionRampRate = 0.0;
 	public static final int kHatchPositionIZone = 0;
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Cargo Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kCargoShootingSpeed = 0.4; 
+	public static final double kCargoFeedingSpeed = 1.0;  
+	public static final double kCargoIntakingSpeed = 0.5;  
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Robot Drive Constants
@@ -112,11 +121,11 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Hatch
-	public static final int kHatchMotorId = 8; //not the real value, needs to be changed
-
+	public static final int kHatchMotorId = 8;
 	public static final int kHatchMotorPDPChannel = 11;
 
-	public static final int kHatchSolenoidOut = 1; //TODO: In/Out may have to be swapped
+
+	public static final int kHatchSolenoidOut = 1;
 	public static final int kHatchSolenoidIn = 2;
 
 	// Cargo
@@ -125,32 +134,30 @@ public class Constants {
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	public static final int kCargoShooterMotorPDPChannel = 5;
 
-	public static final int kCargoIntakeSolenoidOut = 3; //TODO: In/Out may have to be swapped
+	public static final int kCargoIntakeSolenoidOut = 3;
 	public static final int kCargoIntakeSolenoidIn = 4; 
 
-	public static final int kCargoFeedingSpeed = 1;
-	public static final int kCargoShootingSpeed = 1;
-	public static final int kCargoIntakingSpeed = 1;
 
 	// Drive
-	public static final int kLeftDriveMasterId = 2;
-	public static final int kLeftDriveSlaveId = 3;
-	public static final int kLeftDriveSlaveId2 = 4;
-	public static final int kRightDriveMasterId = 5;
-	public static final int kRightDriverSlaveId = 6;
-	public static final int kRightDriverSlaveId2 = 7;
+	public static final int kLeftDriveMasterId = 2; // left back
+	public static final int kLeftDriveSlaveId = 3; // left top
+	public static final int kLeftDriveSlaveId2 = 4; // left front
+	public static final int kRightDriveMasterId = 5; // right back
+	public static final int kRightDriveSlaveId = 6; // right top
+	public static final int kRightDriveSlaveId2 = 7; //right front
 
-	public static final int kLeftDriveMasterPDPChannel = 14; 
+//////// Check again after testing
+	public static final int kLeftDriveMasterPDPChannel = 14; // left back
 	public static final int kLeftDriveMasterPDPBreakerRating = 40;
-	public static final int kLeftDriveSlave1PDPChannel = 13; 
+	public static final int kLeftDriveSlave1PDPChannel = 13; // left top
 	public static final int kLeftDriveSlave1PDPBreakerRating = 40;
-	public static final int kLeftDriveSlave2PDPChannel = 12;  
+	public static final int kLeftDriveSlave2PDPChannel = 12; // left front
 	public static final int kLeftDriveSlave2PDPBreakerRating = 40;
-	public static final int kRightDriveMasterPDPChannel = 15; 
+	public static final int kRightDriveMasterPDPChannel = 15; // right back
 	public static final int kRightDriveMasterPDPBreakerRating = 40;
-	public static final int kRightDriveSlave1PDPChannel = 3; 
+	public static final int kRightDriveSlave1PDPChannel = 2; // right top
 	public static final int kRightDriveSlave1PDPBreakerRating = 40;
-	public static final int kRightDriveSlave2PDPChannel = 2;
+	public static final int kRightDriveSlave2PDPChannel = 3; // right front
 	public static final int kRightDriveSlave2PDPBreakerRating = 40;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,5 +190,6 @@ public class Constants {
 	// Parts GE-17203-FLAT and GE-17371 (sheet 7)
 	public static final double kBoilerTargetTopHeight = 88.0;
 	public static final double kBoilerRadius = 7.5;
+
 
 }
