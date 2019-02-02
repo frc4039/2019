@@ -1,6 +1,5 @@
 package frc.robot.Subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -39,15 +38,11 @@ public class HatchSubsystem extends Subsystem {
 
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
-    private final DoubleSolenoid mHatchSolenoid;
     //private final Solenoid mWristSolenoid;
     private CustomTalonSRX mHatchMotor;
     private HatchWantedState mWantedState;
     private HatchSystemState mSystemState;
     //private double mThresholdStart;
-
-    public static boolean kHatchEject = false;
-    public static boolean kHatchRetract = !kHatchEject;
 
     private boolean mPrevBrakeModeVal;
     private boolean mHomeSuccess;
@@ -78,7 +73,6 @@ public class HatchSubsystem extends Subsystem {
 
         Controllers robotControllers = Controllers.getInstance();
         mHatchMotor = robotControllers.getHatchMotor();
-        mHatchSolenoid = robotControllers.getHatchSolenoid();
 
         mPrevBrakeModeVal = false;
 		setBrakeMode(true);
@@ -208,10 +202,6 @@ public class HatchSubsystem extends Subsystem {
 
         
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
-
-        if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
-            setRetract();
-        }
         
         switch (mWantedState) {
         case ACQUIRE:
@@ -250,6 +240,17 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSystemState handleHolding(double timeInState) {
+        /* if (timeInState < 2) {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+        
+        }
+        if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
+            mHatchMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            mHatchMotor.set(ControlMode.PercentOutput, -0.10);
+            System.out.println("powered");
+            System.out.println(timeInState);
+        } */
         
 
         //mHomeSuccess = false;
@@ -262,7 +263,6 @@ public class HatchSubsystem extends Subsystem {
             return HatchSystemState.HOLDING;
         case ACQUIRE:
 
-            setEject();
             return HatchSystemState.ACQUIRING;
         default:            
 
@@ -286,24 +286,6 @@ public class HatchSubsystem extends Subsystem {
         mWristSolenoid.set(mWristUp);
     } */
 
-    private void setEject() {
-        kHatchEject = true;
-        kHatchRetract = !kHatchEject;
-        mHatchSolenoid.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    private void setRetract() {
-        kHatchEject = false;
-        kHatchRetract = !kHatchEject;
-        mHatchSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
-
-    private void setNeutral() {
-        kHatchEject = false;
-        kHatchRetract = false;
-        mHatchSolenoid.set(DoubleSolenoid.Value.kOff);
-    }
-
     public synchronized void setWantedState(HatchWantedState wanted) {
         mWantedState = wanted;
     }
@@ -322,7 +304,7 @@ public class HatchSubsystem extends Subsystem {
 			_subsystemMutex.lock();
 			mHatchMotor.setNeutralMode(brakeMode ? NeutralMode.Brake : NeutralMode.Coast);
 			mPrevBrakeModeVal = brakeMode;
-			_subsystemMutex.unlock();                                         
+			_subsystemMutex.unlock();
 		}
     }
     

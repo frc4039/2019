@@ -42,7 +42,6 @@ public class Controllers {
 		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriveSlaveId2, rightDrive1);
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
-		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
 
 		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
@@ -73,7 +72,6 @@ public class Controllers {
 	private VictorSP cargoShooterMotor;
 
 	private DoubleSolenoid cargoIntakeSolenoid;
-	private DoubleSolenoid hatchSolenoid;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -99,10 +97,6 @@ public class Controllers {
 
 	public DoubleSolenoid getCargoIntakeSolenoid() {
 		return cargoIntakeSolenoid;
-	}
-
-	public DoubleSolenoid getHatchSolenoid() {
-		return hatchSolenoid;
 	}
 
 ////////// Drive Motors

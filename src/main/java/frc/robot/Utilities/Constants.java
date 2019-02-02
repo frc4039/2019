@@ -29,11 +29,11 @@ public class Constants {
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 450;
+	public static final double kHatchAcquiringPosition = 450; //TODO: these positions may have to be changed
 	public static final double kHatchHoldingPosition = 0; 
 	public static final double kHatchEjectPosition = 0; 
 
-	public static final double kHatchEjectTime = 1.0;
+	public static final double kHatchEjectTime = 2.5; //TODO: Test if this is the best value?
 	public static final double kHatchHomeTime = 2.5;
 
 	public static final double kHatchPositionKp = 7.0;
@@ -124,7 +124,7 @@ public class Constants {
 	public static final int kHatchMotorId = 8;
 	public static final int kHatchMotorPDPChannel = 11;
 
-	public static final int kHatchSolenoidOut = 1;
+	public static final int kHatchSolenoidOut = 1; //TODO: In/Out may have to be swapped
 	public static final int kHatchSolenoidIn = 2;
 
 	// Cargo
@@ -133,7 +133,7 @@ public class Constants {
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	public static final int kCargoShooterMotorPDPChannel = 5;
 
-	public static final int kCargoIntakeSolenoidOut = 3;
+	public static final int kCargoIntakeSolenoidOut = 3; //TODO: In/Out may have to be swapped
 	public static final int kCargoIntakeSolenoidIn = 4; 
 
 	// Drive
