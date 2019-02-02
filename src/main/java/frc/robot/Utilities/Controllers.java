@@ -2,23 +2,17 @@ package frc.robot.Utilities;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.*;
-
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Drivers.NavX;
+import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Compressor;
 
 public class Controllers {
 	private static Controllers instance = null;
-
-	private Compressor compressor;
 
 	public static Controllers getInstance() {
 		if (instance == null)
@@ -38,8 +32,8 @@ public class Controllers {
 		leftDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kLeftDriveSlaveId2, leftDrive1);
 
 		rightDrive1 = CANSpeedControllerBuilder.createFastMasterTalonSRX(Constants.kRightDriveMasterId, Constants.kRightDriveMasterPDPChannel);
-		rightDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriveSlaveId, rightDrive1);
-		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriveSlaveId2, rightDrive1);
+		rightDrive2 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId, rightDrive1);
+		rightDrive3 = CANSpeedControllerBuilder.createPermanentVictorSlaveToTalonSRX(Constants.kRightDriverSlaveId2, rightDrive1);
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 
@@ -79,19 +73,20 @@ public class Controllers {
 	private NavX navX;
 	private CANifier canifierLED;
 
+	private Compressor compressor;
 
-////////// Subsystem Motors & Stuff
+
+	////Subsystem Motors
 
 	public CustomTalonSRX getHatchMotor() {
 		return hatchMotor;
 	}
 
-	public VictorSP getCargoIntakeMotor()
-	{
+	public VictorSP getCargoIntakeMotor(){
 		return cargoIntakeMotor;
 	}
-	public VictorSP getCargoShooterMotor()
-	{
+
+	public VictorSP getCargoShooterMotor(){
 		return cargoShooterMotor;
 	}
 
@@ -126,7 +121,7 @@ public class Controllers {
 	}
 
 
-////////// Joysticks
+	////Joystics and stuff
 
 	public CustomJoystick getDriveJoystickThrottle() {
 		return driveJoystickThrottle;
@@ -137,18 +132,19 @@ public class Controllers {
 	}
 
 
-////////// Sensors & Stuff
+	////Sensors and stuff
 
-	public Compressor getCompressor() {
-		return compressor;
-	}
-	
 	public NavX	getNavX() {
 		return navX;
 	}
 
 	public CANifier getCANifierLED() {
 		return canifierLED;
+	}
+
+
+	public Compressor getCompressor(){
+		return compressor;
 	}
 
 }

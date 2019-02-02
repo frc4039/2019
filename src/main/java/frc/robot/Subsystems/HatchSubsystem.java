@@ -40,8 +40,8 @@ public class HatchSubsystem extends Subsystem {
 
     //private final Solenoid mWristSolenoid;
     private CustomTalonSRX mHatchMotor;
-    private HatchWantedState mWantedState;
-    private HatchSystemState mSystemState;
+    private HatchWantedState mHatchWantedState;
+    private HatchSystemState mHatchSystemState;
     //private double mThresholdStart;
 
     private boolean mPrevBrakeModeVal;
@@ -114,7 +114,7 @@ public class HatchSubsystem extends Subsystem {
 
     @Override
     public void stop() {
-        setWantedState(HatchWantedState.HOLD);
+        setHatchWantedState(HatchWantedState.HOLD);
     }
 
     @Override
@@ -138,8 +138,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onFirstStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = HatchSystemState.HOMING;
-                mWantedState = HatchWantedState.HOME;
+                mHatchSystemState = HatchSystemState.HOMING;
+                mHatchWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -147,8 +147,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mSystemState = HatchSystemState.HOMING;
-                mWantedState = HatchWantedState.HOME;
+                mHatchSystemState = HatchSystemState.HOMING;
+                mHatchWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -156,10 +156,10 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onLoop(double timestamp, boolean isAuto) {
             synchronized (HatchSubsystem.this) {
-                HatchSystemState newState = mSystemState;
+                HatchSystemState newState = mHatchSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
-                switch (mSystemState) {
+                switch (mHatchSystemState) {
                 case ACQUIRING:
                     newState = handleAcquiring(timeInState);
                     break;
@@ -170,14 +170,14 @@ public class HatchSubsystem extends Subsystem {
                     newState = handleHoming(timeInState);
                     break;
                 default:
-                    System.out.println("Unexpected hatch system state: " + mSystemState);
-                    newState = mSystemState;
+                    System.out.println("Unexpected hatch system state: " + mHatchSystemState);
+                    newState = mHatchSystemState;
                     break;
                 }
 
-                if (newState != mSystemState) {
-                    System.out.println(timestamp + ": Changed state: " + mSystemState + " -> " + newState);
-                    mSystemState = newState;
+                if (newState != mHatchSystemState) {
+                    System.out.println(timestamp + ": Changed state: " + mHatchSystemState + " -> " + newState);
+                    mHatchSystemState = newState;
                     mCurrentStateStartTime = Timer.getFPGATimestamp();
                 }
             }
@@ -186,8 +186,8 @@ public class HatchSubsystem extends Subsystem {
 
         @Override
         public void onStop(double timestamp) {
-            mWantedState = HatchWantedState.HOLD;
-            mSystemState = HatchSystemState.HOLDING;
+            mHatchWantedState = HatchWantedState.HOLD;
+            mHatchSystemState = HatchSystemState.HOLDING;
             // Set the states to what the robot falls into when disabled.
             stop();
         }
@@ -203,7 +203,7 @@ public class HatchSubsystem extends Subsystem {
         
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
         
-        switch (mWantedState) {
+        switch (mHatchWantedState) {
         case ACQUIRE:
 
             return HatchSystemState.ACQUIRING;
@@ -221,12 +221,12 @@ public class HatchSubsystem extends Subsystem {
         if (timeInState < Constants.kHatchHomeTime && mHomeSuccess == false) {
             subsystemHome(timeInState);
         } else if (mHomeSuccess == true) {
-            setWantedState(HatchWantedState.HOLD);
+            setHatchWantedState(HatchWantedState.HOLD);
         } else {
             mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
         }
         
-        switch (mWantedState) {
+        switch (mHatchWantedState) {
         case HOME:
 
             return HatchSystemState.HOMING;
@@ -257,7 +257,7 @@ public class HatchSubsystem extends Subsystem {
         mHomeSuccess = false;
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
            
-        switch (mWantedState) {
+        switch (mHatchWantedState) {
         case HOLD:
             
             return HatchSystemState.HOLDING;
@@ -286,13 +286,13 @@ public class HatchSubsystem extends Subsystem {
         mWristSolenoid.set(mWristUp);
     } */
 
-    public synchronized void setWantedState(HatchWantedState wanted) {
-        mWantedState = wanted;
+    public synchronized void setHatchWantedState(HatchWantedState wanted) {
+        mHatchWantedState = wanted;
     }
 
     public synchronized void reset() {
-        mWantedState = HatchWantedState.HOLD;
-        mSystemState = HatchSystemState.HOLDING;
+        mHatchWantedState = HatchWantedState.HOLD;
+        mHatchSystemState = HatchSystemState.HOLDING;
     }
 
     public void outputToSmartDashboard(){
@@ -322,9 +322,9 @@ public class HatchSubsystem extends Subsystem {
 
 	}
 
-    public String getSystemState() {
+    public String getHatchSystemState() {
         
-        switch (mSystemState) {
+        switch (mHatchSystemState) {
             case HOLDING:
                 return "HOLDING";
             case ACQUIRING:
