@@ -124,6 +124,7 @@ public class Constants {
 	public static final int kHatchMotorId = 8;
 	public static final int kHatchMotorPDPChannel = 11;
 
+
 	public static final int kHatchSolenoidOut = 1;
 	public static final int kHatchSolenoidIn = 2;
 
@@ -135,6 +136,7 @@ public class Constants {
 
 	public static final int kCargoIntakeSolenoidOut = 3;
 	public static final int kCargoIntakeSolenoidIn = 4; 
+
 
 	// Drive
 	public static final int kLeftDriveMasterId = 2; // left back

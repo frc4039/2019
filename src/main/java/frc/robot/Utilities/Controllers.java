@@ -14,6 +14,9 @@ import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Drivers.NavX;
+import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Compressor;
 
 public class Controllers {
 	private static Controllers instance = null;
@@ -43,6 +46,12 @@ public class Controllers {
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
+
+		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
+		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
+		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
+
+		compressor = new Compressor();
 
 		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
@@ -81,6 +90,8 @@ public class Controllers {
 	private NavX navX;
 	private CANifier canifierLED;
 
+	private Compressor compressor;
+
 
 ////////// Subsystem Motors & Stuff
 
@@ -88,12 +99,11 @@ public class Controllers {
 		return hatchMotor;
 	}
 
-	public VictorSP getCargoIntakeMotor()
-	{
+	public VictorSP getCargoIntakeMotor() {
 		return cargoIntakeMotor;
 	}
-	public VictorSP getCargoShooterMotor()
-	{
+
+	public VictorSP getCargoShooterMotor() {
 		return cargoShooterMotor;
 	}
 
@@ -104,7 +114,7 @@ public class Controllers {
 	public DoubleSolenoid getHatchSolenoid() {
 		return hatchSolenoid;
 	}
-
+  
 ////////// Drive Motors
 
 	public CustomTalonSRX getLeftDrive1() {
@@ -155,6 +165,10 @@ public class Controllers {
 
 	public CANifier getCANifierLED() {
 		return canifierLED;
+	}
+
+	public Compressor getCompressor() {
+		return compressor;
 	}
 
 }

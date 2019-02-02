@@ -71,7 +71,7 @@ public class CargoSubsystem extends Subsystem {
 
 		mCargoShooterMotor.setInverted(false);
 
-        setBrakeMode(true);
+        setBrakeMode(false);
 
     }
 
@@ -173,7 +173,6 @@ public class CargoSubsystem extends Subsystem {
         
         switch (mWantedState) {
             case INTAKE:
-
                 setIntakeOut();
                 return CargoSystemState.INTAKING;
             case HOLD:
