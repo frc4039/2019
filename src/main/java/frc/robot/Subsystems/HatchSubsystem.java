@@ -31,16 +31,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class HatchSubsystem extends Subsystem {
-
-    //public static boolean kWristDown = false;
-    //public static boolean kWristUp = !kWristDown;
-
     private static HatchSubsystem mInstance;
-
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
     private final DoubleSolenoid mHatchSolenoid;
-    //private final Solenoid mWristSolenoid;
     private CustomTalonSRX mHatchMotor;
     private HatchWantedState mHatchWantedState;
     private HatchSystemState mHatchSystemState;
@@ -72,10 +66,6 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSubsystem() {
-        //mWristSolenoid = Constants.makeSolenoidForId(Constants.kGearWristSolenoid);
-        //mHatchGripper.setStatusFrameRateMs(CANTalon.StatusFrameRate.General, 15);
-        //mHatchGripper.changeControlMode(CANTalon.TalonControlMode.Voltage);
-
         Controllers robotControllers = Controllers.getInstance();
         mHatchMotor = robotControllers.getHatchMotor();
         mHatchSolenoid = robotControllers.getHatchSolenoid();
@@ -86,13 +76,9 @@ public class HatchSubsystem extends Subsystem {
 
     public void init(){
         mHatchMotor.setSensorPhase(false);
-
 		mHatchMotor.setInverted(true);
-
         setBrakeMode(true);
-        
         mHomeSuccess = false;
-
 		boolean setSucceeded;
 		int retryCounter = 0;
 
@@ -107,9 +93,7 @@ public class HatchSubsystem extends Subsystem {
 
 		setSucceeded &= TalonHelper.setPIDGains(mHatchMotor, 0, Constants.kHatchPositionKp, Constants.kHatchPositionKi, Constants.kHatchPositionKd, Constants.kHatchPositionKf, Constants.kHatchPositionRampRate, Constants.kHatchPositionIZone);
 		setSucceeded &= TalonHelper.setPIDGains(mHatchMotor, 1, Constants.kHatchPositionKp, Constants.kHatchPositionKi, Constants.kHatchPositionKd, Constants.kHatchPositionKf, Constants.kHatchPositionRampRate, Constants.kHatchPositionIZone);
-		
         mHatchMotor.selectProfileSlot(0, 0);
-        
         zeroSensors();
     }
 
@@ -125,7 +109,6 @@ public class HatchSubsystem extends Subsystem {
 
     @Override
     public void zeroSensors() {
-        
         boolean setSucceeded;
 		int retryCounter = 0;
 
@@ -134,7 +117,6 @@ public class HatchSubsystem extends Subsystem {
 
 			setSucceeded &= mHatchMotor.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMsFast) == ErrorCode.OK;
 		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount); 
-
     }
 
     private final Loop mLoop = new Loop() {
@@ -187,7 +169,6 @@ public class HatchSubsystem extends Subsystem {
                     mCurrentStateStartTime = Timer.getFPGATimestamp();
                 }
             }
-
         }
 
         @Override
@@ -205,8 +186,6 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSystemState handleAcquiring(double timeInState) {
-
-        
         mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
 
         if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
@@ -250,7 +229,6 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSystemState handleHolding(double timeInState) {        
-
         //mHomeSuccess = false;
         mHomeSuccess = false;
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
@@ -268,23 +246,6 @@ public class HatchSubsystem extends Subsystem {
             return HatchSystemState.HOMING;
         }
     }
-
-    //private boolean mWristUp = false;
-
-    /* public void setOpenLoop(double position) {
-        mHatchMotor.set(ControlMode.Position, position);
-    } */
-
-    /* private void setWristUp() {
-        mWristUp = true;
-        mWristSolenoid.set(mWristUp);
-    } */
-
-    /* private void setWristDown() {
-        mWristUp = false;
-        mWristSolenoid.set(mWristUp);
-    } */
-
 
     private void setEject() {
         kHatchEject = true;
@@ -327,8 +288,8 @@ public class HatchSubsystem extends Subsystem {
     }
     
 	public void subsystemHome(double timeInState) {        
-
         mHatchMotor.set(ControlMode.PercentOutput, -0.30);
+
         if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
             zeroSensors();
             mHatchMotor.set(ControlMode.PercentOutput, 0);
@@ -336,8 +297,6 @@ public class HatchSubsystem extends Subsystem {
         } else {
             mHomeSuccess = false;
         }
-        
-
 	}
 
     public String getHatchSystemState() {
@@ -353,6 +312,4 @@ public class HatchSubsystem extends Subsystem {
                 return "UNKNOWN";
         }
     }
-    
-
 }

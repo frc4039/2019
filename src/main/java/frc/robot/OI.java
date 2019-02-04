@@ -18,14 +18,13 @@ public class OI implements Runnable {
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
 	private CargoSubsystem cargoSubsystem;
-	//private DriverStation ds;
+	// private DriverStation ds;
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
-	//private DriveHelper driveHelper;
+	// private DriverHelper driveHelper;
 
 	private OI() throws Exception {
-		//ds = DriverStation.getInstance();
-
+		// ds = DriverStation.getInstance();
 		Controllers robotControllers = Controllers.getInstance();
 		driveJoystickThrottle = robotControllers.getDriveJoystickThrottle();
 		operatorJoystick = robotControllers.getOperatorJoystick();
@@ -41,17 +40,13 @@ public class OI implements Runnable {
 		if(instance == null) {
 			try {
 				instance = new OI();
-			} catch (Exception ex) {
-				
-			}
+			} catch (Exception ex) {}
 		}
-
 		return instance;
 	}
 
 	@Override
 	public void run() {
-
 		///////////////////////////////
 		//Hatch Control
 		if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
@@ -62,50 +57,30 @@ public class OI implements Runnable {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
 		///////////////////////////////
+
+		///////////////////////////////
 		//Cargo Control
-		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
-		{
+		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE)) {
 			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
-			
-		}
-		else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER))
-		{
-			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
-			
-		}
-		else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP))
-		{
+		} else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
+			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);	
+		} else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP)) {
 			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
-		
-		}
-		else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD))
-		{
+		} else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD)) {
 			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
-			
 		}
 		///////////////////////////////
 
 		///////////////////////////////
 		//Cargo Control
-		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE))
-		{
+		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE)){
 			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
-			
-		}
-		else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER))
-		{
+		} else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
 			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
-			
-		}
-		else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP))
-		{
+		} else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP)) {
 			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
-		
-		}
-		else
-		{
+		} else {
 			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
-			
 		}
 		///////////////////////////////
 	
@@ -120,12 +95,8 @@ public class OI implements Runnable {
 
 		//TODO: Enable for new drivers maybe
 		//CheesyDrive for new drivers
-//		driveBaseSubsystem.setDriveOpenLoop(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear()));
-
-
-
-//		driveBaseSubsystem.setDriveVelocity(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear(), 10000));
-//		driveBaseSubsystem.setDriveVelocity(new DriveMotorValues((y + x) * 650, (y - x) * 650));
+		//driveBaseSubsystem.setDriveOpenLoop(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear()));
+		//driveBaseSubsystem.setDriveVelocity(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear(), 10000));
+		//driveBaseSubsystem.setDriveVelocity(new DriveMotorValues((y + x) * 650, (y - x) * 650));
 	}
-
 }

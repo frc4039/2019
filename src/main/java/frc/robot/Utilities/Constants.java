@@ -16,7 +16,7 @@ public class Constants {
 
 
 	//Operator controller buttons
-	public static final int OPERATOR_Y_AXIS = 0;	//TODO: This is actually the X axis... we need to find the Y axis value....
+	public static final int OPERATOR_X_AXIS = 0;	//TODO: This is actually the X axis... we need to find the Y axis value....
 	public static final int HATCH_SCORE = 1; 	//A
 	public static final int HATCH_PICKUP = 2;	//B
 	public static final int HATCH_ZERO = 3; 	//X
@@ -93,14 +93,15 @@ public class Constants {
 
 	public static final int kLooperThreadPriority = Thread.MAX_PRIORITY;
 
-	//public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
-	public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
+	public static final double kSensorUnitsPerRotation = 4096.0;    //original value for encoder 1:1 with shaft
+	// public static final double kSensorUnitsPerRotation = 30720.0;    //value for encoder on 3 cim ballshifter with 60:24 3rd stage
 
 	public static final double k100msPerMinute = 600.0;
 	public static final double kLooperDt = 0.005;
 
 		/* CONTROL LOOP GAINS */
 
+	//TODO: change
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
 	public static final double kDriveHighGearVelocityKp = 0.004;
@@ -109,7 +110,7 @@ public class Constants {
 	public static final double kDriveHighGearVelocityKf = 0.03175;
 	public static final int kDriveHighGearVelocityIZone = 1000;
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
-	public static final double kDriveHighGearMaxSetpoint = 12.0 * 12.0; // 12 fps
+	public static final double kDriveHighGearMaxSetpoint = 12.0 * 14.0; // 14 fps
 
 	public static final int kTimeoutMs = 20;
 	public static final int kTimeoutMsFast = 10;
