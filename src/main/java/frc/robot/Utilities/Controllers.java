@@ -14,14 +14,10 @@ import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.Drivers.NavX;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Compressor;
 
 public class Controllers {
 	private static Controllers instance = null;
-
-	private Compressor compressor;
 
 	public static Controllers getInstance() {
 		if (instance == null)
@@ -46,12 +42,6 @@ public class Controllers {
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
-
-		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
-		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
-		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
-
-		compressor = new Compressor();
 
 		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
@@ -166,9 +156,4 @@ public class Controllers {
 	public CANifier getCANifierLED() {
 		return canifierLED;
 	}
-
-	public Compressor getCompressor() {
-		return compressor;
-	}
-
 }
