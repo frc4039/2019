@@ -13,6 +13,7 @@ import frc.robot.Autonomous.Modes.BasicMode;
 import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
+import frc.robot.Subsystems.CargoSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
@@ -21,25 +22,22 @@ import frc.robot.Utilities.Loops.RobotStateEstimator;
 //import java.util.ArrayList;
 
 public class Robot extends CustomRobot {
-
 	private Looper mLooper;
-
 	private OI oI;
 
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
+	private CargoSubsystem cargoSubsystem;
 
 	private RobotStateEstimator robotStateEstimator;
-
 	private ThreadRateControl threadRateControl = new ThreadRateControl();
-
 	private AutoModeExecuter autoModeExecuter;
 
 	@Override
 	public void robotInit() {
 		mLooper = new Looper();
-
 		oI = OI.getInstance();
+
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		driveBaseSubsystem.init();
 		driveBaseSubsystem.registerEnabledLoops(mLooper);
@@ -48,8 +46,11 @@ public class Robot extends CustomRobot {
 		hatchSubsystem.init();
 		hatchSubsystem.registerEnabledLoops(mLooper);
 
+		cargoSubsystem = CargoSubsystem.getInstance();
+		cargoSubsystem.init();
+		cargoSubsystem.registerEnabledLoops(mLooper);
+
 		robotStateEstimator = RobotStateEstimator.getInstance();
-		
 		mLooper.register(robotStateEstimator);
 
 	}
@@ -59,18 +60,14 @@ public class Robot extends CustomRobot {
 		mLooper.start(true);
 		driveBaseSubsystem.setBrakeMode(true);
 		autoModeExecuter = new AutoModeExecuter();
-
-
 		AutoModeBase autoMode = new BasicMode();
-
 
 		if (autoMode != null)
 			autoModeExecuter.setAutoMode(autoMode);
 		else
 			return;
-
+	
 		autoModeExecuter.start();
-
 		threadRateControl.start(true);
 
 		while (isAutonomous() && isEnabled()) {threadRateControl.doRateControl(100);}
@@ -82,6 +79,10 @@ public class Robot extends CustomRobot {
 		mLooper.start(false);
 		threadRateControl.start(true);
 
+		Controllers.getInstance().getCompressor().start();
+		Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+		System.out.println(Controllers.getInstance().getCompressor().enabled());
+
 		while (isOperatorControl() && isEnabled()) {
 			oI.run();
 			threadRateControl.doRateControl(20);
@@ -91,9 +92,7 @@ public class Robot extends CustomRobot {
 	@Override
 	public void disabled() {
 		exitAuto();
-
 		mLooper.stop();
-
 		threadRateControl.start(true);
 
 		while (isDisabled()) {
