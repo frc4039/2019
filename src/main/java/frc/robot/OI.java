@@ -48,14 +48,17 @@ public class OI implements Runnable {
 	@Override
 	public void run() {
 		///////////////////////////////
-		//Hatch Control
-		if (operatorJoystick.getRawButton(Constants.HATCH_PICKUP)) {
-			hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
-		} else if (operatorJoystick.getRawButton(Constants.HATCH_SCORE)) {
-			hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
-		} else if (operatorJoystick.getRawButton(Constants.HATCH_ZERO)){
+
+		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
+			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
+				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
+			} else if (hatchSubsystem.getHatchSystemState() == "ACQUIRING") {
+				hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
+			} 
+		} else if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
+	
 		///////////////////////////////
 
 		///////////////////////////////
@@ -69,21 +72,7 @@ public class OI implements Runnable {
 		} else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD)) {
 			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
 		}
-		///////////////////////////////
-
-		///////////////////////////////
-		//Cargo Control
-		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE)){
-			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
-		} else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
-			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);
-		} else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP)) {
-			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
-		} else {
-			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
-		}
-		///////////////////////////////
-	
+		///////////////////////////////	
 
 		///////////////////////////////
 		//Drivebase control
