@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
+
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.BasicMode;
@@ -17,6 +19,7 @@ import frc.robot.Subsystems.CargoSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
+
 //import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
 //import java.util.ArrayList;
@@ -53,6 +56,8 @@ public class Robot extends CustomRobot {
 		robotStateEstimator = RobotStateEstimator.getInstance();
 		mLooper.register(robotStateEstimator);
 
+		CameraServer.getInstance().startAutomaticCapture(0);
+		
 	}
 
 	@Override
