@@ -48,7 +48,6 @@ public class OI implements Runnable {
 	@Override
 	public void run() {
 		///////////////////////////////
-
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
@@ -58,7 +57,6 @@ public class OI implements Runnable {
 		} else if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
-	
 		///////////////////////////////
 
 		///////////////////////////////
