@@ -3,6 +3,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import frc.robot.Utilities.Constants;
 import frc.robot.Utilities.Loops.Loop;
@@ -26,8 +27,8 @@ public class CargoSubsystem extends Subsystem {
     private VictorSP mCargoIntakeMotor;
     private VictorSP mCargoShooterMotor;
 
-    private CargoWantedState mWantedState;
-    private CargoSystemState mSystemState;
+    private CargoWantedState mCargoWantedState;
+    private CargoSystemState mCargoSystemState;
 
     private CustomJoystick operatorJoystick;
 
@@ -75,14 +76,14 @@ public class CargoSubsystem extends Subsystem {
 
 
     //Just leaving this here in case it helps with shuffleboard
-    /* @Override
+    @Override
     public void outputToSmartDashboard() {
-        SmartDashboard.putNumber("Hatch Gripper Current", mHatchGripper.getOutputCurrent());
-    } */
+        SmartDashboard.putString("Cargo Subsystem State", getCargoSystemState());
+    }
 
     @Override
     public void stop() {
-        setWantedState(CargoWantedState.HOLD);
+        setCargoWantedState(CargoWantedState.HOLD);
     }
 
     @Override
@@ -103,8 +104,8 @@ public class CargoSubsystem extends Subsystem {
         @Override
         public void onFirstStart(double timestamp) {
             synchronized (CargoSubsystem.this) {
-                mSystemState = CargoSystemState.HOLDING;
-                mWantedState = CargoWantedState.HOLD;
+                mCargoSystemState = CargoSystemState.HOLDING;
+                mCargoWantedState = CargoWantedState.HOLD;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -112,8 +113,8 @@ public class CargoSubsystem extends Subsystem {
         @Override
         public void onStart(double timestamp) {
             synchronized (CargoSubsystem.this) {
-                mSystemState = CargoSystemState.HOLDING;
-                mWantedState = CargoWantedState.HOLD;
+                mCargoSystemState = CargoSystemState.HOLDING;
+                mCargoWantedState = CargoWantedState.HOLD;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -121,10 +122,10 @@ public class CargoSubsystem extends Subsystem {
         @Override
         public void onLoop(double timestamp, boolean isAuto) {
             synchronized (CargoSubsystem.this) {
-                CargoSystemState newState = mSystemState;
+                CargoSystemState newState = mCargoSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
-                switch (mSystemState) {
+                switch (mCargoSystemState) {
                 case INTAKING:
                     newState = handleIntaking(timeInState);
                     break;
@@ -138,14 +139,14 @@ public class CargoSubsystem extends Subsystem {
                     newState = handleWindingUp(timeInState);
                     break;
                 default:
-                    System.out.println("Unexpected cargo system state: " + mSystemState);
-                    newState = mSystemState;
+                    System.out.println("Unexpected cargo system state: " + mCargoSystemState);
+                    newState = mCargoSystemState;
                     break;
                 }
 
-                if (newState != mSystemState) {
-                    System.out.println(timestamp + ": Changed state: " + mSystemState + " -> " + newState);
-                    mSystemState = newState;
+                if (newState != mCargoSystemState) {
+                    System.out.println(timestamp + ": Changed state: " + mCargoSystemState + " -> " + newState);
+                    mCargoSystemState = newState;
                     mCurrentStateStartTime = Timer.getFPGATimestamp();
                 }
             }
@@ -154,8 +155,8 @@ public class CargoSubsystem extends Subsystem {
 
         @Override
         public void onStop(double timestamp) {
-            mWantedState = CargoWantedState.HOLD;
-            mSystemState = CargoSystemState.HOLDING;
+            mCargoWantedState = CargoWantedState.HOLD;
+            mCargoSystemState = CargoSystemState.HOLDING;
             // Set the states to what the robot falls into when disabled.
             stop();
         }
@@ -169,8 +170,9 @@ public class CargoSubsystem extends Subsystem {
     protected CargoSystemState handleIntaking(double timeInState) {
         mCargoIntakeMotor.set(Constants.kCargoIntakingSpeed);
         
-        switch (mWantedState) {
+        switch (mCargoWantedState) {
             case INTAKE:
+                outputToSmartDashboard();
                 return CargoSystemState.INTAKING;
             case HOLD:
                 setIntakeUp();
@@ -184,8 +186,9 @@ public class CargoSubsystem extends Subsystem {
 
         setCargoPositionOpenLoop();
 
-        switch (mWantedState) {
+        switch (mCargoWantedState) {
         case HOLD:
+            outputToSmartDashboard();
             return CargoSystemState.HOLDING;
         case INTAKE:
             setIntakeOut();
@@ -202,8 +205,9 @@ public class CargoSubsystem extends Subsystem {
         mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
         setCargoPositionOpenLoop();
 
-        switch (mWantedState) {
+        switch (mCargoWantedState) {
             case WINDUP:
+            outputToSmartDashboard();
                 return CargoSystemState.WINDINGUP;
             case INTAKE:
                 setIntakeOut();
@@ -224,8 +228,9 @@ public class CargoSubsystem extends Subsystem {
         mCargoIntakeMotor.set(Constants.kCargoFeedingSpeed);
         mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
     
-        switch (mWantedState) {
+        switch (mCargoWantedState) {
         case SHOOT:
+            outputToSmartDashboard();
             return CargoSystemState.SHOOTING;
         case INTAKE:
             setIntakeOut();
@@ -258,17 +263,13 @@ public class CargoSubsystem extends Subsystem {
         mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
-    public synchronized void setWantedState(CargoWantedState wanted) {
-        mWantedState = wanted;
+    public synchronized void setCargoWantedState(CargoWantedState wanted) {
+        mCargoWantedState = wanted;
     }
 
     public synchronized void reset() {
-        mWantedState = CargoWantedState.HOLD;
-        mSystemState = CargoSystemState.HOLDING;
-    }
-
-    public void outputToSmartDashboard(){
-        //nothing
+        mCargoWantedState = CargoWantedState.HOLD;
+        mCargoSystemState = CargoSystemState.HOLDING;
     }
 
     public void setBrakeMode(boolean brakeMode) {
@@ -293,4 +294,20 @@ public class CargoSubsystem extends Subsystem {
     /* public void setOpenLoop(double percent) {
         mHatchMotor.set(ControlMode.PercentOutput, percent);
     } */
+
+    public String getCargoSystemState() {
+        
+        switch (mCargoSystemState) {
+            case INTAKING:
+                return "INTAKING";
+            case HOLDING:
+                return "HOLDING";
+            case WINDINGUP:
+                return "WINDINGUP";
+            case SHOOTING: 
+                return "SHOOTING";
+            default: 
+                return "UNKNOWN";
+        }
+    }
 }

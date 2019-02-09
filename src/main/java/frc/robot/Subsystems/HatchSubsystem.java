@@ -3,6 +3,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -97,10 +98,10 @@ public class HatchSubsystem extends Subsystem {
         zeroSensors();
     }
 
-    /* @Override
+    @Override
     public void outputToSmartDashboard() {
-        SmartDashboard.putNumber("Hatch Gripper Current", mHatchGripper.getOutputCurrent());
-    } */
+        SmartDashboard.putString("Hatch Subsystem State", getHatchSystemState());
+    }
 
     @Override
     public void stop() {
@@ -194,7 +195,7 @@ public class HatchSubsystem extends Subsystem {
         
         switch (mHatchWantedState) {
         case ACQUIRE:
-
+            outputToSmartDashboard();
             return HatchSystemState.ACQUIRING;
         case HOLD:
 
@@ -217,7 +218,7 @@ public class HatchSubsystem extends Subsystem {
         
         switch (mHatchWantedState) {
         case HOME:
-
+            outputToSmartDashboard();
             return HatchSystemState.HOMING;
         case ACQUIRE:
 
@@ -235,7 +236,7 @@ public class HatchSubsystem extends Subsystem {
            
         switch (mHatchWantedState) {
         case HOLD:
-            
+            outputToSmartDashboard();
             return HatchSystemState.HOLDING;
         case ACQUIRE:
             
@@ -272,10 +273,6 @@ public class HatchSubsystem extends Subsystem {
     public synchronized void reset() {
         mHatchWantedState = HatchWantedState.HOLD;
         mHatchSystemState = HatchSystemState.HOLDING;
-    }
-
-    public void outputToSmartDashboard(){
-        //nothing
     }
 
     public void setBrakeMode(boolean brakeMode) {
