@@ -16,7 +16,7 @@ public class Constants {
 
 
 	//Operator controller buttons
-	public static final int OPERATOR_X_AXIS = 0;	//TODO: This is actually the X axis... we need to find the Y axis value....
+	public static final int OPERATOR_X_AXIS = 1; //left stick Y-axis
 	public static final int HATCH_SCORE = 1; 	//A
 	public static final int HATCH_PICKUP = 2;	//B
 	public static final int HATCH_ZERO = 3; 	//X
@@ -104,10 +104,10 @@ public class Constants {
 	//TODO: change
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
-	public static final double kDriveHighGearVelocityKp = 0.004;
-	public static final double kDriveHighGearVelocityKi = 0.0002;
-	public static final double kDriveHighGearVelocityKd = 0.02;
-	public static final double kDriveHighGearVelocityKf = 0.03175;
+	public static final double kDriveHighGearVelocityKp = 0.05;
+	public static final double kDriveHighGearVelocityKi = 0.0;
+	public static final double kDriveHighGearVelocityKd = 1.0;
+	public static final double kDriveHighGearVelocityKf = 0.2842;
 	public static final int kDriveHighGearVelocityIZone = 1000;
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
 	public static final double kDriveHighGearMaxSetpoint = 12.0 * 14.0; // 14 fps

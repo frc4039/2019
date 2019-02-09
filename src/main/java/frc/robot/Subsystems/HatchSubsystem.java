@@ -101,7 +101,7 @@ public class HatchSubsystem extends Subsystem {
     @Override
     public void outputToSmartDashboard() {
         SmartDashboard.putString("Hatch Subsystem State", getHatchSystemState());
-    }
+    } 
 
     @Override
     public void stop() {
@@ -191,6 +191,11 @@ public class HatchSubsystem extends Subsystem {
 
         if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
             setRetract();
+        }
+
+        //TODO: test
+        if (mHatchMotor.getSelectedSensorPosition() < 430) {
+            return HatchSystemState.HOLDING;
         }
         
         switch (mHatchWantedState) {

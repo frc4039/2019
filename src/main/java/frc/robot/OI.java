@@ -61,13 +61,25 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Cargo Control
-		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE)) {
-			cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
-		} else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
-			cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);	
-		} else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP)) {
-			cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
-		} else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD)) {
+		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_INTAKE)) {
+			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
+			} else if (cargoSubsystem.getCargoSystemState() == "INTAKING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+			}
+		}
+
+		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_WINDUP)) {
+			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
+			} else if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
+			} else if (cargoSubsystem.getCargoSystemState() == "SHOOTING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+			}
+		}
+
+		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_HOLD)) {
 			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 		}
 		///////////////////////////////	
