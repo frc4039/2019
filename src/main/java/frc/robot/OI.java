@@ -62,13 +62,13 @@ public class OI implements Runnable {
 		///////////////////////////////
 		//Cargo Control
 		if (operatorJoystick.getRawButton(Constants.CARGO_INTAKE)) {
-			cargoSubsystem.setWantedState(CargoWantedState.INTAKE);
+			cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
 		} else if (operatorJoystick.getRawButton(Constants.CARGO_SHOOTER)) {
-			cargoSubsystem.setWantedState(CargoWantedState.SHOOT);	
+			cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);	
 		} else if (operatorJoystick.getRawButton(Constants.CARGO_WINDUP)) {
-			cargoSubsystem.setWantedState(CargoWantedState.WINDUP);
+			cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
 		} else if (operatorJoystick.getRawButton(Constants.CARGO_HOLD)) {
-			cargoSubsystem.setWantedState(CargoWantedState.HOLD);
+			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 		}
 		///////////////////////////////	
 
