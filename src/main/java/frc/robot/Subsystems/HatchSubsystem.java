@@ -44,6 +44,8 @@ public class HatchSubsystem extends Subsystem {
     public static boolean kHatchEject = false;
     public static boolean kHatchRetract = !kHatchEject;
 
+    private boolean kHatchAcquired = false;
+
     private boolean mPrevBrakeModeVal;
     private boolean mHomeSuccess;
 
@@ -193,9 +195,13 @@ public class HatchSubsystem extends Subsystem {
             setRetract();
         }
 
-        //TODO: test
-        if (mHatchMotor.getSelectedSensorPosition() < 430) {
-            return HatchSystemState.HOLDING;
+        if (kHatchAcquired == false && mHatchMotor.getSelectedSensorPosition() == Constants.kHatchAcquiringPosition) {
+            kHatchAcquired = true;
+        }
+
+        if (kHatchAcquired == true && mHatchMotor.getSelectedSensorPosition() < 435) {
+            setHatchWantedState(HatchWantedState.HOLD);
+            
         }
         
         switch (mHatchWantedState) {
@@ -238,6 +244,10 @@ public class HatchSubsystem extends Subsystem {
         //mHomeSuccess = false;
         mHomeSuccess = false;
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+
+        if (kHatchAcquired == true) {
+            kHatchAcquired = false;
+        }
            
         switch (mHatchWantedState) {
         case HOLD:
