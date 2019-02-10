@@ -92,7 +92,7 @@ public class OI implements Runnable {
 		x = Math.abs(x)*x;
         y = Math.abs(y)*y;
 
-    	double left = y + x;
+        double left = y + x;
         double right = y - x;   
 
 		if (driveJoystickThrottle.getRawButton(Constants.TARGETING)){
