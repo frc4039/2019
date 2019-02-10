@@ -14,6 +14,7 @@ public class Constants {
 	public static final int DRIVE_Y_AXIS = 1;
 	public static final double kJoystickDeadband = 0.08;
 
+	public static final int TARGETING = 9; //temporary button for targeting
 
 	//Operator controller buttons
 	public static final int OPERATOR_X_AXIS = 1; //left stick Y-axis

@@ -16,6 +16,9 @@ import frc.robot.Utilities.TrajectoryFollowingMotion.*;
 
 import java.util.concurrent.locks.ReentrantLock;
 
+import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+
 public class DriveBaseSubsystem implements CustomSubsystem {
 	private static DriveBaseSubsystem instance = null;
 
@@ -286,7 +289,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
                 steering_adjust = KpAim*heading_error + min_aim_command;
         }
 
-        float distance_adjust = KpDistance * distance_error;
+        double distance_adjust = KpDistance * distance_error;
 
 		double output = steering_adjust + distance_adjust;
 		
