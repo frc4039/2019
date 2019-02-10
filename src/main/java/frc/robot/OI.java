@@ -47,6 +47,7 @@ public class OI implements Runnable {
 
 	@Override
 	public void run() {
+
 		///////////////////////////////
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
@@ -86,6 +87,8 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Drivebase control
+		driveBaseSubsystem.displayLimelightOutput();
+
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
 

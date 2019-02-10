@@ -27,6 +27,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	private NavX mNavXBoard;
 
+	private NetworkTable table;
+
 	private DriveControlState mControlMode;
 
 	private static ReentrantLock _subsystemMutex = new ReentrantLock();
@@ -57,6 +59,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mNavXBoard = robotControllers.getNavX();
 
+        table = NetworkTableInstance.getDefault().getTable("limelight");
 
 		mPrevBrakeModeVal = false;
 		setBrakeMode(true);
@@ -231,29 +234,17 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
 
+		table.getEntry("ledMode").setNumber(1); // Turn LEDs off
+		table.getEntry("camMode").setNumber(1); // Set camera to driver mode
+
 		d = arcadeDrive(d);
 
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
 	}
 
-
-	public synchronized void setDriveVelocity(DriveMotorValues d) {
-		setDriveVelocity(d, true);
-	}
-
-	public synchronized void setDriveVelocity(DriveMotorValues d, boolean autoChangeMode) {
-		if (autoChangeMode)
-			setControlMode(DriveControlState.VELOCITY);
-		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.leftDrive));
-		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.rightDrive));
-	}
-	
-	public synchronized void setDriveTargetingHelp(DriveMotorValues d) {
-        setControlMode(DriveControlState.OPEN_LOOP);
-
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        NetworkTableEntry tv = table.getEntry("tv");
+	public synchronized void displayLimelightOutput() {
+		NetworkTableEntry tv = table.getEntry("tv");
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry ty = table.getEntry("ty");
         NetworkTableEntry ta = table.getEntry("ta");
@@ -271,7 +262,38 @@ public class DriveBaseSubsystem implements CustomSubsystem {
         SmartDashboard.putNumber("Limelighty", limelightTargetY);
         SmartDashboard.putNumber("LimelightArea", limelightTargetArea);
         SmartDashboard.putNumber("LimelightArea", limelightTargetSkew);
+	}
 
+	public synchronized void setDriveVelocity(DriveMotorValues d) {
+		setDriveVelocity(d, true);
+	}
+
+	public synchronized void setDriveVelocity(DriveMotorValues d, boolean autoChangeMode) {
+		if (autoChangeMode)
+			setControlMode(DriveControlState.VELOCITY);
+		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.leftDrive));
+		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.rightDrive));
+	}
+	
+	public synchronized void setDriveTargetingHelp(DriveMotorValues d) {
+        setControlMode(DriveControlState.OPEN_LOOP);
+
+		table.getEntry("ledMode").setNumber(3); // Turn LEDs on
+		table.getEntry("camMode").setNumber(0); // Set camera to vision mode
+
+		NetworkTableEntry tv = table.getEntry("tv");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry ty = table.getEntry("ty");
+        NetworkTableEntry ta = table.getEntry("ta");
+        NetworkTableEntry ts = table.getEntry("ts");
+        
+        //read values periodically
+        double limelightTargetValid = tv.getDouble(0);
+        double limelightTargetX = tx.getDouble(0);
+        double limelightTargetY = ty.getDouble(0);
+        double limelightTargetArea = ta.getDouble(0);
+        double limelightTargetSkew = ts.getDouble(0);
+		
 		double KpAim = -0.1f;
 		double KpDistance = -0.1f;
 		double min_aim_command = 0.05;
