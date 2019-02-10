@@ -92,8 +92,8 @@ public class OI implements Runnable {
 		x = Math.abs(x)*x;
         y = Math.abs(y)*y;
 
-        left = y + x;
-        right = y - x;   
+    	double left = y + x;
+        double right = y - x;   
 
 		if (driveJoystickThrottle.getRawButton(Constants.TARGETING)){
             driveBaseSubsystem.setDriveTargetingHelp(new DriveMotorValues(Util.limit(left, 1), Util.limit(right, 1)));

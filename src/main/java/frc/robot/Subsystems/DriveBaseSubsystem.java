@@ -199,12 +199,41 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		}
 	}
 
+	public DriveMotorValues arcadeDrive(DriveMotorValues d) {
+		d.leftDrive = d.leftDrive * d.leftDrive * d.leftDrive;
+	 	d.rightDrive = d.rightDrive * d.rightDrive * d.rightDrive;
+
+		double saturatedInput;
+		double greaterInput = Math.max(Math.abs(d.leftDrive), Math.abs(d.rightDrive));
+			//range [0,1]
+		double lesserInput = Math.abs(d.leftDrive) + Math.abs(d.rightDrive) - greaterInput;
+			//range [0,1]
+		if (greaterInput > 0.0){
+			saturatedInput = (lesserInput / greaterInput) + 1.0;
+			//range [1,2]
+		} else{
+			saturatedInput = 1.0;
+		}
+
+		//scale down the joystick input values
+		//such that  throttle + turn) always has a range [1,1]
+	 	d.leftDrive = d.leftDrive / saturatedInput;
+	 	d.rightDrive = d.rightDrive / saturatedInput;
+		// throttle = throttle / saturatedInput * getThrottleScalar();
+		//turn = turn / saturatedInput * getTurnScalar();
+
+		return new DriveMotorValues(d.leftDrive + d.rightDrive, d.leftDrive - d.rightDrive);
+	}
+
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
+
+		d = arcadeDrive(d);
 
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
 	}
+
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
 		setDriveVelocity(d, true);
