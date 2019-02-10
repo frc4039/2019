@@ -10,7 +10,7 @@ public class Constants {
 
 
 	//Driver control buttons
-	public static final int DRIVE_X_AXIS = 0;
+	public static final int DRIVE_X_AXIS = 4;
 	public static final int DRIVE_Y_AXIS = 1;
 	public static final double kJoystickDeadband = 0.08;
 
