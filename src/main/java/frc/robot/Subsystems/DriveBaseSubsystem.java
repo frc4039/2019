@@ -216,7 +216,55 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.leftDrive));
 		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(d.rightDrive));
 	}
+	
+	public synchronized void setDriveTargetingHelp(DriveMotorValues d) {
+        setControlMode(DriveControlState.OPEN_LOOP);
 
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry tv = table.getEntry("tv");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry ty = table.getEntry("ty");
+        NetworkTableEntry ta = table.getEntry("ta");
+        NetworkTableEntry ts = table.getEntry("ts");
+        
+        //read values periodically
+        double limelightTargetValid = tv.getDouble(0);
+        double limelightTargetX = tx.getDouble(0);
+        double limelightTargetY = ty.getDouble(0);
+        double limelightTargetArea = ta.getDouble(0);
+        double limelightTargetSkew = ts.getDouble(0);
+        
+        SmartDashboard.putNumber("LimelightTargetValid", limelightTargetValid);
+        SmartDashboard.putNumber("LimelightX", limelightTargetX);
+        SmartDashboard.putNumber("Limelighty", limelightTargetY);
+        SmartDashboard.putNumber("LimelightArea", limelightTargetArea);
+        SmartDashboard.putNumber("LimelightArea", limelightTargetSkew);
+
+		double KpAim = -0.1f;
+		double KpDistance = -0.1f;
+		double min_aim_command = 0.05;
+
+		double heading_error = -limelightTargetX;
+    	double distance_error = -limelightTargetY;
+		double steering_adjust = 0.0;
+
+        if (limelightTargetX > 1.0)
+        {
+                steering_adjust = KpAim*heading_error - min_aim_command;
+        }
+        else if (limelightTargetX < 1.0)
+        {
+                steering_adjust = KpAim*heading_error + min_aim_command;
+        }
+
+        float distance_adjust = KpDistance * distance_error;
+
+		double output = steering_adjust + distance_adjust;
+		
+        mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
+        mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
+	}
+	
 	private void updatePathFollower(double timestamp) {
 		RigidTransform2d robot_pose = mRobotState.getLatestFieldToVehicle().getValue();
 		Twist2d command = mPathFollower.update(timestamp, robot_pose,
