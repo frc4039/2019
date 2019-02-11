@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.NavX;
@@ -13,8 +14,11 @@ import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.TrajectoryFollowingMotion.*;
+import frc.robot.Utilities.SimPID;
 
 import java.util.concurrent.locks.ReentrantLock;
+
+import edu.wpi.first.networktables.*;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
 	private static DriveBaseSubsystem instance = null;
@@ -28,12 +32,31 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
+	private NetworkTable table;
+
+	private SimPID mPID = new SimPID();
+
 	private boolean mPrevBrakeModeVal;
 
 	private Path mCurrentPath = null;
 	private PathFollower mPathFollower;
 
 	private PathFollowerRobotState mRobotState = PathFollowerRobotState.getInstance();
+
+	private NetworkTableEntry tv;
+	private	NetworkTableEntry tx;
+	private	NetworkTableEntry ty;
+	private	NetworkTableEntry ta;
+	private	NetworkTableEntry ts;
+
+	private double limelightTargetValid;
+	private double limelightTargetX;
+	private	double limelightTargetY;
+	private	double limelightTargetArea;
+	private	double limelightTargetSkew;
+
+	private double output = 0;
+
 
 	public static DriveBaseSubsystem getInstance() {
 		if (instance == null)
@@ -53,6 +76,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		rightDriveSlave2 = robotControllers.getRightDrive3();
 
 		mNavXBoard = robotControllers.getNavX();
+
+		table = NetworkTableInstance.getDefault().getTable("limelight");
 
 
 		mPrevBrakeModeVal = false;
@@ -228,12 +253,53 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
 
+		table.getEntry("ledMode").setNumber(1); //Turns LED's off
+		table.getEntry("camMode").setNumber(1); //Set camera to camera mode
+
 		d = arcadeDrive(d);
 
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
 	}
 
+	public synchronized void setVisionAssist(DriveMotorValues d) {
+		setControlMode(DriveControlState.OPEN_LOOP);
+	
+		table.getEntry("ledMode").setNumber(3); //Turns LED's on
+		table.getEntry("camMode").setNumber(0); //Set camera to vision mode
+
+		tv = table.getEntry("tv");
+		tx = table.getEntry("tx");
+		ty = table.getEntry("ty");
+		ta = table.getEntry("ta");
+		ts = table.getEntry("ts");
+
+		limelightTargetValid = tv.getDouble(0);
+		limelightTargetX = tx.getDouble(0);
+		limelightTargetY = ty.getDouble(0);
+		limelightTargetArea = ta.getDouble(0);
+		limelightTargetSkew = ts.getDouble(0);
+		
+		mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+		mPID.setDesiredValue(0);
+		mPID.setMaxOutput(1);
+		
+		output = mPID.calcPID(limelightTargetX);
+
+		output += Constants.kVisionAssistF;
+		if (output> 0){
+			output += Constants.kVisionAssistF;
+		
+		} else if (output <0){
+			output -= Constants.kVisionAssistF;
+		} 
+		
+
+		d = arcadeDrive(d);
+
+		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
+		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
+	}
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
 		setDriveVelocity(d, true);

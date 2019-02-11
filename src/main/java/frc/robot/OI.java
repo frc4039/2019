@@ -89,7 +89,11 @@ public class OI implements Runnable {
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
 
-		driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
+		if (operatorJoystick.getRawButton(Constants.VISION_ASSIST)){
+			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x));
+		} else {
+			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
+		}
 		///////////////////////////////
 
 		//TODO: Enable for new drivers maybe

@@ -13,7 +13,8 @@ public class Constants {
 	public static final int DRIVE_X_AXIS = 4;
 	public static final int DRIVE_Y_AXIS = 1;
 	public static final double kJoystickDeadband = 0.08;
-
+	public static final int VISION_ASSIST = 5;
+ 
 
 	//Operator controller buttons
 	public static final int OPERATOR_X_AXIS = 1; //left stick Y-axis
@@ -24,7 +25,7 @@ public class Constants {
 	public static final int CARGO_HOLD = 6;   	//Right bumper
 	public static final int CARGO_WINDUP = 7;	//Select (left tiny button)
 	public static final int CARGO_SHOOTER = 8;  //Start (right tiny button)
- 
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +55,13 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Robot Drive Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// Vision Assist
+	public static final double kVisionAssistP = 0;
+	public static final double kVisionAssistI = 0;
+	public static final double kVisionAssistD = 0;
+	public static final double kVisionAssistF = 0;
+	public static final double kVisionAssistEpsilon = 0;
 
 	// Wheels
 	public static final double kDriveWheelDiameterInches = 6.125;
