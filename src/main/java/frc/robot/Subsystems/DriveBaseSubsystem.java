@@ -32,16 +32,16 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
-	private NetworkTable table;
-
-	private SimPID mPID = new SimPID();
-
 	private boolean mPrevBrakeModeVal;
 
 	private Path mCurrentPath = null;
 	private PathFollower mPathFollower;
 
 	private PathFollowerRobotState mRobotState = PathFollowerRobotState.getInstance();
+
+	private SimPID mPID = new SimPID();
+	
+	private NetworkTable table;
 
 	private NetworkTableEntry tv;
 	private	NetworkTableEntry tx;
@@ -79,6 +79,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		table = NetworkTableInstance.getDefault().getTable("limelight");
 
+		mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+		mPID.setDesiredValue(0);
+		mPID.setMaxOutput(1);
 
 		mPrevBrakeModeVal = false;
 		setBrakeMode(true);
@@ -250,24 +253,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		return new DriveMotorValues(d.leftDrive + d.rightDrive, d.leftDrive - d.rightDrive);
 	}
 
-	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
-		setControlMode(DriveControlState.OPEN_LOOP);
-
-		table.getEntry("ledMode").setNumber(1); //Turns LED's off
-		table.getEntry("camMode").setNumber(1); //Set camera to camera mode
-
-		d = arcadeDrive(d);
-
-		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
-		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
-	}
-
-	public synchronized void setVisionAssist(DriveMotorValues d) {
-		setControlMode(DriveControlState.OPEN_LOOP);
-	
-		table.getEntry("ledMode").setNumber(3); //Turns LED's on
-		table.getEntry("camMode").setNumber(0); //Set camera to vision mode
-
+	public void visionCalcs() {
+		
 		tv = table.getEntry("tv");
 		tx = table.getEntry("tx");
 		ty = table.getEntry("ty");
@@ -280,22 +267,31 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		limelightTargetArea = ta.getDouble(0);
 		limelightTargetSkew = ts.getDouble(0);
 		
-		mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
-		mPID.setDesiredValue(0);
-		mPID.setMaxOutput(1);
-		
 		output = mPID.calcPID(limelightTargetX);
 
-		output += Constants.kVisionAssistF;
-		if (output> 0){
-			output += Constants.kVisionAssistF;
-		
-		} else if (output <0){
+		if (output > 0) {
+		 	output += Constants.kVisionAssistF;
+		} else if (output < 0) {
 			output -= Constants.kVisionAssistF;
 		} 
-		
+
+	}
+
+	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
+		setControlMode(DriveControlState.OPEN_LOOP);
 
 		d = arcadeDrive(d);
+
+		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive);
+		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
+	}
+
+	public synchronized void setVisionAssist(DriveMotorValues d) {
+		setControlMode(DriveControlState.OPEN_LOOP);		
+
+		d = arcadeDrive(d);
+
+		visionCalcs();
 
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
