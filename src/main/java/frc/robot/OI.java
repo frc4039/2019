@@ -12,6 +12,8 @@ import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
+import edu.wpi.first.networktables.*;
+
 public class OI implements Runnable {
 	private static OI instance = null;
 
@@ -23,6 +25,8 @@ public class OI implements Runnable {
 	private CustomJoystick operatorJoystick;
 	// private DriverHelper driveHelper;
 
+	private NetworkTable table;
+
 	private OI() throws Exception {
 		// ds = DriverStation.getInstance();
 		Controllers robotControllers = Controllers.getInstance();
@@ -33,6 +37,8 @@ public class OI implements Runnable {
 		hatchSubsystem = HatchSubsystem.getInstance();
 		cargoSubsystem = CargoSubsystem.getInstance();
 
+		table = NetworkTableInstance.getDefault().getTable("limelight");
+		
 		//driveHelper = new DriveHelper();
 	}
 
@@ -89,7 +95,15 @@ public class OI implements Runnable {
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
 
-		if (operatorJoystick.getRawButton(Constants.VISION_ASSIST)){
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.VISION_ASSIST)) {
+			table.getEntry("ledMode").setNumber(3); //Turns LED's on
+			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
+		} else if (driveJoystickThrottle.getFallingEdgeButton(Constants.VISION_ASSIST)) {
+			table.getEntry("ledMode").setNumber(1); //Turns LED's off
+			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
+		}
+
+		if (driveJoystickThrottle.getRawButton(Constants.VISION_ASSIST)){
 			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x));
 		} else {
 			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
