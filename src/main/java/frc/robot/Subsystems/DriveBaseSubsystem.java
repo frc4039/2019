@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.NavX;
@@ -13,8 +14,11 @@ import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.TrajectoryFollowingMotion.*;
+import frc.robot.Utilities.SimPID;
 
 import java.util.concurrent.locks.ReentrantLock;
+
+import edu.wpi.first.networktables.*;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
 	private static DriveBaseSubsystem instance = null;
@@ -35,6 +39,14 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	private PathFollowerRobotState mRobotState = PathFollowerRobotState.getInstance();
 
+	private SimPID mPID = new SimPID();
+
+	private NetworkTable table;
+	private double limelightTargetX;
+
+	private double output = 0;
+
+
 	public static DriveBaseSubsystem getInstance() {
 		if (instance == null)
 			instance = new DriveBaseSubsystem();
@@ -54,9 +66,10 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mNavXBoard = robotControllers.getNavX();
 
-
 		mPrevBrakeModeVal = false;
 		setBrakeMode(true);
+
+		table = NetworkTableInstance.getDefault().getTable("limelight");
 
 		mControlMode = DriveControlState.PATH_FOLLOWING;
 
@@ -225,6 +238,47 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		return new DriveMotorValues(d.leftDrive + d.rightDrive, d.leftDrive - d.rightDrive);
 	}
 
+	public void visionCalcs() {
+		
+		/* NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry tv = table.getEntry("tv");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry ty = table.getEntry("ty");
+        NetworkTableEntry ta = table.getEntry("ta");
+        NetworkTableEntry ts = table.getEntry("ts");
+        
+        //read values periodically
+        boolean limelightTargetAcquired = tv.getBoolean(false);
+        double limelightTargetX = tx.getDouble(0.0);
+        double limelightTargetY = ty.getDouble(0.0);
+        double limelightTargetArea = ta.getDouble(0.0);
+        double limelightSkew = ts.getDouble(0.0); */
+        
+        //SmartDashboard.putNumber("LimelightX", limelightTargetX);
+        //SmartDashboard.putNumber("Limelighty", limelightTargetY);
+        //SmartDashboard.putNumber("LimelightArea", limelightTargetArea);
+		//SmartDashboard.putBoolean("Target", limelightTargetAcquired);
+
+        limelightTargetX = table.getEntry("tx").getDouble(0.0);
+
+		mPID = new SimPID(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+        mPID.setMaxOutput(1);
+        mPID.setDesiredValue(0);
+        //mPID.setDoneRange(0.02);
+        output = mPID.calcPID(limelightTargetX/27);
+		
+		//mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+		//mPID.setDesiredValue(0);
+		//mPID.setMaxOutput(1);
+
+		if (output > 0) {
+		 	output += Constants.kVisionAssistF;
+		} else if (output < 0) {
+			output -= Constants.kVisionAssistF;
+		} 
+
+	}
+
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		setControlMode(DriveControlState.OPEN_LOOP);
 
@@ -234,6 +288,16 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive);
 	}
 
+	public synchronized void setVisionAssist(DriveMotorValues d) {
+		setControlMode(DriveControlState.OPEN_LOOP);		
+
+		d = arcadeDrive(d);
+
+		visionCalcs();
+
+		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
+		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
+	}
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
 		setDriveVelocity(d, true);
