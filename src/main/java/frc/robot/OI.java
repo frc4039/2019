@@ -96,16 +96,19 @@ public class OI implements Runnable {
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
 
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.VISION_ASSIST)) {
-			table.getEntry("ledMode").setNumber(3); //Turns LED's on
-			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
-		} else if (driveJoystickThrottle.getFallingEdgeButton(Constants.VISION_ASSIST)) {
-			table.getEntry("ledMode").setNumber(1); //Turns LED's off
-			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
+			System.out.println("led on");
+		} 
+		if (driveJoystickThrottle.getFallingEdgeButton(Constants.VISION_ASSIST)) {
+			System.out.println("led off");
 		}
 
 		if (driveJoystickThrottle.getRawButton(Constants.VISION_ASSIST)){
+			table.getEntry("ledMode").setNumber(3); //Turns LED's on
+			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
 			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x));
 		} else {
+			table.getEntry("ledMode").setNumber(1); //Turns LED's off
+			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
 			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
 		}
 		///////////////////////////////

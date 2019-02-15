@@ -86,7 +86,6 @@ public class Robot extends CustomRobot {
 
 		Controllers.getInstance().getCompressor().start();
 		Controllers.getInstance().getCompressor().setClosedLoopControl(true);
-		System.out.println(Controllers.getInstance().getCompressor().enabled());
 
 		while (isOperatorControl() && isEnabled()) {
 			oI.run();

@@ -40,20 +40,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	private PathFollowerRobotState mRobotState = PathFollowerRobotState.getInstance();
 
 	private SimPID mPID = new SimPID();
-	
+
 	private NetworkTable table;
-
-	private NetworkTableEntry tv;
-	private	NetworkTableEntry tx;
-	private	NetworkTableEntry ty;
-	private	NetworkTableEntry ta;
-	private	NetworkTableEntry ts;
-
-	private double limelightTargetValid;
 	private double limelightTargetX;
-	private	double limelightTargetY;
-	private	double limelightTargetArea;
-	private	double limelightTargetSkew;
 
 	private double output = 0;
 
@@ -77,14 +66,10 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mNavXBoard = robotControllers.getNavX();
 
-		table = NetworkTableInstance.getDefault().getTable("limelight");
-
-		mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
-		mPID.setDesiredValue(0);
-		mPID.setMaxOutput(1);
-
 		mPrevBrakeModeVal = false;
 		setBrakeMode(true);
+
+		table = NetworkTableInstance.getDefault().getTable("limelight");
 
 		mControlMode = DriveControlState.PATH_FOLLOWING;
 
@@ -255,19 +240,36 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	public void visionCalcs() {
 		
-		tv = table.getEntry("tv");
-		tx = table.getEntry("tx");
-		ty = table.getEntry("ty");
-		ta = table.getEntry("ta");
-		ts = table.getEntry("ts");
+		/* NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        NetworkTableEntry tv = table.getEntry("tv");
+        NetworkTableEntry tx = table.getEntry("tx");
+        NetworkTableEntry ty = table.getEntry("ty");
+        NetworkTableEntry ta = table.getEntry("ta");
+        NetworkTableEntry ts = table.getEntry("ts");
+        
+        //read values periodically
+        boolean limelightTargetAcquired = tv.getBoolean(false);
+        double limelightTargetX = tx.getDouble(0.0);
+        double limelightTargetY = ty.getDouble(0.0);
+        double limelightTargetArea = ta.getDouble(0.0);
+        double limelightSkew = ts.getDouble(0.0); */
+        
+        //SmartDashboard.putNumber("LimelightX", limelightTargetX);
+        //SmartDashboard.putNumber("Limelighty", limelightTargetY);
+        //SmartDashboard.putNumber("LimelightArea", limelightTargetArea);
+		//SmartDashboard.putBoolean("Target", limelightTargetAcquired);
 
-		limelightTargetValid = tv.getDouble(0);
-		limelightTargetX = tx.getDouble(0);
-		limelightTargetY = ty.getDouble(0);
-		limelightTargetArea = ta.getDouble(0);
-		limelightTargetSkew = ts.getDouble(0);
+        limelightTargetX = table.getEntry("tx").getDouble(0.0);
+
+		mPID = new SimPID(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+        mPID.setMaxOutput(1);
+        mPID.setDesiredValue(0);
+        //mPID.setDoneRange(0.02);
+        output = mPID.calcPID(limelightTargetX/27);
 		
-		output = mPID.calcPID(limelightTargetX);
+		//mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+		//mPID.setDesiredValue(0);
+		//mPID.setMaxOutput(1);
 
 		if (output > 0) {
 		 	output += Constants.kVisionAssistF;
