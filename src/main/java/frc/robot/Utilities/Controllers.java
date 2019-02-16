@@ -2,14 +2,12 @@ package frc.robot.Utilities;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
@@ -45,13 +43,13 @@ public class Controllers {
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
 
-		cargoIntakeMotor = new VictorSP(Constants.kCargoIntakeMotorId);
-		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
+		cargoIntakeMotor = new VictorSPX(Constants.kCargoIntakeMotorId);
+		cargoShooterMotor = new CustomTalonSRX(Constants.kCargoShooterMotorId, Constants.kCargoShooterMotorPDPChannel);
 		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
 
 		leftClimberMotor = new CANSparkMax(Constants.kLeftClimberMotorId, MotorType.kBrushless);
 		rightClimberMotor = new CANSparkMax(Constants.kRightClimberMotorId, MotorType.kBrushless);
-		climberDriveMotor = new CustomTalonSRX(Constants.kClimberDriveMotorId, Constants.kClimberDriveMotorPDPChannel);
+		climberDriveMotor = new VictorSPX(Constants.kClimberDriveMotorId);
 
 		compressor = new Compressor();
 
@@ -74,15 +72,15 @@ public class Controllers {
 	private BaseMotorController rightDrive3;
 
 	private CustomTalonSRX hatchMotor;
-	private VictorSP cargoIntakeMotor;
-	private VictorSP cargoShooterMotor;
+	private VictorSPX cargoIntakeMotor;
+	private CustomTalonSRX cargoShooterMotor;
 
 	private DoubleSolenoid cargoIntakeSolenoid;
 	private DoubleSolenoid hatchSolenoid;
 
 	private CANSparkMax leftClimberMotor;
 	private CANSparkMax rightClimberMotor;
-	private CustomTalonSRX climberDriveMotor;
+	private VictorSPX climberDriveMotor;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -99,11 +97,11 @@ public class Controllers {
 		return hatchMotor;
 	}
 
-	public VictorSP getCargoIntakeMotor() {
+	public VictorSPX getCargoIntakeMotor() {
 		return cargoIntakeMotor;
 	}
 
-	public VictorSP getCargoShooterMotor() {
+	public CustomTalonSRX getCargoShooterMotor() {
 		return cargoShooterMotor;
 	}
 
@@ -121,6 +119,10 @@ public class Controllers {
 
 	public CANSparkMax getRightClimberMotor() {
 		return rightClimberMotor;
+	}
+
+	public VictorSPX getClimberDriveMotor() {
+		return climberDriveMotor;
 	}
   
 ////////// Drive Motors

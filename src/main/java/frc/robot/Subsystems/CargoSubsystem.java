@@ -5,11 +5,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import frc.robot.Utilities.Constants;
 import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.Drivers.CustomJoystick;
+import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.*;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,8 +28,8 @@ public class CargoSubsystem extends Subsystem {
     private static ReentrantLock _subsystemMutex = new ReentrantLock();
 
     private final DoubleSolenoid mCargoIntakeSolenoid;
-    private VictorSP mCargoIntakeMotor;
-    private VictorSP mCargoShooterMotor;
+    private VictorSPX mCargoIntakeMotor;
+    private CustomTalonSRX mCargoShooterMotor;
 
     private CargoWantedState mCargoWantedState;
     private CargoSystemState mCargoSystemState;
@@ -168,7 +172,7 @@ public class CargoSubsystem extends Subsystem {
     }
 
     protected CargoSystemState handleIntaking(double timeInState) {
-        mCargoIntakeMotor.set(Constants.kCargoIntakingSpeed);
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoIntakingSpeed);
         
         switch (mCargoWantedState) {
             case INTAKE:
@@ -176,7 +180,7 @@ public class CargoSubsystem extends Subsystem {
                 return CargoSystemState.INTAKING;
             case HOLD:
                 setIntakeUp();
-                mCargoIntakeMotor.set(0);
+                mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.HOLDING;
             default:
                 return CargoSystemState.INTAKING;
@@ -202,7 +206,7 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handleWindingUp(double timeInState)
     {
-        mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
+        mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
         setCargoPositionOpenLoop();
 
         switch (mCargoWantedState) {
@@ -211,10 +215,10 @@ public class CargoSubsystem extends Subsystem {
                 return CargoSystemState.WINDINGUP;
             case INTAKE:
                 setIntakeOut();
-                mCargoShooterMotor.set(0);
+                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.INTAKING;
             case HOLD:
-                mCargoShooterMotor.set(0);
+                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.HOLDING;
             case SHOOT:
                 return CargoSystemState.SHOOTING;
@@ -225,8 +229,8 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handleShooting(double timeInState) {
 
-        mCargoIntakeMotor.set(Constants.kCargoFeedingSpeed);
-        mCargoShooterMotor.set(Constants.kCargoShootingSpeed);
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoFeedingSpeed);
+        mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
     
         switch (mCargoWantedState) {
         case SHOOT:
@@ -234,11 +238,11 @@ public class CargoSubsystem extends Subsystem {
             return CargoSystemState.SHOOTING;
         case INTAKE:
             setIntakeOut();
-            mCargoShooterMotor.set(0);
+            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.INTAKING;
         case HOLD:
-            mCargoShooterMotor.set(0);
-            mCargoIntakeMotor.set(0);
+            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+            mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.HOLDING;
         default:
             return CargoSystemState.SHOOTING;
@@ -286,7 +290,7 @@ public class CargoSubsystem extends Subsystem {
 
         double y = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.OPERATOR_X_AXIS), Constants.kJoystickDeadband);
 
-        mCargoIntakeMotor.set(y);
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, y);
 
     }
 

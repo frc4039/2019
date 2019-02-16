@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -20,6 +22,7 @@ import frc.robot.Utilities.Loops.Loop;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Controllers;
 import frc.robot.Utilities.Drivers.CustomJoystick;
+import frc.robot.Utilities.Drivers.CustomTalonSRX;
 import frc.robot.Utilities.Drivers.TalonHelper;
 import frc.robot.Utilities.*;
 
@@ -44,6 +47,8 @@ public class ClimberSubsystem extends Subsystem {
 
     private CANSparkMax mLeftClimberMotor;
     private CANSparkMax mRightClimberMotor;
+    private VictorSPX mClimberDriveMotor;
+
     private ClimberWantedState mClimberWantedState;
     private ClimberSystemState mClimberSystemState;
     //private double mThresholdStart;
@@ -84,6 +89,7 @@ public class ClimberSubsystem extends Subsystem {
         Controllers robotControllers = Controllers.getInstance();
         mLeftClimberMotor = robotControllers.getLeftClimberMotor();
         mRightClimberMotor = robotControllers.getRightClimberMotor();
+        mClimberDriveMotor = robotControllers.getClimberDriveMotor();
 
         driveJoystickThrottle = robotControllers.getDriveJoystickThrottle();
         operatorJoystick = robotControllers.getOperatorJoystick();
@@ -305,7 +311,8 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     private ClimberSystemState handleDriving(double timeInState) {
-        mLeftClimberMotor.set(0);
+        mClimber.setReference(0, ControlType.kDutyCycle);
+        setClimberDrive();
 
         
         switch (mClimberWantedState) {
@@ -322,6 +329,12 @@ public class ClimberSubsystem extends Subsystem {
         double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
         mClimber.setReference(left, ControlType.kDutyCycle);
+    }
+
+    public void setClimberDrive() {
+        double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
+
+        mClimberDriveMotor.set(ControlMode.PercentOutput, left);
     }
 
     public void setClimberRetract() {

@@ -132,7 +132,7 @@ public class CustomTalonSRX extends TalonSRX {
 		sb.append("General Status Frame 12: " + getStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, Constants.kTimeoutMs) + "\r\n");
 		sb.append("General Status Frame 13: " + getStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, Constants.kTimeoutMs) + "\r\n");
 		sb.append("General Status Frame 14: " + getStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, Constants.kTimeoutMs) + "\r\n");
-		sb.append("General Status Frame 15: " + getStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmwareApiStatus, Constants.kTimeoutMs) + "\r\n");
+		//sb.append("General Status Frame 15: " + getStatusFramePeriod(StatusFrameEnhanced.Status_15_FirmareApiStatus, Constants.kTimeoutMs) + "\r\n");
 		return sb.toString();
 	}
 }
