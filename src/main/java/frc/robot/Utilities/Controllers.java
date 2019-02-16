@@ -4,6 +4,8 @@ import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -47,6 +49,10 @@ public class Controllers {
 		cargoShooterMotor = new VictorSP(Constants.kCargoShooterMotorId);
 		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
 
+		leftClimberMotor = new CANSparkMax(Constants.kLeftClimberMotorId, MotorType.kBrushless);
+		rightClimberMotor = new CANSparkMax(Constants.kRightClimberMotorId, MotorType.kBrushless);
+		climberDriveMotor = new CustomTalonSRX(Constants.kClimberDriveMotorId, Constants.kClimberDriveMotorPDPChannel);
+
 		compressor = new Compressor();
 
 		try {
@@ -73,6 +79,10 @@ public class Controllers {
 
 	private DoubleSolenoid cargoIntakeSolenoid;
 	private DoubleSolenoid hatchSolenoid;
+
+	private CANSparkMax leftClimberMotor;
+	private CANSparkMax rightClimberMotor;
+	private CustomTalonSRX climberDriveMotor;
 
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -103,6 +113,14 @@ public class Controllers {
 
 	public DoubleSolenoid getHatchSolenoid() {
 		return hatchSolenoid;
+	}
+
+	public CANSparkMax getLeftClimberMotor() {
+		return leftClimberMotor;
+	}
+
+	public CANSparkMax getRightClimberMotor() {
+		return rightClimberMotor;
 	}
   
 ////////// Drive Motors

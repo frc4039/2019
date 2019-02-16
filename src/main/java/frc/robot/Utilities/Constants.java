@@ -14,6 +14,11 @@ public class Constants {
 	public static final int DRIVE_Y_AXIS = 1;		//left stick Y-axis
 	public static final double kJoystickDeadband = 0.08;
 	public static final int VISION_ASSIST = 5;
+	public static final int CLIMBER_EXTEND = 4; //Y
+	public static final int LEFT_TRIGGER = 2;
+	public static final int RIGHT_TRIGGER = 3;
+	public static final double kTriggerDeadband = 0.1; //fake
+	public static final int PRINT_LIMIT_SWITCH = 6;
  
 
 	//Operator controller buttons
@@ -25,6 +30,7 @@ public class Constants {
 	public static final int CARGO_HOLD = 6;   	//Right bumper
 	public static final int CARGO_WINDUP = 7;	//Select (left tiny button)
 	public static final int CARGO_SHOOTER = 8;  	//Start (right tiny button)
+	public static final int CLIMBER_INITIATE = 4; //Y
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -51,6 +57,26 @@ public class Constants {
 	public static final double kCargoShootingSpeed = 0.4; 
 	public static final double kCargoFeedingSpeed = 1.0;  
 	public static final double kCargoIntakingSpeed = 0.5;  
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	//// Climber Subsystem Constants
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final double kClimberExtendedPosition = 0.4; // TODO: change
+	public static final double kClimberHomePosition = 0.0; 
+
+	public static final int kClimberLimitSwitchBottom = 0;
+	public static final int kClimberLimitSwitchTop = 1;
+
+	public static final double kClimberPositionkP = 1;
+	public static final double kClimberPositionkI = 0;
+	public static final double kClimberPositionkD = 0;
+	public static final double kClimberPositionkIz = 0;
+	public static final double kClimberPositionkFF = 0;
+	public static final double kClimberPositionkMaxOutput = 0;
+	public static final double kClimberPositionkMinOutput = 0;
+	public static final double kClimberPositionkMaxRPM = 5700;
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Robot Drive Constants
@@ -138,13 +164,22 @@ public class Constants {
 	public static final int kHatchSolenoidIn = 2;
 
 	// Cargo
-	public static final int kCargoIntakeMotorId = 0;
-	public static final int kCargoShooterMotorId = 1;
+	public static final int kCargoIntakeMotorId = 13;
+	public static final int kCargoShooterMotorId = 12;
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	public static final int kCargoShooterMotorPDPChannel = 5;
 
 	public static final int kCargoIntakeSolenoidOut = 3;
 	public static final int kCargoIntakeSolenoidIn = 4; 
+
+	// Climber
+	// drive motor is 11
+	public static final int kClimberDriveMotorId = 20; //TODO: change
+	public static final int kClimberDriveMotorPDPChannel = 11;
+	public static final int kLeftClimberMotorId = 9;
+	public static final int kLeftClimberMotorPDPChannel = 0;
+	public static final int kRightClimberMotorId = 10;
+	public static final int kRightClimberMotorPDPChannel = 15;
 
 
 	// Drive

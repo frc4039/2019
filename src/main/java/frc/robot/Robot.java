@@ -16,6 +16,7 @@ import frc.robot.Autonomous.Modes.NewMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.CargoSubsystem;
+import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
@@ -31,6 +32,7 @@ public class Robot extends CustomRobot {
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
 	private CargoSubsystem cargoSubsystem;
+	private ClimberSubsystem climberSubsystem;
 
 	private RobotStateEstimator robotStateEstimator;
 	private ThreadRateControl threadRateControl = new ThreadRateControl();
@@ -52,6 +54,10 @@ public class Robot extends CustomRobot {
 		cargoSubsystem = CargoSubsystem.getInstance();
 		cargoSubsystem.init();
 		cargoSubsystem.registerEnabledLoops(mLooper);
+
+		climberSubsystem = ClimberSubsystem.getInstance();
+		climberSubsystem.init();
+		climberSubsystem.registerEnabledLoops(mLooper);
 
 		robotStateEstimator = RobotStateEstimator.getInstance();
 		mLooper.register(robotStateEstimator);

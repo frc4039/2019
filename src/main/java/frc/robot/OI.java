@@ -6,7 +6,9 @@ package frc.robot;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.HatchSubsystem.HatchWantedState;
 import frc.robot.Subsystems.CargoSubsystem;
+import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Subsystems.CargoSubsystem.CargoWantedState;
+import frc.robot.Subsystems.ClimberSubsystem.ClimberWantedState;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Drivers.CustomJoystick;
@@ -20,6 +22,7 @@ public class OI implements Runnable {
 	private DriveBaseSubsystem driveBaseSubsystem;
 	private HatchSubsystem hatchSubsystem;
 	private CargoSubsystem cargoSubsystem;
+	private ClimberSubsystem climberSubsystem;
 	// private DriverStation ds;
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
@@ -36,6 +39,7 @@ public class OI implements Runnable {
 		driveBaseSubsystem = DriveBaseSubsystem.getInstance();
 		hatchSubsystem = HatchSubsystem.getInstance();
 		cargoSubsystem = CargoSubsystem.getInstance();
+		climberSubsystem = ClimberSubsystem.getInstance();
 
 		table = NetworkTableInstance.getDefault().getTable("limelight");
 		
@@ -54,6 +58,7 @@ public class OI implements Runnable {
 	@Override
 	public void run() {
 		///////////////////////////////
+		//Hatch Control
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
@@ -89,6 +94,22 @@ public class OI implements Runnable {
 			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 		}
 		///////////////////////////////	
+
+		///////////////////////////////
+		//Climber control
+		if (operatorJoystick.getRisingEdgeButton(Constants.CLIMBER_INITIATE)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.INITIATE);
+			System.out.println("Initiate");
+		}
+
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_EXTEND)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.EXTEND);
+			System.out.println("Extend");
+		}
+		
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.PRINT_LIMIT_SWITCH)) {
+			System.out.println(climberSubsystem.getClimberLimitSwitchBottom());
+		}
 
 		///////////////////////////////
 		//Drivebase control
