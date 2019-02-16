@@ -86,10 +86,10 @@ public class Constants {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Vision Assist
-	public static final double kVisionAssistP = 0.3;
+	public static final double kVisionAssistP = 0.4;
 	public static final double kVisionAssistI = 0;
-	public static final double kVisionAssistD = 700;
-	public static final double kVisionAssistF = 0.12;
+	public static final double kVisionAssistD = 10;
+	public static final double kVisionAssistF = 0.0;
 	public static final double kVisionAssistEpsilon = 0;
 
 	// Wheels
