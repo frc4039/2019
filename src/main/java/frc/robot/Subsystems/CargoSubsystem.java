@@ -73,7 +73,7 @@ public class CargoSubsystem extends Subsystem {
 
     public void init() {
         mCargoIntakeMotor.setInverted(true);
-		mCargoShooterMotor.setInverted(false);
+		mCargoShooterMotor.setInverted(true);
 
         setBrakeMode(false);
     }

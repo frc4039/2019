@@ -57,9 +57,9 @@ public class Constants {
 	//// Cargo Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kCargoShootingSpeed = 0.4; 
+	public static final double kCargoShootingSpeed = 0.3; 
 	public static final double kCargoFeedingSpeed = 1.0;  
-	public static final double kCargoIntakingSpeed = 0.5;  
+	public static final double kCargoIntakingSpeed = 1.0;  
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Climber Subsystem Constants
