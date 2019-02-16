@@ -15,11 +15,12 @@ public class Constants {
 	public static final double kJoystickDeadband = 0.08;
 	public static final int VISION_ASSIST = 5;
 	public static final int CLIMBER_EXTEND = 4; //Y
-	public static final int CLIMBER_RETRACT = 1;
+	public static final int CLIMBER_RETRACT = 1; //A
 	public static final int LEFT_TRIGGER = 2;
 	public static final int RIGHT_TRIGGER = 3;
 	public static final double kTriggerDeadband = 0.05; //fake
-	public static final int PRINT_LIMIT_SWITCH = 6;
+	public static final int DRIVER_SCORE = 6; //Right bumper
+	public static final int DRIVER_INTAKE = 9; //Left stick click
  
 
 	//Operator controller buttons
@@ -37,13 +38,14 @@ public class Constants {
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 450;
+	public static final double kHatchAcquiringPosition = 510;
 	public static final double kHatchHoldingPosition = 0; 
 	public static final double kHatchEjectPosition = 0; 
 
-	public static final double kHatchEjectTime = 1.0;
+	public static final double kHatchEjectTime = 0.25;
 	public static final double kHatchHomeTime = 2.5;
 
+	public static final double kHatchAutomaticHold = 500;
 	public static final double kHatchPositionKp = 7.0;
 	public static final double kHatchPositionKi = 0.0;
 	public static final double kHatchPositionKd = 70.0;
@@ -175,7 +177,7 @@ public class Constants {
 
 	// Climber
 	// drive motor is 11
-	public static final int kClimberDriveMotorId = 20; //TODO: change
+	public static final int kClimberDriveMotorId = 11; //TODO: change
 	public static final int kClimberDriveMotorPDPChannel = 11;
 	public static final int kLeftClimberMotorId = 9;
 	public static final int kLeftClimberMotorPDPChannel = 0;

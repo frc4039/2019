@@ -60,12 +60,12 @@ public class OI implements Runnable {
 		///////////////////////////////
 		//Hatch Control
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
-			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
-				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
-			} else if (hatchSubsystem.getHatchSystemState() == "ACQUIRING") {
-				hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
-			} 
-		} else if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
+			hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
+		}
+		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_SCORE)) {
+			hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
+		}
+		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
 		///////////////////////////////
@@ -111,11 +111,6 @@ public class OI implements Runnable {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
 		}
 
-		if (driveJoystickThrottle.getRisingEdgeButton(Constants.PRINT_LIMIT_SWITCH)) {
-			System.out.println(climberSubsystem.getClimberLimitSwitchBottom());
-			System.out.println(climberSubsystem.getClimberLimitSwitchTop());
-		}
-
 		///////////////////////////////
 		//Drivebase control
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
@@ -136,6 +131,19 @@ public class OI implements Runnable {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
 			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
 			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
+		}
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
+			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
+				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
+			}
+		}
+
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_INTAKE)) {
+			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
+			} else if (cargoSubsystem.getCargoSystemState() == "INTAKING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+			}
 		}
 		///////////////////////////////
 

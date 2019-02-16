@@ -290,6 +290,7 @@ public class ClimberSubsystem extends Subsystem {
         //mLeftClimberMotor.set(Constants.kClimberHomePosition);
         //if (getClimberLimitSwitchTop() == false) {
             setClimberRetract();
+            setClimberDrive();
         //} else if (getClimberLimitSwitchTop() == true){
         //    setClimberWantedState(ClimberWantedState.HOLD);
         //}
@@ -313,7 +314,8 @@ public class ClimberSubsystem extends Subsystem {
     private ClimberSystemState handleDriving(double timeInState) {
         mClimber.setReference(0, ControlType.kDutyCycle);
         setClimberDrive();
-
+        setClimberExtend();
+        
         
         switch (mClimberWantedState) {
         case HOLD:
@@ -332,15 +334,15 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     public void setClimberDrive() {
-        double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
+        double right = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimberDriveMotor.set(ControlMode.PercentOutput, left);
+        mClimberDriveMotor.set(ControlMode.PercentOutput, right);
     }
 
     public void setClimberRetract() {
-        double right = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
+        double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(-right, ControlType.kDutyCycle);
+        mClimber.setReference(-left, ControlType.kDutyCycle);
     }
 
     public void setClimberInitiate() {
