@@ -15,9 +15,10 @@ public class Constants {
 	public static final double kJoystickDeadband = 0.08;
 	public static final int VISION_ASSIST = 5;
 	public static final int CLIMBER_EXTEND = 4; //Y
+	public static final int CLIMBER_RETRACT = 1;
 	public static final int LEFT_TRIGGER = 2;
 	public static final int RIGHT_TRIGGER = 3;
-	public static final double kTriggerDeadband = 0.1; //fake
+	public static final double kTriggerDeadband = 0.05; //fake
 	public static final int PRINT_LIMIT_SWITCH = 6;
  
 

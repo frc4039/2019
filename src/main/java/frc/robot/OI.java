@@ -107,6 +107,10 @@ public class OI implements Runnable {
 			System.out.println("Extend");
 		}
 
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_RETRACT)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
+		}
+
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.PRINT_LIMIT_SWITCH)) {
 			System.out.println(climberSubsystem.getClimberLimitSwitchBottom());
 			System.out.println(climberSubsystem.getClimberLimitSwitchTop());

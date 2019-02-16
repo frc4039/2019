@@ -230,10 +230,10 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     private ClimberSystemState handleExtending(double timeInState) {
-        //mLeftClimberMotor.set(Constants.kClimberExtendedPosition);
-        if (getClimberLimitSwitchTop() == true && getClimberLimitSwitchBottom() == false) {
+
+        if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true) {
             setClimberExtend();
-        } else if (getClimberLimitSwitchTop() == true && getClimberLimitSwitchBottom() == true){
+        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == false){
             setClimberWantedState(ClimberWantedState.DRIVE);
         }
 
@@ -247,6 +247,9 @@ public class ClimberSubsystem extends Subsystem {
         case RETRACT:
 
             return ClimberSystemState.RETRACTING;
+        case DRIVE:
+            
+            return ClimberSystemState.DRIVING;
         default:
 
             return ClimberSystemState.HOLDING;
@@ -256,7 +259,7 @@ public class ClimberSubsystem extends Subsystem {
     private ClimberSystemState handleHolding(double timeInState) {        
         //mHomeSuccess = false;
         //mHomeSuccess = false;
-        //mLeftClimberMotor.set(0);
+        mClimber.setReference(0, ControlType.kDutyCycle);
            
         switch (mClimberWantedState) {
         case HOLD:
@@ -279,11 +282,11 @@ public class ClimberSubsystem extends Subsystem {
 
     private ClimberSystemState handleRetracting(double timeInState) {
         //mLeftClimberMotor.set(Constants.kClimberHomePosition);
-        if (getClimberLimitSwitchTop() == true) {
+        //if (getClimberLimitSwitchTop() == false) {
             setClimberRetract();
-        } else if (getClimberLimitSwitchTop() == false){
-            setClimberWantedState(ClimberWantedState.HOLD);
-        }
+        //} else if (getClimberLimitSwitchTop() == true){
+        //    setClimberWantedState(ClimberWantedState.HOLD);
+        //}
 
         switch (mClimberWantedState) {
         case RETRACT:
@@ -292,6 +295,9 @@ public class ClimberSubsystem extends Subsystem {
         case HOLD:
 
             return ClimberSystemState.HOLDING;
+        case EXTEND: 
+            
+            return ClimberSystemState.EXTENDING;
         default:
 
             return ClimberSystemState.RETRACTING;
@@ -299,7 +305,7 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     private ClimberSystemState handleDriving(double timeInState) {
-        //mLeftClimberMotor.set(0);
+        mLeftClimberMotor.set(0);
 
         
         switch (mClimberWantedState) {
@@ -326,7 +332,6 @@ public class ClimberSubsystem extends Subsystem {
 
     public void setClimberInitiate() {
         double left = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
-        System.out.println(left);
         mClimber.setReference(left, ControlType.kDutyCycle);
     }
 
