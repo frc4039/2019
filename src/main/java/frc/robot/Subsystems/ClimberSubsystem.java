@@ -315,13 +315,13 @@ public class ClimberSubsystem extends Subsystem {
     public void setClimberExtend() {
         double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(left, ControlType.kVelocity);
+        mClimber.setReference(left, ControlType.kDutyCycle);
     }
 
     public void setClimberRetract() {
         double right = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(-right, ControlType.kVelocity);
+        mClimber.setReference(-right, ControlType.kDutyCycle);
     }
 
     public void setClimberInitiate() {
