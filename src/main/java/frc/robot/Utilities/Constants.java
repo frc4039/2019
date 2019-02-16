@@ -61,6 +61,16 @@ public class Constants {
 	public static final double kCargoFeedingSpeed = 1.0;  
 	public static final double kCargoIntakingSpeed = 1.0;  
 
+	public static final double kCargoShootingVelocity = 6000;
+
+	
+	public static final double kCargoShooterVelocityKp = 0.005;
+	public static final double kCargoShooterVelocityKi = 0;
+	public static final double kCargoShooterVelocityKd = 0;
+	public static final double kCargoShooterVelocityKf = 0.0425;
+	public static final int kCargoShooterVelocityIZone = 0;
+	public static final double kCargoShooterVelocityRampRate = 1.0;
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Climber Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////

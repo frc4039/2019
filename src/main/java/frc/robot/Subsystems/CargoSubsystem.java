@@ -5,8 +5,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
+
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import frc.robot.Utilities.Drivers.TalonHelper;
 
 import frc.robot.Utilities.Constants;
 import frc.robot.Utilities.Loops.Loop;
@@ -76,6 +83,22 @@ public class CargoSubsystem extends Subsystem {
 		mCargoShooterMotor.setInverted(true);
 
         setBrakeMode(false);
+
+        boolean setSucceeded;
+		int retryCounter = 0;
+
+		do {
+			setSucceeded = true;
+
+			setSucceeded &= mCargoShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.kTimeoutMs) == ErrorCode.OK;
+			setSucceeded &= mCargoShooterMotor.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, Constants.kTimeoutMs) == ErrorCode.OK;
+			setSucceeded &= mCargoShooterMotor.configVelocityMeasurementWindow(32, Constants.kTimeoutMs) == ErrorCode.OK;
+
+		} while(!setSucceeded && retryCounter++ < Constants.kTalonRetryCount);
+
+		setSucceeded &= TalonHelper.setPIDGains(mCargoShooterMotor, 0, Constants.kCargoShooterVelocityKp, Constants.kCargoShooterVelocityKi, Constants.kCargoShooterVelocityKd, Constants.kCargoShooterVelocityKf, Constants.kCargoShooterVelocityRampRate, Constants.kCargoShooterVelocityIZone);
+		
+		mCargoShooterMotor.selectProfileSlot(0, 0);
     }
 
 
@@ -206,8 +229,10 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handleWindingUp(double timeInState)
     {
-        mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
+        //mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
+        mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
         setCargoPositionOpenLoop();
+
 
         switch (mCargoWantedState) {
             case WINDUP:
@@ -230,7 +255,7 @@ public class CargoSubsystem extends Subsystem {
     private CargoSystemState handleShooting(double timeInState) {
 
         mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoFeedingSpeed);
-        mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
+        mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
     
         switch (mCargoWantedState) {
         case SHOOT:
