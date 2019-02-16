@@ -161,8 +161,8 @@ public class Constants {
 	public static final int kHatchMotorPDPChannel = 11;
 
 
-	public static final int kHatchSolenoidOut = 1;
-	public static final int kHatchSolenoidIn = 2;
+	public static final int kHatchSolenoidOut = 0;
+	public static final int kHatchSolenoidIn = 1;
 
 	// Cargo
 	public static final int kCargoIntakeMotorId = 13;
@@ -170,8 +170,8 @@ public class Constants {
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	public static final int kCargoShooterMotorPDPChannel = 5;
 
-	public static final int kCargoIntakeSolenoidOut = 3;
-	public static final int kCargoIntakeSolenoidIn = 4; 
+	public static final int kCargoIntakeSolenoidOut = 2;
+	public static final int kCargoIntakeSolenoidIn = 3; 
 
 	// Climber
 	// drive motor is 11
