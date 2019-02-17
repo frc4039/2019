@@ -86,14 +86,25 @@ public class Constants {
 	public static final double kClimbDrivebasePercent = 0.25;
 	public static final double kClimbRetractTinyWheelsPercent = 0.40;
 
-	public static final double kClimberPositionkP = 1;
+	public static final double kClimberPositionkP = 0;
 	public static final double kClimberPositionkI = 0;
 	public static final double kClimberPositionkD = 0;
 	public static final double kClimberPositionkIz = 0;
-	public static final double kClimberPositionkFF = 0;
-	public static final double kClimberPositionkMaxOutput = 0;
-	public static final double kClimberPositionkMinOutput = 0;
+	public static final double kClimberPositionkFF = 0.005;
+	public static final double kClimberPositionkMaxOutput = 1.0;
+	public static final double kClimberPositionkMinOutput = -1.0;
 	public static final double kClimberPositionkMaxRPM = 5700;
+	public static final double kClimberMaxVel = 5700;
+	public static final double kClimberMinVel = 0;
+	public static final double kClimberMaxAccel = 5700;
+	public static final double kClimberAllowedError = 0;
+	public static final int kClimberSlotID = 0;
+
+	public static final double kClimberUp = -230;
+	public static final double kClimberDown = -695;
+	public static final double kStartingPosition = -0.024;
+	public static final double kFirstLimitSwitch = -228.1;
+	public static final double kSecondLimitSwitch = -695;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +202,6 @@ public class Constants {
 	public static final int kCargoIntakeSolenoidIn = 3; 
 
 	// Climber
-	// drive motor is 11
 	public static final int kClimberDriveMotorId = 11; //TODO: change
 	public static final int kClimberDriveMotorPDPChannel = 11;
 	public static final int kLeftClimberMotorId = 9;

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -104,10 +105,11 @@ public class ClimberSubsystem extends Subsystem {
 
         mLeftClimberMotor.set(0);
         mRightClimberMotor.follow(mLeftClimberMotor, true);
-        mLeftClimberMotor.setInverted(true);
+        //mLeftClimberMotor.setInverted(true);
 
         mClimber = mLeftClimberMotor.getPIDController();
         mClimberEncoder = mLeftClimberMotor.getEncoder();
+        //mLeftClimberMotor.
 
         mClimber.setP(Constants.kClimberPositionkP);
         mClimber.setI(Constants.kClimberPositionkI);
@@ -115,6 +117,11 @@ public class ClimberSubsystem extends Subsystem {
         mClimber.setIZone(Constants.kClimberPositionkIz);
         mClimber.setFF(Constants.kClimberPositionkFF);
         mClimber.setOutputRange(Constants.kClimberPositionkMinOutput, Constants.kClimberPositionkMaxOutput);
+
+        mClimber.setSmartMotionMaxVelocity(Constants.kClimberMaxVel, Constants.kClimberSlotID);
+        mClimber.setSmartMotionMinOutputVelocity(Constants.kClimberMinVel, Constants.kClimberSlotID);
+        mClimber.setSmartMotionMaxAccel(Constants.kClimberMaxAccel, Constants.kClimberSlotID);
+        mClimber.setSmartMotionAllowedClosedLoopError(Constants.kClimberAllowedError, Constants.kClimberSlotID);
 
         //setBrakeMode(true);
         //mHomeSuccess = false;
@@ -230,6 +237,8 @@ public class ClimberSubsystem extends Subsystem {
             setClimberWantedState(ClimberWantedState.HOLD);
         }
 
+        SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
+
         switch (mClimberWantedState) {
             case INITIATE:
 
@@ -263,6 +272,8 @@ public class ClimberSubsystem extends Subsystem {
             setClimberWantedState(ClimberWantedState.DRIVE);
         }
 
+        SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
+
         switch (mClimberWantedState) {
             case INITIATE:
 
@@ -293,6 +304,8 @@ public class ClimberSubsystem extends Subsystem {
         //mHomeSuccess = false;
         mClimber.setReference(0, ControlType.kDutyCycle);
         mClimberDriveMotor.set(ControlMode.PercentOutput, 0);
+
+        SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
            
         switch (mClimberWantedState) {
             case INITIATE:
@@ -322,10 +335,14 @@ public class ClimberSubsystem extends Subsystem {
     private ClimberSystemState handleRetracting(double timeInState) {
         //mLeftClimberMotor.set(Constants.kClimberHomePosition);
         //if (getClimberLimitSwitchTop() == false) {
-            setClimberRetract();
+            //setClimberRetract();
             //setClimberDrive();
+
+            SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
             
             mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
+
+            mClimber.setReference(Constants.kClimberUp, ControlType.kSmartMotion);
         //} else if (getClimberLimitSwitchTop() == true){
         //    setClimberWantedState(ClimberWantedState.HOLD);
         //}
@@ -360,6 +377,8 @@ public class ClimberSubsystem extends Subsystem {
         //if (getClimberLimitSwitchTop() == false) {
         setClimberRetract();
         setClimberDrive();
+
+        SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
             
         //} else if (getClimberLimitSwitchTop() == true){
         //    setClimberWantedState(ClimberWantedState.HOLD);
@@ -393,9 +412,10 @@ public class ClimberSubsystem extends Subsystem {
     private ClimberSystemState handleDriving(double timeInState) {
         mClimber.setReference(0, ControlType.kDutyCycle);
         setClimberDrive();
-        setClimberExtend();
+        //setClimberExtend();
         
-        
+        SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
+
         switch (mClimberWantedState) {
             case INITIATE:
 
@@ -424,7 +444,7 @@ public class ClimberSubsystem extends Subsystem {
     public void setClimberExtend() {
         double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(left, ControlType.kDutyCycle);
+        mClimber.setReference(-left, ControlType.kDutyCycle);
     }
 
     public void setClimberDrive() {
@@ -436,12 +456,12 @@ public class ClimberSubsystem extends Subsystem {
     public void setClimberRetract() {
         double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(-left, ControlType.kDutyCycle);
+        mClimber.setReference(left, ControlType.kDutyCycle);
     }
 
     public void setClimberInitiate() {
         double left = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
-        mClimber.setReference(left, ControlType.kDutyCycle);
+        mClimber.setReference(-left, ControlType.kDutyCycle);
     }
 
     public boolean getClimberLimitSwitchBottom() {

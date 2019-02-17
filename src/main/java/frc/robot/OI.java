@@ -133,6 +133,12 @@ public class OI implements Runnable {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
 			}
 		}
+		
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
+			if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
+			}
+		}
 
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RESET)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.RESET);
