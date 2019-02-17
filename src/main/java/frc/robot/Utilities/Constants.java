@@ -21,6 +21,8 @@ public class Constants {
 	public static final double kTriggerDeadband = 0.05; //fake
 	public static final int DRIVER_SCORE = 6; //Right bumper
 	public static final int DRIVER_INTAKE = 9; //Left stick click
+	public static final int CLIMB_RESET = 3;	//X
+	public static final int CLIMB_HOLD = 2;		//B
  
 
 	//Operator controller buttons
@@ -80,6 +82,9 @@ public class Constants {
 
 	public static final int kClimberLimitSwitchBottom = 0;
 	public static final int kClimberLimitSwitchTop = 1;
+
+	public static final double kClimbDrivebasePercent = 0.25;
+	public static final double kClimbRetractTinyWheelsPercent = 0.40;
 
 	public static final double kClimberPositionkP = 1;
 	public static final double kClimberPositionkI = 0;

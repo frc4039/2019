@@ -74,6 +74,7 @@ public class ClimberSubsystem extends Subsystem {
         HOLD,    //default
         RETRACT,
         DRIVE,
+        RESET,
         INITIATE
     }
 
@@ -82,6 +83,7 @@ public class ClimberSubsystem extends Subsystem {
         HOLDING, // gripper fully closed
         RETRACTING, // gripper fully seperated
         DRIVING,
+        RESETING,
         INITIATING
     }
 
@@ -189,6 +191,9 @@ public class ClimberSubsystem extends Subsystem {
                 case INITIATING:
                     newState = handleInitiating(timeInState);
                     break;
+                case RESETING:
+                    newState = handleReseting(timeInState);
+                    break;
                 default:
                     System.out.println("Unexpected climber system state: " + mClimberSystemState);
                     newState = mClimberSystemState;
@@ -226,12 +231,27 @@ public class ClimberSubsystem extends Subsystem {
         }
 
         switch (mClimberWantedState) {
-        case HOLD:
-            return ClimberSystemState.HOLDING;
-        case EXTEND:
-            return ClimberSystemState.EXTENDING;
-        default:
-            return ClimberSystemState.INITIATING;
+            case INITIATE:
+
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
+
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
         }
     }
 
@@ -244,21 +264,27 @@ public class ClimberSubsystem extends Subsystem {
         }
 
         switch (mClimberWantedState) {
-        case EXTEND:
+            case INITIATE:
 
-            return ClimberSystemState.EXTENDING;
-        case HOLD:
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
 
-            return ClimberSystemState.HOLDING;
-        case RETRACT:
-
-            return ClimberSystemState.RETRACTING;
-        case DRIVE:
-            
-            return ClimberSystemState.DRIVING;
-        default:
-
-            return ClimberSystemState.HOLDING;
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
         }
     }
 
@@ -266,23 +292,30 @@ public class ClimberSubsystem extends Subsystem {
         //mHomeSuccess = false;
         //mHomeSuccess = false;
         mClimber.setReference(0, ControlType.kDutyCycle);
+        mClimberDriveMotor.set(ControlMode.PercentOutput, 0);
            
         switch (mClimberWantedState) {
-        case HOLD:
-            
-            return ClimberSystemState.HOLDING;
-        case INITIATE:
+            case INITIATE:
 
-            return ClimberSystemState.INITIATING;
-        case EXTEND:
-            
-            return ClimberSystemState.EXTENDING;
-        case RETRACT:
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
 
-            return ClimberSystemState.RETRACTING;
-        default:            
-
-            return ClimberSystemState.HOLDING;
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
         }
     }
 
@@ -290,24 +323,70 @@ public class ClimberSubsystem extends Subsystem {
         //mLeftClimberMotor.set(Constants.kClimberHomePosition);
         //if (getClimberLimitSwitchTop() == false) {
             setClimberRetract();
-            setClimberDrive();
+            //setClimberDrive();
+            
+            mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
         //} else if (getClimberLimitSwitchTop() == true){
         //    setClimberWantedState(ClimberWantedState.HOLD);
         //}
 
         switch (mClimberWantedState) {
-        case RETRACT:
+            case INITIATE:
 
-            return ClimberSystemState.RETRACTING;
-        case HOLD:
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
 
-            return ClimberSystemState.HOLDING;
-        case EXTEND: 
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
+        }
+    }
+    
+    private ClimberSystemState handleReseting(double timeInState) {
+        //mLeftClimberMotor.set(Constants.kClimberHomePosition);
+        //if (getClimberLimitSwitchTop() == false) {
+        setClimberRetract();
+        setClimberDrive();
             
-            return ClimberSystemState.EXTENDING;
-        default:
+        //} else if (getClimberLimitSwitchTop() == true){
+        //    setClimberWantedState(ClimberWantedState.HOLD);
+        //}
 
-            return ClimberSystemState.RETRACTING;
+        switch (mClimberWantedState) {
+            case INITIATE:
+
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
+
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
         }
     }
 
@@ -318,12 +397,27 @@ public class ClimberSubsystem extends Subsystem {
         
         
         switch (mClimberWantedState) {
-        case HOLD:
-            return ClimberSystemState.HOLDING;
-        case RETRACT:
-            return ClimberSystemState.RETRACTING;
-        default:
-            return ClimberSystemState.DRIVING;
+            case INITIATE:
+
+                return ClimberSystemState.INITIATING;
+            case EXTEND:
+    
+                return ClimberSystemState.EXTENDING;
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            case RETRACT:
+    
+                return ClimberSystemState.RETRACTING;
+            case DRIVE:
+                
+                return ClimberSystemState.DRIVING;
+            case RESET:
+
+                return ClimberSystemState.RESETING;
+            default:
+    
+                return ClimberSystemState.HOLDING;
         }
     }
 
@@ -405,6 +499,10 @@ public class ClimberSubsystem extends Subsystem {
                 return "RETRACTING";
             case DRIVING:
                 return "DRIVING";
+            case INITIATING:
+                return "INITIATING";
+            case RESETING:
+                return "RESETING";
             default: 
                 return "UNKNOWN";
         }

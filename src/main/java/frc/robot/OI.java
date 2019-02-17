@@ -116,26 +116,28 @@ public class OI implements Runnable {
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
 
-		if (driveJoystickThrottle.getRisingEdgeButton(Constants.VISION_ASSIST)) {
-			System.out.println("led on");
-		} 
-		if (driveJoystickThrottle.getFallingEdgeButton(Constants.VISION_ASSIST)) {
-			System.out.println("led off");
-		}
-
 		if (driveJoystickThrottle.getRawButton(Constants.VISION_ASSIST)){
 			table.getEntry("ledMode").setNumber(3); //Turns LED's on
 			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
 			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x));
+		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
+			driveBaseSubsystem.setDriveClimb();
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
 			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
 			driveBaseSubsystem.setDriveOpenLoop(new DriveMotorValues(y, x));
 		}
+
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
 			}
+		}
+
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RESET)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.RESET);
+		} else if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_HOLD)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.HOLD);
 		}
 
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_INTAKE)) {

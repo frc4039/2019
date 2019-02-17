@@ -18,7 +18,10 @@ import frc.robot.Utilities.SimPID;
 
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBaseSubsystem implements CustomSubsystem {
 	private static DriveBaseSubsystem instance = null;
@@ -297,6 +300,13 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
+	}
+
+	public synchronized void setDriveClimb() {
+		setControlMode(DriveControlState.OPEN_LOOP);
+
+		mLeftMaster.set(ControlMode.PercentOutput, Constants.kClimbDrivebasePercent);
+		mRightMaster.set(ControlMode.PercentOutput, Constants.kClimbDrivebasePercent);
 	}
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
