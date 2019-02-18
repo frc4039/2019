@@ -100,11 +100,11 @@ public class Constants {
 	public static final double kClimberAllowedError = 0;
 	public static final int kClimberSlotID = 0;
 
-	public static final double kClimberUp = -230;
-	public static final double kClimberDown = -695;
-	public static final double kStartingPosition = -0.024;
-	public static final double kFirstLimitSwitch = -228.1;
-	public static final double kSecondLimitSwitch = -695;
+	public static final double kClimberUp = 230;
+	public static final double kClimberDown = 695;
+	public static final double kStartingPosition = 0.024;
+	public static final double kFirstLimitSwitch = 228.1;
+	public static final double kSecondLimitSwitch = 695;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
