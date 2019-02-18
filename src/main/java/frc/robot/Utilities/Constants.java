@@ -35,6 +35,7 @@ public class Constants {
 	public static final int CARGO_WINDUP = 7;	//Select (left tiny button)
 	public static final int CARGO_SHOOTER = 8;  	//Start (right tiny button)
 	public static final int CLIMBER_INITIATE = 4; //Y
+	public static final int RESET_ENCODER = 9;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -86,6 +87,9 @@ public class Constants {
 	public static final double kClimbDrivebasePercent = 0.25;
 	public static final double kClimbRetractTinyWheelsPercent = 0.40;
 
+
+
+/*
 	public static final double kClimberPositionkP = 0;
 	public static final double kClimberPositionkI = 0;
 	public static final double kClimberPositionkD = 0;
@@ -99,12 +103,20 @@ public class Constants {
 	public static final double kClimberMaxAccel = 5700;
 	public static final double kClimberAllowedError = 0;
 	public static final int kClimberSlotID = 0;
-
+*/
 	public static final double kClimberUp = 0;
-	public static final double kClimberDown = 475;
-	public static final double kStartingPosition = 0.024;
-	public static final double kFirstLimitSwitch = 228.1;
-	public static final double kSecondLimitSwitch = 695;
+	public static final double kClimberDown = 465; // 475
+	//public static final double kStartingPosition = 0.024;
+	public static final double kFirstLimitSwitch = 235; // 228.1
+	public static final double kClimberAlmostFirstLimitSwitch = 200;
+	public static final double kClimberAlmostDown = 450;
+
+	public static final double kClimberInitiateFast = 1.0;
+	public static final double kClimberInitiateSlow = 0.5;
+	public static final double kClimberLiftFast = 1.0;
+	public static final double kClimberLiftSlow = 0.5;
+	public static final double kClimberRetractSpeed = -1.0;
+	public static final double kClimberHoldPositionSpeed = 0.01;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -110,7 +110,7 @@ public class ClimberSubsystem extends Subsystem {
         mClimber = mLeftClimberMotor.getPIDController();
         mClimberEncoder = mLeftClimberMotor.getEncoder();
         //mLeftClimberMotor.
-
+/*
         mClimber.setP(Constants.kClimberPositionkP);
         mClimber.setI(Constants.kClimberPositionkI);
         mClimber.setD(Constants.kClimberPositionkD);
@@ -122,7 +122,7 @@ public class ClimberSubsystem extends Subsystem {
         mClimber.setSmartMotionMinOutputVelocity(Constants.kClimberMinVel, Constants.kClimberSlotID);
         mClimber.setSmartMotionMaxAccel(Constants.kClimberMaxAccel, Constants.kClimberSlotID);
         mClimber.setSmartMotionAllowedClosedLoopError(Constants.kClimberAllowedError, Constants.kClimberSlotID);
-
+*/
         //setBrakeMode(true);
         //mHomeSuccess = false;
 		boolean setSucceeded;
@@ -231,9 +231,12 @@ public class ClimberSubsystem extends Subsystem {
 
     private ClimberSystemState handleInitiating(double timeInState) {
 
-        if (getClimberLimitSwitchTop() == true) {
-            setClimberInitiate();
+        if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostFirstLimitSwitch) {
+            mClimber.setReference(Constants.kClimberInitiateFast, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberLimitSwitchTop) {
+            mClimber.setReference(Constants.kClimberInitiateSlow, ControlType.kDutyCycle);
         } else if (getClimberLimitSwitchTop() == false) {
+            mClimber.setReference(0, ControlType.kDutyCycle);
             mClimberEncoder.setPosition(0);
             setClimberWantedState(ClimberWantedState.HOLD);
         }
@@ -268,9 +271,12 @@ public class ClimberSubsystem extends Subsystem {
 
     private ClimberSystemState handleExtending(double timeInState) {
 
-        if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true) {
-            setClimberExtend();
+        if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostDown) {
+            mClimber.setReference(Constants.kClimberLiftFast, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() == Constants.kClimberDown) {
+            mClimber.setReference(Constants.kClimberLiftSlow, ControlType.kDutyCycle);
         } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == false){
+            mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
             setClimberWantedState(ClimberWantedState.DRIVE);
         }
 
@@ -348,11 +354,10 @@ public class ClimberSubsystem extends Subsystem {
             mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
 
             
-            if (mClimberEncoder.getPosition() < Constants.kClimberUp - 10){
-                mClimber.setReference(0,ControlType.kDutyCycle);
-            //else if (mClimberEncoder.getPosition() > Constants.kClimberUp && )
-            } else {
-                mClimber.setReference(Constants.kClimberUp, ControlType.kSmartMotion);
+            if (mClimberEncoder.getPosition() > Constants.kClimberUp + 10){
+                mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
+            } else if (mClimberEncoder.getPosition() <= Constants.kClimberUp + 10) {
+                mClimber.setReference(0, ControlType.kSmartMotion);
             }    
             
         //} else if (getClimberLimitSwitchTop() == true){
@@ -387,8 +392,7 @@ public class ClimberSubsystem extends Subsystem {
     private ClimberSystemState handleReseting(double timeInState) {
         //mLeftClimberMotor.set(Constants.kClimberHomePosition);
         //if (getClimberLimitSwitchTop() == false) {
-        setClimberRetract();
-        setClimberDrive();
+        setClimberExtend();
 
         SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
         SmartDashboard.putNumber("Neo speed: ", mClimberEncoder.getVelocity());
@@ -456,26 +460,24 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     public void setClimberExtend() {
-        double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
+        double left = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(-left, ControlType.kDutyCycle);
+        double right = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
+
+        mClimber.setReference(right - left, ControlType.kDutyCycle);
     }
 
     public void setClimberDrive() {
-        double right = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
+        double right = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimberDriveMotor.set(ControlMode.PercentOutput, right);
-    }
+        mClimberDriveMotor.set(ControlMode.PercentOutput, -right);
 
-    public void setClimberRetract() {
-        double left = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
-
-        mClimber.setReference(left, ControlType.kDutyCycle);
+        SmartDashboard.putNumber("Wheels: ", right);
     }
 
     public void setClimberInitiate() {
-        double left = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
-        mClimber.setReference(-left, ControlType.kDutyCycle);
+        double left = QuickMaths.normalizeJoystickWithDeadband(operatorJoystick.getRawAxis(Constants.LEFT_TRIGGER), Constants.kTriggerDeadband);
+        mClimber.setReference(left, ControlType.kDutyCycle);
     }
 
     public boolean getClimberLimitSwitchBottom() {
@@ -508,18 +510,8 @@ public class ClimberSubsystem extends Subsystem {
 		}
     }
     
-	public void subsystemHome(double timeInState) {        
-        /*mLeftClimberMotor.set(Constants.kClimberHomePosition);
-        mRightClimberMotor.follow(mLeftClimberMotor);
-
-        if (mLeftClimberMotor.getSelectedSensorVelocity() == 0 && mRightClimberMotor.getSelectedSensorVelocity() == 0) {
-            zeroSensors();
-            mLeftClimberMotor.set(ControlMode.PercentOutput, 0);
-            mRightClimberMotor.follow(mLeftClimberMotor);
-            mHomeSuccess = true;
-        } else {
-            mHomeSuccess = false;
-        }*/
+	public void subsystemHome() {        
+        mClimberEncoder.setPosition(0);
 	}
 
     public String getClimberSystemState() {

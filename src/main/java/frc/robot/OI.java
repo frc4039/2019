@@ -99,16 +99,20 @@ public class OI implements Runnable {
 		//Climber control
 		if (operatorJoystick.getRisingEdgeButton(Constants.CLIMBER_INITIATE)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.INITIATE);
-			System.out.println("Initiate");
+
 		}
 
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_EXTEND)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.EXTEND);
-			System.out.println("Extend");
+
 		}
 
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_RETRACT)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
+		}
+
+		if (operatorJoystick.getRisingEdgeButton(Constants.RESET_ENCODER)) {
+			climberSubsystem.subsystemHome();
 		}
 
 		///////////////////////////////
@@ -132,9 +136,6 @@ public class OI implements Runnable {
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
 			}
-		}
-		
-		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
 			if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
 			}
