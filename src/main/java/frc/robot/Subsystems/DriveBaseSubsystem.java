@@ -129,7 +129,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	@Override
 	public void init() {
 		mLeftMaster.setSensorPhase(true);
-		mRightMaster.setSensorPhase(false);
+		mRightMaster.setSensorPhase(true);
 
 		mLeftMaster.setInverted(false);
 		leftDriveSlave1.setInverted(false);
