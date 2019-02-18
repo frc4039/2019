@@ -35,7 +35,8 @@ public class Constants {
 	public static final int CARGO_WINDUP = 7;	//Select (left tiny button)
 	public static final int CARGO_SHOOTER = 8;  	//Start (right tiny button)
 	public static final int CLIMBER_INITIATE = 4; //Y
-	public static final int RESET_ENCODER = 9;
+	public static final int RESET_ENCODER = 9; //l
+	//public static final int CARGO_PUSH = 10; //fake button?
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants

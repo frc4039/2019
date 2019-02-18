@@ -72,6 +72,8 @@ public class OI implements Runnable {
 
 		///////////////////////////////
 		//Cargo Control
+
+		// Intake
 		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_INTAKE)) {
 			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
@@ -80,6 +82,7 @@ public class OI implements Runnable {
 			}
 		}
 
+		// Shoot
 		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_WINDUP)) {
 			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
@@ -90,6 +93,12 @@ public class OI implements Runnable {
 			}
 		}
 
+		//Push
+		/*if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_PUSH)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.PUSH);
+		}*/
+
+		// Hold
 		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_HOLD)) {
 			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 		}

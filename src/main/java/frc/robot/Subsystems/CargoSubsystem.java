@@ -55,14 +55,19 @@ public class CargoSubsystem extends Subsystem {
     }
 
     public enum CargoWantedState {
-        INTAKE, HOLD, WINDUP, SHOOT
+        INTAKE,
+        HOLD,
+        WINDUP,
+        SHOOT,
+        //PUSH
     }
 
     private enum CargoSystemState {
         INTAKING, // intake out, rollers spinning
-        HOLDING, // intake in, rollers not spinning
+        HOLDING, // intake in, rollers spinning at a low % or not at all
         WINDINGUP, // intake in, shooter rollers spining
-        SHOOTING // runs upper and lower rollers
+        SHOOTING, // runs upper and lower rollers
+        //PUSHING
     }
 
     private CargoSubsystem() {
@@ -165,6 +170,9 @@ public class CargoSubsystem extends Subsystem {
                 case WINDINGUP:
                     newState = handleWindingUp(timeInState);
                     break;
+                /*case PUSHING:
+                    newState = handlePushing(timeInState);
+                    break;*/
                 default:
                     System.out.println("Unexpected cargo system state: " + mCargoSystemState);
                     newState = mCargoSystemState;
@@ -205,10 +213,30 @@ public class CargoSubsystem extends Subsystem {
                 setIntakeUp();
                 mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.HOLDING;
+            /*case PUSH:
+                mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
+                return CargoSystemState.PUSHING;*/
             default:
                 return CargoSystemState.INTAKING;
         }
   }
+/*
+    private CargoSystemState handlePushing(double timeInState) {
+        setIntakeOut();
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
+
+        switch (mCargoWantedState) {
+        case HOLD:
+            mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
+            return CargoSystemState.HOLDING;
+        case INTAKE:
+            mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoIntakingSpeed);
+            return CargoSystemState.INTAKING;
+        default:
+            return CargoSystemState.PUSHING;
+        }
+    }
+*/
     private CargoSystemState handleHolding(double timeInState) {
 
         setCargoPositionOpenLoop();
@@ -222,6 +250,8 @@ public class CargoSubsystem extends Subsystem {
             return CargoSystemState.INTAKING;
         case WINDUP:
             return CargoSystemState.WINDINGUP;
+        /*case PUSH:
+            return CargoSystemState.PUSHING;*/
         default:
             return CargoSystemState.HOLDING;
         }
@@ -335,6 +365,8 @@ public class CargoSubsystem extends Subsystem {
                 return "WINDINGUP";
             case SHOOTING: 
                 return "SHOOTING";
+            /*case PUSHING:  
+                return "PUSHING";*/
             default: 
                 return "UNKNOWN";
         }
