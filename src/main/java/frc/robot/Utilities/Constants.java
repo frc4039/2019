@@ -32,8 +32,7 @@ public class Constants {
 	public static final int HATCH_ZERO = 3; //X
 	public static final int CARGO_INTAKE = 5; //Left bumper
 	public static final int CARGO_HOLD = 6; //Right bumper
-	public static final int CARGO_WINDUP = 7; //Left tiny button
-	public static final int CARGO_SHOOTER = 8; //Right tiny button
+	public static final int CARGO_SHOOTER = 7; //Left tiny button
 	public static final int CLIMBER_INITIATE = 4; //Y
 	public static final int RESET_ENCODER = 9; //Left stick click
 	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
