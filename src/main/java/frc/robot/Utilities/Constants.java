@@ -10,33 +10,33 @@ public class Constants {
 
 
 	//Driver control buttons
-	public static final int DRIVE_X_AXIS = 4;  		//right stick X-axis
-	public static final int DRIVE_Y_AXIS = 1;		//left stick Y-axis
-	public static final double kJoystickDeadband = 0.08;
-	public static final int VISION_ASSIST = 5;
+	public static final int DRIVE_X_AXIS = 4;  		//Right stick X-axis
+	public static final int DRIVE_Y_AXIS = 1;		//Left stick Y-axis
+	public static final double kJoystickDeadband = 0.08; //Not a button
+	public static final int VISION_ASSIST = 5; //Left bumper
 	public static final int CLIMBER_EXTEND = 4; //Y
 	public static final int CLIMBER_RETRACT = 1; //A
-	public static final int LEFT_TRIGGER = 2;
-	public static final int RIGHT_TRIGGER = 3;
-	public static final double kTriggerDeadband = 0.05; //fake
+	public static final int LEFT_TRIGGER = 2; //Left trigger
+	public static final int RIGHT_TRIGGER = 3; //Right trigger
+	public static final double kTriggerDeadband = 0.05; //Fake value, also not a button
 	public static final int DRIVER_SCORE = 6; //Right bumper
 	public static final int DRIVER_INTAKE = 9; //Left stick click
-	public static final int CLIMB_RESET = 3;	//X
-	public static final int CLIMB_HOLD = 2;		//B
+	public static final int CLIMB_RESET = 3; //X
+	public static final int CLIMB_HOLD = 2;	 //B
  
 
 	//Operator controller buttons
-	public static final int OPERATOR_X_AXIS = 1; 	//left stick Y-axis
-	public static final int HATCH_SCORE = 1; 	//A
-	public static final int HATCH_PICKUP = 2;	//B
-	public static final int HATCH_ZERO = 3; 	//X
-	public static final int CARGO_INTAKE = 5;   	//Left bumper
-	public static final int CARGO_HOLD = 6;   	//Right bumper
-	public static final int CARGO_WINDUP = 7;	//Select (left tiny button)
-	public static final int CARGO_SHOOTER = 8;  	//Start (right tiny button)
+	public static final int OPERATOR_X_AXIS = 1; //Left stick Y-axis
+	public static final int HATCH_SCORE = 1; //A
+	public static final int HATCH_PICKUP = 2; //B
+	public static final int HATCH_ZERO = 3; //X
+	public static final int CARGO_INTAKE = 5; //Left bumper
+	public static final int CARGO_HOLD = 6; //Right bumper
+	public static final int CARGO_WINDUP = 7; //Left tiny button
+	public static final int CARGO_SHOOTER = 8; //Right tiny button
 	public static final int CLIMBER_INITIATE = 4; //Y
-	public static final int RESET_ENCODER = 9; //l
-	//public static final int CARGO_PUSH = 10; //fake button?
+	public static final int RESET_ENCODER = 9; //Left stick click
+	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -87,8 +87,6 @@ public class Constants {
 
 	public static final double kClimbDrivebasePercent = 0.25;
 	public static final double kClimbRetractTinyWheelsPercent = 0.40;
-
-
 
 /*
 	public static final double kClimberPositionkP = 0;
