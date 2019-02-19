@@ -98,7 +98,7 @@ public class OI implements Runnable {
 			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.PUSH);
 			} else if (cargoSubsystem.getCargoSystemState() == "PUSHING") {
-				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+				cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
 			}
 		}*/
 
