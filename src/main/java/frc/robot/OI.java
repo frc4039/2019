@@ -95,7 +95,11 @@ public class OI implements Runnable {
 
 		//Push
 		/*if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_PUSH)) {
-			cargoSubsystem.setCargoWantedState(CargoWantedState.PUSH);
+			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.PUSH);
+			} else if (cargoSubsystem.getCargoSystemState() == "PUSHING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+			}
 		}*/
 
 		// Hold

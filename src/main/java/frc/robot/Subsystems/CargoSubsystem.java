@@ -238,7 +238,6 @@ public class CargoSubsystem extends Subsystem {
     }
 */
     private CargoSystemState handleHolding(double timeInState) {
-
         setCargoPositionOpenLoop();
 
         switch (mCargoWantedState) {
