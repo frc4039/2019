@@ -26,6 +26,7 @@ public class OI implements Runnable {
 	// private DriverStation ds;
 	private CustomJoystick driveJoystickThrottle;
 	private CustomJoystick operatorJoystick;
+	private CustomJoystick testJoystick;
 	// private DriverHelper driveHelper;
 
 	private NetworkTable table;
@@ -57,10 +58,10 @@ public class OI implements Runnable {
 
 	@Override
 	public void run() {
-		///////////////////////////////
+		//////////////////////////////////////////////////////////////
 		//Hatch Control
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
-			hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
+			hatchSubsystem.setHatchWantedState(HatchWantedState.SUPERHOLD);
 		}
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_SCORE)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
@@ -68,9 +69,10 @@ public class OI implements Runnable {
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
-		///////////////////////////////
+		//////////////////////////////////////////////////////////////
 
-		///////////////////////////////
+
+		//////////////////////////////////////////////////////////////
 		//Cargo Control
 
 		// Intake
@@ -106,9 +108,10 @@ public class OI implements Runnable {
 		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_HOLD)) {
 			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 		}
-		///////////////////////////////	
+		//////////////////////////////////////////////////////////////
 
-		///////////////////////////////
+
+		//////////////////////////////////////////////////////////////
 		//Climber control
 
 		//operator
@@ -132,8 +135,10 @@ public class OI implements Runnable {
 		} else if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_HOLD)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.HOLD);
 		}
+		//////////////////////////////////////////////////////////////
 
-		///////////////////////////////
+
+		//////////////////////////////////////////////////////////////
 		//Drivebase control
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X_AXIS), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kJoystickDeadband);
@@ -169,12 +174,88 @@ public class OI implements Runnable {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 			}
 		}
-		///////////////////////////////
+		//////////////////////////////////////////////////////////////
 
 		//TODO: Enable for new drivers maybe
 		//CheesyDrive for new drivers
 		//driveBaseSubsystem.setDriveOpenLoop(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear()));
 		//driveBaseSubsystem.setDriveVelocity(driveHelper.calculateOutput(y, x, driveJoystickThrottle.getRawButton(Constants.DRIVE_IMM_TURN), driveBaseSubsystem.isHighGear(), 10000));
 		//driveBaseSubsystem.setDriveVelocity(new DriveMotorValues((y + x) * 650, (y - x) * 650));
+	}
+
+	public void test() {
+		//////////////////////////////////////////////////////////////
+		//Hatch Control
+		if (testJoystick.getRisingEdgeButton(Constants.HATCH_OPEN)) {
+			hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
+		}
+		if (testJoystick.getRisingEdgeButton(Constants.HATCH_CLOSE)) {
+			hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
+		}
+		//////////////////////////////////////////////////////////////
+
+
+		//////////////////////////////////////////////////////////////
+		//Cargo Control
+		// Intake
+		if (testJoystick.getRisingEdgeButton(Constants.INTAKE_OUT)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
+		}
+		if (testJoystick.getRisingEdgeButton(Constants.INTAKE_IN)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+		}
+
+		// Shoot
+		if (testJoystick.getRisingEdgeButton(Constants.WINDUP)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
+		}
+		if (testJoystick.getRisingEdgeButton(Constants.SHOOTING)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
+		}
+
+		//Push
+		/*if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_PUSH)) {
+			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.PUSH);
+			} else if (cargoSubsystem.getCargoSystemState() == "PUSHING") {
+				cargoSubsystem.setCargoWantedState(CargoWantedState.INTAKE);
+			}
+		}*/
+
+		// Hold
+		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_HOLD)) {
+			cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
+		}
+		//////////////////////////////////////////////////////////////
+
+
+		//////////////////////////////////////////////////////////////
+		//Climber control
+		//operator
+		if (testJoystick.getRisingEdgeButton(Constants.CLIMB_INITIATE)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.INITIATE);
+		}
+		if (testJoystick.getRisingEdgeButton(Constants.RESET_ENCODERS)) {
+			climberSubsystem.subsystemHome();
+		}
+
+		//driver
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_EXTEND)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.EXTEND);
+		}
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RETRACT)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
+		}
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RESET)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.RESET);
+		}
+		//////////////////////////////////////////////////////////////
+
+
+		//////////////////////////////////////////////////////////////
+		//Drivebase control
+		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X), Constants.kJoystickDeadband);
+		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y), Constants.kJoystickDeadband);
+		//////////////////////////////////////////////////////////////
 	}
 }

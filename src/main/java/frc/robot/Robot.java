@@ -124,5 +124,9 @@ public class Robot extends CustomRobot {
 
 	@Override
 	public void test() {
+
+		while (isTest() &&  isEnabled()) {
+			oI.test();
+		}
 	}
 }

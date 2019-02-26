@@ -36,6 +36,21 @@ public class Constants {
 	public static final int CLIMBER_INITIATE = 4; //Y
 	public static final int RESET_ENCODER = 9; //Left stick click
 	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
+
+	//System check
+	public static final int DRIVE_Y = 0; //check 
+	public static final int DRIVE_X = 1; //check
+	public static final int HATCH_CLOSE = 2; //B
+	public static final int HATCH_OPEN = 1; //A
+	public static final int INTAKE_IN = 5; //Left bumper
+	public static final int INTAKE_OUT = 6; //Right bumper
+	public static final int WINDUP = 7; //Left little button
+	public static final int SHOOTING = 8; //Right little button
+	public static final int HOLD = 9; //Left stick click
+	public static final int CLIMB_INITIATE = 4; //Y
+	public static final int CLIMB_EXTEND = 2; //Left trigger
+	public static final int CLIMB_RETRACT = 3; //Right trigger
+	public static final int RESET_ENCODERS = 3; //X
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -44,9 +59,15 @@ public class Constants {
 	public static final double kHatchAcquiringPosition = 510;
 	public static final double kHatchHoldingPosition = 0; 
 	public static final double kHatchEjectPosition = 0; 
+	public static final double kHatchAcquiringPercentage = 0.05;
+	public static final double kHatchHomingPercentage = -0.30;
+	public static final double kHatchSuperHold = -0.5; //TODO: make -1 eventually
+	public static final double kHatchVoltageLimit = 0.4;
+	public static final double kHatchVoltageUnlimited = 1.0;
 
 	public static final double kHatchEjectTime = 0.25;
 	public static final double kHatchHomeTime = 2.5;
+	public static final double kHatchHoldTime = 2.0;
 
 	public static final double kHatchAutomaticHold = 500;
 	public static final double kHatchPositionKp = 7.0;

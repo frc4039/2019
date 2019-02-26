@@ -45,6 +45,7 @@ public class HatchSubsystem extends Subsystem {
     public static boolean kHatchRetract = !kHatchEject;
 
     private boolean kHatchAcquired = false;
+    private boolean kHatchVoltageLimit = false;
 
     private boolean mPrevBrakeModeVal;
     private boolean mHomeSuccess;
@@ -59,13 +60,15 @@ public class HatchSubsystem extends Subsystem {
     public enum HatchWantedState {
         HOME,
         ACQUIRE,    //default
-        HOLD
+        HOLD,
+        SUPERHOLD
     }
 
     private enum HatchSystemState {
         HOMING,
         ACQUIRING,// gripper fully closed
-        HOLDING // gripper fully seperated
+        HOLDING, // gripper fully seperated
+        SUPERHOLDING
     }
 
     private HatchSubsystem() {
@@ -151,6 +154,8 @@ public class HatchSubsystem extends Subsystem {
                 HatchSystemState newState = mHatchSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
+                SmartDashboard.putString("System State: ", getHatchSystemState());
+
                 switch (mHatchSystemState) {
                 case ACQUIRING:
                     newState = handleAcquiring(timeInState);
@@ -160,6 +165,9 @@ public class HatchSubsystem extends Subsystem {
                     break;
                 case HOMING:
                     newState = handleHoming(timeInState);
+                    break;
+                case SUPERHOLDING:
+                    newState = handleSuperHolding(timeInState);
                     break;
                 default:
                     System.out.println("Unexpected hatch system state: " + mHatchSystemState);
@@ -190,7 +198,11 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSystemState handleAcquiring(double timeInState) {
-        mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+        if (mHatchMotor.getSelectedSensorPosition() <= Constants.kHatchAcquiringPosition) {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
+        } else {
+            mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchAcquiringPercentage);
+        }
 
         if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
             setRetract();
@@ -207,13 +219,13 @@ public class HatchSubsystem extends Subsystem {
         
         switch (mHatchWantedState) {
         case ACQUIRE:
-            outputToSmartDashboard();
             return HatchSystemState.ACQUIRING;
         case HOLD:
-
             return HatchSystemState.HOLDING;
+        case SUPERHOLD:
+            mHatchMotor.configClosedLoopPeakOutput(0, Constants.kHatchVoltageUnlimited);
+            return HatchSystemState.SUPERHOLDING;
         default:
-
             return HatchSystemState.HOMING;
         }
     }
@@ -230,13 +242,10 @@ public class HatchSubsystem extends Subsystem {
         
         switch (mHatchWantedState) {
         case HOME:
-            outputToSmartDashboard();
             return HatchSystemState.HOMING;
         case ACQUIRE:
-
             return HatchSystemState.ACQUIRING;
         default:
-
             return HatchSystemState.HOLDING;
         }
     }
@@ -244,6 +253,7 @@ public class HatchSubsystem extends Subsystem {
     private HatchSystemState handleHolding(double timeInState) {        
         //mHomeSuccess = false;
         mHomeSuccess = false;
+
         mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
 
         if (kHatchAcquired == true) {
@@ -252,16 +262,37 @@ public class HatchSubsystem extends Subsystem {
            
         switch (mHatchWantedState) {
         case HOLD:
-            outputToSmartDashboard();
             return HatchSystemState.HOLDING;
         case ACQUIRE:
-            
             setEject();
             return HatchSystemState.ACQUIRING;
         default:            
 
             return HatchSystemState.HOMING;
         }
+    }
+
+    private HatchSystemState handleSuperHolding(double timeInState) {
+        if (mHatchMotor.getSelectedSensorPosition() <= Constants.kHatchHoldingPosition) {
+            mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchSuperHold);
+        } else {
+            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+        }
+
+        if (timeInState > Constants.kHatchHoldTime) {
+            setHatchWantedState(HatchWantedState.HOLD);
+        }
+
+        switch (mHatchWantedState) {
+            case HOLD:
+                mHatchMotor.configClosedLoopPeakOutput(0, Constants.kHatchVoltageLimit);
+                return HatchSystemState.HOLDING;
+            case ACQUIRE:
+                mHatchMotor.configClosedLoopPeakOutput(0, Constants.kHatchVoltageLimit);
+                return HatchSystemState.ACQUIRING;
+            default:            
+                return HatchSystemState.SUPERHOLDING;
+            }
     }
 
     private void setEject() {
@@ -301,7 +332,7 @@ public class HatchSubsystem extends Subsystem {
     }
     
 	public void subsystemHome(double timeInState) {        
-        mHatchMotor.set(ControlMode.PercentOutput, -0.30);
+        mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchHomingPercentage);
 
         if (mHatchMotor.getSelectedSensorVelocity() == 0 && timeInState > 0.2) {
             zeroSensors();
