@@ -137,6 +137,20 @@ public class OI implements Runnable {
 		}
 		//////////////////////////////////////////////////////////////
 
+		
+		//////////////////////////////////////////////////////////////
+		//Camera control
+		if (operatorJoystick.getPOV()==Constants.PIPELINE_0) {
+			table.getEntry("pipeline").setNumber(0);
+		} else if (operatorJoystick.getPOV()==Constants.PIPELINE_1) {
+			table.getEntry("pipeline").setNumber(1);
+		} else if (operatorJoystick.getPOV()==Constants.PIPELINE_2) {
+			table.getEntry("pipeline").setNumber(2);
+		} else if (operatorJoystick.getPOV()==Constants.PIPELINE_3) {
+			table.getEntry("pipeline").setNumber(3);
+		} 
+		///////////////////////////////
+
 
 		//////////////////////////////////////////////////////////////
 		//Drivebase control
@@ -158,11 +172,11 @@ public class OI implements Runnable {
 
 		//Score cargo/hatch
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
-			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
-				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
-			}
 			if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
+			}
+			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
+				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
 			}
 		}
 

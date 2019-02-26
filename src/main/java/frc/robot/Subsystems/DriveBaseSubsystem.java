@@ -18,8 +18,6 @@ import frc.robot.Utilities.SimPID;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -129,7 +127,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	@Override
 	public void init() {
 		mLeftMaster.setSensorPhase(true);
-		mRightMaster.setSensorPhase(true);
+		mRightMaster.setSensorPhase(true); //false on BC19
 
 		mLeftMaster.setInverted(false);
 		leftDriveSlave1.setInverted(false);

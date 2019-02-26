@@ -344,7 +344,7 @@ public class CargoSubsystem extends Subsystem {
 
         double y = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.OPERATOR_X_AXIS), Constants.kJoystickDeadband);
 
-        mCargoIntakeMotor.set(ControlMode.PercentOutput, y);
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y/2); //TODO: might have to be thirded or more
 
     }
 

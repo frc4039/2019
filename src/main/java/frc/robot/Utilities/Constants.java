@@ -14,15 +14,16 @@ public class Constants {
 	public static final int DRIVE_Y_AXIS = 1;		//Left stick Y-axis
 	public static final double kJoystickDeadband = 0.08; //Not a button
 	public static final int VISION_ASSIST = 5; //Left bumper
+	public static final int DRIVER_SCORE = 6; //Right bumper
+	public static final int DRIVER_INTAKE = 9; //Left stick click
+
+	public static final int CLIMB_RESET = 3; //X
+	public static final int CLIMB_HOLD = 2;	 //B
 	public static final int CLIMBER_EXTEND = 4; //Y
 	public static final int CLIMBER_RETRACT = 1; //A
 	public static final int LEFT_TRIGGER = 2; //Left trigger
 	public static final int RIGHT_TRIGGER = 3; //Right trigger
 	public static final double kTriggerDeadband = 0.05; //Fake value, also not a button
-	public static final int DRIVER_SCORE = 6; //Right bumper
-	public static final int DRIVER_INTAKE = 9; //Left stick click
-	public static final int CLIMB_RESET = 3; //X
-	public static final int CLIMB_HOLD = 2;	 //B
  
 
 	//Operator controller buttons
@@ -36,6 +37,10 @@ public class Constants {
 	public static final int CLIMBER_INITIATE = 4; //Y
 	public static final int RESET_ENCODER = 9; //Left stick click
 	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
+	public static final int PIPELINE_0 = 0;   	//D-Pad Up
+	public static final int PIPELINE_1 = 180;   //D-Pad Down
+	public static final int PIPELINE_2 = 270;   //D-Pad Left
+	public static final int PIPELINE_3 = 90;   	//D-Pad Right
 
 	//System check
 	public static final int DRIVE_Y = 0; //check 
@@ -56,9 +61,9 @@ public class Constants {
 	//// Hatch Subsystem Constants
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public static final double kHatchAcquiringPosition = 510;
+	public static final double kHatchAcquiringPosition = 535;
 	public static final double kHatchHoldingPosition = 0; 
-	public static final double kHatchEjectPosition = 0; 
+	public static final double kHatchEjectPosition = 182; 
 	public static final double kHatchAcquiringPercentage = 0.05;
 	public static final double kHatchHomingPercentage = -0.30;
 	public static final double kHatchSuperHold = -0.5; //TODO: make -1 eventually
@@ -69,10 +74,10 @@ public class Constants {
 	public static final double kHatchHomeTime = 2.5;
 	public static final double kHatchHoldTime = 2.0;
 
-	public static final double kHatchAutomaticHold = 500;
-	public static final double kHatchPositionKp = 7.0;
+	public static final double kHatchAutoHoldingPosition = 530;
+	public static final double kHatchPositionKp = 4.0;
 	public static final double kHatchPositionKi = 0.0;
-	public static final double kHatchPositionKd = 70.0;
+	public static final double kHatchPositionKd = 150.0;
 	public static final double kHatchPositionKf = 0.0;
 	public static final double kHatchPositionRampRate = 0.0;
 	public static final int kHatchPositionIZone = 0;

@@ -212,9 +212,8 @@ public class HatchSubsystem extends Subsystem {
             kHatchAcquired = true;
         }
 
-        if (kHatchAcquired == true && mHatchMotor.getSelectedSensorPosition() < Constants.kHatchAutomaticHold) {
+        if (kHatchAcquired == true && mHatchMotor.getSelectedSensorPosition() < Constants.kHatchAutoHoldingPosition) {
             setHatchWantedState(HatchWantedState.HOLD);
-            
         }
         
         switch (mHatchWantedState) {
