@@ -305,9 +305,8 @@ public class ClimberSubsystem extends Subsystem {
         }
     }
 
-    private ClimberSystemState handleHolding(double timeInState) {        
-        //mHomeSuccess = false;
-        //mHomeSuccess = false;
+    private ClimberSystemState handleHolding(double timeInState) {
+
         mClimber.setReference(0, ControlType.kDutyCycle);
         mClimberDriveMotor.set(ControlMode.PercentOutput, 0);
            
@@ -341,7 +340,7 @@ public class ClimberSubsystem extends Subsystem {
         //if (getClimberLimitSwitchTop() == false) {
             //setClimberRetract();
             //setClimberDrive();
-
+            
             mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
 
         
@@ -418,7 +417,6 @@ public class ClimberSubsystem extends Subsystem {
         mClimber.setReference(0, ControlType.kDutyCycle);
         setClimberDrive();
         //setClimberExtend();
-    
         switch (mClimberWantedState) {
             case INITIATE:
 
