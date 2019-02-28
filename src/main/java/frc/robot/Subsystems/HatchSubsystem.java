@@ -198,7 +198,7 @@ public class HatchSubsystem extends Subsystem {
     }
 
     private HatchSystemState handleAcquiring(double timeInState) {
-        if (mHatchMotor.getSelectedSensorPosition() <= Constants.kHatchAcquiringPosition) {
+        if (mHatchMotor.getSelectedSensorPosition() <= Constants.kHatchAcquiringPosition - 10) {
             mHatchMotor.set(ControlMode.Position, Constants.kHatchAcquiringPosition);
         } else {
             mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchAcquiringPercentage);
@@ -244,8 +244,10 @@ public class HatchSubsystem extends Subsystem {
             return HatchSystemState.HOMING;
         case ACQUIRE:
             return HatchSystemState.ACQUIRING;
-        default:
+        case HOLD:
             return HatchSystemState.HOLDING;
+        default:
+            return HatchSystemState.HOMING;
         }
     }
 
@@ -265,18 +267,20 @@ public class HatchSubsystem extends Subsystem {
         case ACQUIRE:
             setEject();
             return HatchSystemState.ACQUIRING;
+        case HOME:
+            return HatchSystemState.HOMING;
         default:            
 
-            return HatchSystemState.HOMING;
+            return HatchSystemState.HOLDING;
         }
     }
 
     private HatchSystemState handleSuperHolding(double timeInState) {
-        if (mHatchMotor.getSelectedSensorPosition() <= Constants.kHatchHoldingPosition) {
+        //if (mHatchMotor.getSelectedSensorPosition() >= Constants.kHatchHoldingPosition) {
             mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchSuperHold);
-        } else {
-            mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-        }
+        //} else {
+        //    mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
+        //}
 
         if (timeInState > Constants.kHatchHoldTime) {
             setHatchWantedState(HatchWantedState.HOLD);
@@ -351,6 +355,8 @@ public class HatchSubsystem extends Subsystem {
                 return "ACQUIRING";
             case HOMING: 
                 return "HOMING";
+            case SUPERHOLDING:
+                return "SUPERHOLDING";
             default: 
                 return "UNKNOWN";
         }
