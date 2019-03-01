@@ -5,27 +5,26 @@ import frc.robot.Utilities.TrajectoryFollowingMotion.PathBuilder.Waypoint;
 
 import java.util.ArrayList;
 
-public class MarkerPath implements PathContainer {
+public class Back90Turn implements PathContainer {
 
 	@Override
 	public Path buildPath() {
 		ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
-		sWaypoints.add(new Waypoint(20,276,0,0));
-		sWaypoints.add(new Waypoint(65,277,15,60));
-		sWaypoints.add(new Waypoint(83,260,15,60,"OurMarker"));
-		sWaypoints.add(new Waypoint(117,260,15,60));
-		sWaypoints.add(new Waypoint(192,261,0,60));
+		sWaypoints.add(new Waypoint(275,197,0,0));
+		sWaypoints.add(new Waypoint(275,217,15,20));
+		sWaypoints.add(new Waypoint(290,232,0,30));
+
 
 		return PathBuilder.buildPathFromWaypoints(sWaypoints);
 	}
 
 	@Override
 	public RigidTransform2d getStartPose() {
-		return new RigidTransform2d(new Translation2d(20, 276), Rotation2d.fromDegrees(0));
+		return new RigidTransform2d(new Translation2d(275, 197), Rotation2d.fromDegrees(-90));
 	}
 
 	@Override
 	public boolean isReversed() {
-		return false;
+		return true;
 	}
 }

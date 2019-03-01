@@ -9,53 +9,63 @@ public class Constants {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	//Driver control buttons
+	//Driver control axis
 	public static final int DRIVE_X_AXIS = 4;  		//Right stick X-axis
 	public static final int DRIVE_Y_AXIS = 1;		//Left stick Y-axis
 	public static final double kJoystickDeadband = 0.08; //Not a button
+
+	public static final int LEFT_TRIGGER = 2; //Left trigger
+	public static final int RIGHT_TRIGGER = 3; //Right trigger
+	public static final double kTriggerDeadband = 0.05; //not a button
+
+
+	//Driver control buttons
+	public static final int CLIMBER_RETRACT = 1; //A
+	public static final int CLIMB_HOLD = 2;	 //B
+	public static final int CLIMB_RESET = 3; //X
+	public static final int CLIMBER_EXTEND = 4; //Y
 	public static final int VISION_ASSIST = 5; //Left bumper
 	public static final int DRIVER_SCORE = 6; //Right bumper
 	public static final int DRIVER_INTAKE = 9; //Left stick click
-
-	public static final int CLIMB_RESET = 3; //X
-	public static final int CLIMB_HOLD = 2;	 //B
-	public static final int CLIMBER_EXTEND = 4; //Y
-	public static final int CLIMBER_RETRACT = 1; //A
-	public static final int LEFT_TRIGGER = 2; //Left trigger
-	public static final int RIGHT_TRIGGER = 3; //Right trigger
-	public static final double kTriggerDeadband = 0.05; //Fake value, also not a button
  
 
-	//Operator controller buttons
+	//Operator controller axis
+
 	public static final int OPERATOR_X_AXIS = 1; //Left stick Y-axis
+
+	//Operator controller buttons
 	public static final int HATCH_SCORE = 1; //A
 	public static final int HATCH_PICKUP = 2; //B
 	public static final int HATCH_ZERO = 3; //X
+	public static final int CLIMBER_INITIATE = 4; //Y
 	public static final int CARGO_INTAKE = 5; //Left bumper
 	public static final int CARGO_HOLD = 6; //Right bumper
 	public static final int CARGO_SHOOTER = 7; //Left tiny button
-	public static final int CLIMBER_INITIATE = 4; //Y
 	public static final int RESET_ENCODER = 9; //Left stick click
 	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
+
 	public static final int PIPELINE_0 = 0;   	//D-Pad Up
 	public static final int PIPELINE_1 = 180;   //D-Pad Down
 	public static final int PIPELINE_2 = 270;   //D-Pad Left
 	public static final int PIPELINE_3 = 90;   	//D-Pad Right
 
 	//System check
+	//Axis
 	public static final int DRIVE_Y = 0; //check 
 	public static final int DRIVE_X = 1; //check
-	public static final int HATCH_CLOSE = 2; //B
+	public static final int CLIMB_EXTEND = 2; //Left trigger
+	public static final int CLIMB_RETRACT = 3; //Right trigger
+
+	//Buttons
 	public static final int HATCH_OPEN = 1; //A
+	public static final int HATCH_CLOSE = 2; //B
+	public static final int RESET_ENCODERS = 3; //X
+	public static final int CLIMB_INITIATE = 4; //Y
 	public static final int INTAKE_IN = 5; //Left bumper
 	public static final int INTAKE_OUT = 6; //Right bumper
 	public static final int WINDUP = 7; //Left little button
 	public static final int SHOOTING = 8; //Right little button
 	public static final int HOLD = 9; //Left stick click
-	public static final int CLIMB_INITIATE = 4; //Y
-	public static final int CLIMB_EXTEND = 2; //Left trigger
-	public static final int CLIMB_RETRACT = 3; //Right trigger
-	public static final int RESET_ENCODERS = 3; //X
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	//// Hatch Subsystem Constants
@@ -155,12 +165,12 @@ public class Constants {
 	public static final double kVisionAssistEpsilon = 0;
 
 	// Wheels
-	public static final double kDriveWheelDiameterInches = 6.125;
+	public static final double kDriveWheelDiameterInches = 6.35;
 	//public static final double kDriveWheelDiameterInches = 4.875;	//Practice bot calibrated 4.875
 	//public static final double kDriveWheelDiameterInches = 5;	//Comp bot measured val
-	public static final double kTrackWidthInches = 23.5;
+	public static final double kTrackWidthInches = 26;
 	//public static final double kTrackWidthInches = 25.5;
-	public static final double kTrackScrubFactor = 1.0; // 0.924 ?
+	public static final double kTrackScrubFactor = 0.3; // 0.924 ?
 
 	// Geometry
 	public static final double kCenterToFrontBumperDistance = 18.75;
@@ -178,7 +188,7 @@ public class Constants {
 
 	public static final double kInertiaSteeringGain = 0.0; // angular velocity command is multiplied by this gain * our speed in inches per sec
 	public static final double kSegmentCompletionTolerance = 1; // inches
-	public static final double kPathFollowingMaxAccel = 100.0; // inches per second^2
+	public static final double kPathFollowingMaxAccel = 140.0; // inches per second^2
 	public static final double kPathFollowingMaxVel = 140.0; // inches per second
 
 	public static final double kPathFollowingProfileKp = 5.0;   //Used to be 5 when tuning our paths
@@ -203,11 +213,11 @@ public class Constants {
 	//TODO: change
 	// PID gains for drive velocity loop (HIGH GEAR)
 	// Units: setpoint, error, and output are in inches per second.
-	public static final double kDriveHighGearVelocityKp = 0.05;
+	public static final double kDriveHighGearVelocityKp = 0.375;
 	public static final double kDriveHighGearVelocityKi = 0.0;
-	public static final double kDriveHighGearVelocityKd = 1.0;
-	public static final double kDriveHighGearVelocityKf = 0.2842;
-	public static final int kDriveHighGearVelocityIZone = 1000;
+	public static final double kDriveHighGearVelocityKd = 15.0;
+	public static final double kDriveHighGearVelocityKf = 0.2803;
+	public static final int kDriveHighGearVelocityIZone = 0;
 	public static final double kDriveHighGearVelocityRampRate = 0.1;
 	public static final double kDriveHighGearMaxSetpoint = 12.0 * 14.0; // 14 fps
 

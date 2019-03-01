@@ -176,7 +176,7 @@ public class HatchSubsystem extends Subsystem {
                 }
 
                 if (newState != mHatchSystemState) {
-                    System.out.println(timestamp + ": Changed state: " + mHatchSystemState + " -> " + newState);
+                    System.out.println(timestamp + ": Changed hatch state: " + mHatchSystemState + " -> " + newState);
                     mHatchSystemState = newState;
                     mCurrentStateStartTime = Timer.getFPGATimestamp();
                 }
@@ -219,13 +219,13 @@ public class HatchSubsystem extends Subsystem {
         switch (mHatchWantedState) {
         case ACQUIRE:
             return HatchSystemState.ACQUIRING;
-        case HOLD:
-            return HatchSystemState.HOLDING;
         case SUPERHOLD:
             mHatchMotor.configClosedLoopPeakOutput(0, Constants.kHatchVoltageUnlimited);
             return HatchSystemState.SUPERHOLDING;
-        default:
+        case HOME:
             return HatchSystemState.HOMING;
+        default:
+            return HatchSystemState.ACQUIRING;
         }
     }
 
@@ -246,6 +246,9 @@ public class HatchSubsystem extends Subsystem {
             return HatchSystemState.ACQUIRING;
         case HOLD:
             return HatchSystemState.HOLDING;
+        case SUPERHOLD:
+            mHatchMotor.configClosedLoopPeakOutput(0, Constants.kHatchVoltageUnlimited);
+            return HatchSystemState.SUPERHOLDING;
         default:
             return HatchSystemState.HOMING;
         }
@@ -269,18 +272,14 @@ public class HatchSubsystem extends Subsystem {
             return HatchSystemState.ACQUIRING;
         case HOME:
             return HatchSystemState.HOMING;
-        default:            
-
+        default:
             return HatchSystemState.HOLDING;
         }
     }
 
     private HatchSystemState handleSuperHolding(double timeInState) {
-        //if (mHatchMotor.getSelectedSensorPosition() >= Constants.kHatchHoldingPosition) {
-            mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchSuperHold);
-        //} else {
-        //    mHatchMotor.set(ControlMode.Position, Constants.kHatchHoldingPosition);
-        //}
+        
+        mHatchMotor.set(ControlMode.PercentOutput, Constants.kHatchSuperHold);
 
         if (timeInState > Constants.kHatchHoldTime) {
             setHatchWantedState(HatchWantedState.HOLD);

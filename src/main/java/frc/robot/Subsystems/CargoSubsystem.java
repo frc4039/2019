@@ -59,7 +59,7 @@ public class CargoSubsystem extends Subsystem {
         HOLD,
         WINDUP,
         SHOOT,
-        //PUSH
+        PUSH
     }
 
     private enum CargoSystemState {
@@ -67,7 +67,7 @@ public class CargoSubsystem extends Subsystem {
         HOLDING, // intake in, rollers spinning at a low % or not at all
         WINDINGUP, // intake in, shooter rollers spining
         SHOOTING, // runs upper and lower rollers
-        //PUSHING
+        PUSHING
     }
 
     private CargoSubsystem() {
@@ -170,9 +170,9 @@ public class CargoSubsystem extends Subsystem {
                 case WINDINGUP:
                     newState = handleWindingUp(timeInState);
                     break;
-                /*case PUSHING:
+                case PUSHING:
                     newState = handlePushing(timeInState);
-                    break;*/
+                    break;
                 default:
                     System.out.println("Unexpected cargo system state: " + mCargoSystemState);
                     newState = mCargoSystemState;
@@ -213,44 +213,43 @@ public class CargoSubsystem extends Subsystem {
                 setIntakeUp();
                 mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.HOLDING;
-            /*case PUSH:
-                mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
-                return CargoSystemState.PUSHING;*/
+            case PUSH:
+                setIntakeOut();
+                return CargoSystemState.PUSHING;
             default:
                 return CargoSystemState.INTAKING;
         }
   }
-/*
+
     private CargoSystemState handlePushing(double timeInState) {
-        setIntakeOut();
         mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
 
         switch (mCargoWantedState) {
         case HOLD:
+            setIntakeUp();
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.HOLDING;
         case INTAKE:
-            mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoIntakingSpeed);
             return CargoSystemState.INTAKING;
         default:
             return CargoSystemState.PUSHING;
         }
     }
-*/
+
     private CargoSystemState handleHolding(double timeInState) {
         setCargoPositionOpenLoop();
 
         switch (mCargoWantedState) {
         case HOLD:
-            outputToSmartDashboard();
             return CargoSystemState.HOLDING;
         case INTAKE:
             setIntakeOut();
             return CargoSystemState.INTAKING;
         case WINDUP:
             return CargoSystemState.WINDINGUP;
-        /*case PUSH:
-            return CargoSystemState.PUSHING;*/
+        case PUSH:
+            setIntakeOut();
+            return CargoSystemState.PUSHING;
         default:
             return CargoSystemState.HOLDING;
         }
@@ -258,14 +257,12 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handleWindingUp(double timeInState)
     {
-        //mCargoShooterMotor.set(ControlMode.PercentOutput, Constants.kCargoShootingSpeed);
         mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
         setCargoPositionOpenLoop();
 
 
         switch (mCargoWantedState) {
             case WINDUP:
-            outputToSmartDashboard();
                 return CargoSystemState.WINDINGUP;
             case INTAKE:
                 setIntakeOut();
@@ -276,6 +273,9 @@ public class CargoSubsystem extends Subsystem {
                 return CargoSystemState.HOLDING;
             case SHOOT:
                 return CargoSystemState.SHOOTING;
+            case PUSH:
+                setIntakeOut();
+                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             default:
                 return CargoSystemState.WINDINGUP;
         }
@@ -288,7 +288,6 @@ public class CargoSubsystem extends Subsystem {
     
         switch (mCargoWantedState) {
         case SHOOT:
-            outputToSmartDashboard();
             return CargoSystemState.SHOOTING;
         case INTAKE:
             setIntakeOut();
@@ -298,6 +297,10 @@ public class CargoSubsystem extends Subsystem {
             mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.HOLDING;
+        case PUSH:
+            setIntakeOut();
+            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+            return CargoSystemState.PUSHING;
         default:
             return CargoSystemState.SHOOTING;
         }

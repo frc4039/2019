@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
-import frc.robot.Autonomous.Modes.BasicMode;
-import frc.robot.Autonomous.Modes.NewMode;
+import frc.robot.Autonomous.Modes.TestMode;
+import frc.robot.Autonomous.Modes.CargoShipLeftMode;
+import frc.robot.Autonomous.Modes.CargoShipFrontMode;
+import frc.robot.Autonomous.Modes.DriverControlMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.CargoSubsystem;
@@ -20,6 +22,8 @@ import frc.robot.Subsystems.ClimberSubsystem;
 import frc.robot.Utilities.*;
 import frc.robot.Utilities.Loops.Looper;
 import frc.robot.Utilities.Loops.RobotStateEstimator;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
@@ -36,6 +40,9 @@ public class Robot extends CustomRobot {
 
 	private RobotStateEstimator robotStateEstimator;
 	private ThreadRateControl threadRateControl = new ThreadRateControl();
+
+	AutoModeBase autoMode;
+    SendableChooser<String> autoChooser;
 	private AutoModeExecuter autoModeExecuter;
 
 	@Override
@@ -63,6 +70,14 @@ public class Robot extends CustomRobot {
 		mLooper.register(robotStateEstimator);
 
 		CameraServer.getInstance().startAutomaticCapture(0);
+
+		autoChooser = new SendableChooser<String>();
+        autoChooser.addDefault("Driver Control", "DriverControl");
+        autoChooser.addObject("Cargoship Left", "CargoShipLeftMode");
+		autoChooser.addObject("Cargoship Front", "CargoShipFrontMode");
+		autoChooser.addObject("Test", "TestMode");
+
+        SmartDashboard.putData("Autonomous Chooser", autoChooser);
 		
 	}
 
@@ -71,7 +86,25 @@ public class Robot extends CustomRobot {
 		mLooper.start(true);
 		driveBaseSubsystem.setBrakeMode(true);
 		autoModeExecuter = new AutoModeExecuter();
-		AutoModeBase autoMode = new BasicMode();
+
+		String selectedAuto = (String) autoChooser.getSelected();
+        System.out.println(selectedAuto);
+        switch (selectedAuto) {
+        case "CargoShipLeftMode":
+            autoMode = new CargoShipLeftMode();
+            break;
+        case "CargoShipFrontMode":
+            autoMode = new CargoShipFrontMode();
+			break;
+		case "TestMode":
+			autoMode = new TestMode();
+			break;
+        default:
+            autoMode = new DriverControlMode();
+            break;
+		}
+		
+		AutoModeBase autoMode = new TestMode();
 
 		if (autoMode != null)
 			autoModeExecuter.setAutoMode(autoMode);
@@ -81,7 +114,11 @@ public class Robot extends CustomRobot {
 		autoModeExecuter.start();
 		threadRateControl.start(true);
 
-		while (isAutonomous() && isEnabled()) {threadRateControl.doRateControl(100);}
+		while (isAutonomous() && isEnabled()) {
+			threadRateControl.doRateControl(100);
+			//oI.run();
+			//threadRateControl.doRateControl(20);
+		}
 	}
 
 	@Override
@@ -106,6 +143,7 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		while (isDisabled()) {
+			oI.run();
 			driveBaseSubsystem.setBrakeMode(false);
 			threadRateControl.doRateControl(100);
 		}
