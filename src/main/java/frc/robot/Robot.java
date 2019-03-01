@@ -143,7 +143,7 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		while (isDisabled()) {
-			oI.run();
+			//oI.run();
 			driveBaseSubsystem.setBrakeMode(false);
 			threadRateControl.doRateControl(100);
 		}

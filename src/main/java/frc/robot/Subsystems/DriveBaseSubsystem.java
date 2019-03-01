@@ -127,7 +127,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	@Override
 	public void init() {
 		mLeftMaster.setSensorPhase(true);
-		mRightMaster.setSensorPhase(true); //false on BC19
+		//mRightMaster.setSensorPhase(false); //practicebot
+		mRightMaster.setSensorPhase(true);   //compbot
 
 		mLeftMaster.setInverted(false);
 		leftDriveSlave1.setInverted(false);

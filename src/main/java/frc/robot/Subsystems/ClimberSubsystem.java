@@ -131,11 +131,6 @@ public class ClimberSubsystem extends Subsystem {
         //zeroSensors();
     }
 
-    /* @Override
-    public void outputToSmartDashboard() {
-        SmartDashboard.putNumber("Hatch Gripper Current", mHatchGripper.getOutputCurrent());
-    } */
-
     @Override
     public void stop() {
         setClimberWantedState(ClimberWantedState.HOLD);
@@ -182,8 +177,7 @@ public class ClimberSubsystem extends Subsystem {
                 ClimberSystemState newState = mClimberSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
-                SmartDashboard.putNumber("Neo encoder position: ", mClimberEncoder.getPosition());
-                SmartDashboard.putNumber("Neo speed: ", mClimberEncoder.getVelocity());
+                outputToSmartDashboard();
 
                 switch (mClimberSystemState) {
                 case EXTENDING:
@@ -454,8 +448,6 @@ public class ClimberSubsystem extends Subsystem {
         double right = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
 
         mClimberDriveMotor.set(ControlMode.PercentOutput, -right);
-
-        SmartDashboard.putNumber("Wheels: ", right);
     }
 
     public void setClimberInitiate() {
@@ -481,7 +473,7 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     public void outputToSmartDashboard(){
-        //nothing
+        SmartDashboard.putString("Climber Subsystem State", getClimberSystemState());
     }
 
     public void setBrakeMode(boolean brakeMode) {

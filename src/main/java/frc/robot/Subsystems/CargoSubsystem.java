@@ -157,6 +157,8 @@ public class CargoSubsystem extends Subsystem {
                 CargoSystemState newState = mCargoSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
+                outputToSmartDashboard();
+
                 switch (mCargoSystemState) {
                 case INTAKING:
                     newState = handleIntaking(timeInState);
@@ -207,7 +209,6 @@ public class CargoSubsystem extends Subsystem {
         
         switch (mCargoWantedState) {
             case INTAKE:
-                outputToSmartDashboard();
                 return CargoSystemState.INTAKING;
             case HOLD:
                 setIntakeUp();
@@ -367,8 +368,8 @@ public class CargoSubsystem extends Subsystem {
                 return "WINDINGUP";
             case SHOOTING: 
                 return "SHOOTING";
-            /*case PUSHING:  
-                return "PUSHING";*/
+            case PUSHING:  
+                return "PUSHING";
             default: 
                 return "UNKNOWN";
         }

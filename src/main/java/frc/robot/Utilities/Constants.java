@@ -41,8 +41,8 @@ public class Constants {
 	public static final int CARGO_INTAKE = 5; //Left bumper
 	public static final int CARGO_HOLD = 6; //Right bumper
 	public static final int CARGO_SHOOTER = 7; //Left tiny button
-	public static final int RESET_ENCODER = 9; //Left stick click
-	//public static final int CARGO_PUSH = 10; //Fake button? To be reassigned
+	public static final int RESET_ENCODER = 10; //Left stick click
+	public static final int CARGO_PUSH = 9; //Fake button? To be reassigned
 
 	public static final int PIPELINE_0 = 0;   	//D-Pad Up
 	public static final int PIPELINE_1 = 180;   //D-Pad Down

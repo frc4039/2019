@@ -154,7 +154,7 @@ public class HatchSubsystem extends Subsystem {
                 HatchSystemState newState = mHatchSystemState;
                 double timeInState = Timer.getFPGATimestamp() - mCurrentStateStartTime;
                 
-                SmartDashboard.putString("System State: ", getHatchSystemState());
+                outputToSmartDashboard();
 
                 switch (mHatchSystemState) {
                 case ACQUIRING:
