@@ -116,7 +116,6 @@ public class Robot extends CustomRobot {
 
 		while (isAutonomous() && isEnabled()) {
 			threadRateControl.doRateControl(100);
-			//oI.run();
 			//threadRateControl.doRateControl(20);
 		}
 	}
@@ -143,7 +142,6 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		while (isDisabled()) {
-			//oI.run();
 			driveBaseSubsystem.setBrakeMode(false);
 			threadRateControl.doRateControl(100);
 		}
