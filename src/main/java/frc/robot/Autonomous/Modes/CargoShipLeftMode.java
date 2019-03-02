@@ -22,7 +22,7 @@ public class CargoShipLeftMode extends AutoModeBase {
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
 		runAction(new WaitAction(0.1));
-		runAction(new ScoreHatchAction());
+		//runAction(new ScoreHatchAction());
 		//runAction(new WaitAction(2));
 		runAction(new DrivePathAction(new Back90Turn()));
 		//runAction(new WaitAction(2));

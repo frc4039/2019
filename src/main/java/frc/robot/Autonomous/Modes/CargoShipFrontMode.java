@@ -21,11 +21,11 @@ public class CargoShipFrontMode extends AutoModeBase {
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
 		runAction(new WaitAction(3));
-		runAction(new ScoreHatchAction());
-		runAction(new WaitAction(3));
-		runAction(new DrivePathAction(new ToHumanLoad2A()));
-		runAction(new WaitAction(3));
-		runAction(new DrivePathAction(new ToHumanLoad2B()));
+		//runAction(new ScoreHatchAction());
+		//runAction(new WaitAction(3));
+		//runAction(new DrivePathAction(new ToHumanLoad2A()));
+		//runAction(new WaitAction(3));
+		//runAction(new DrivePathAction(new ToHumanLoad2B()));
 
 		//runAction(new WaitAction(15));
 	}

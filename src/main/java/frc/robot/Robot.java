@@ -14,6 +14,7 @@ import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.TestMode;
 import frc.robot.Autonomous.Modes.CargoShipLeftMode;
 import frc.robot.Autonomous.Modes.CargoShipFrontMode;
+import frc.robot.Autonomous.Modes.CargoShipBlueRightMode;
 import frc.robot.Autonomous.Modes.DriverControlMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
@@ -75,6 +76,7 @@ public class Robot extends CustomRobot {
         autoChooser.addDefault("Driver Control", "DriverControl");
         autoChooser.addObject("Cargoship Left", "CargoShipLeftMode");
 		autoChooser.addObject("Cargoship Front", "CargoShipFrontMode");
+		autoChooser.addObject("Cargoship Right", "CargoShipBlueRightMode");
 		autoChooser.addObject("Test", "TestMode");
 
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
@@ -96,6 +98,9 @@ public class Robot extends CustomRobot {
         case "CargoShipFrontMode":
             autoMode = new CargoShipFrontMode();
 			break;
+		case "CargoShipBlueRightMode":
+			autoMode = new CargoShipBlueRightMode();
+			break;
 		case "TestMode":
 			autoMode = new TestMode();
 			break;
@@ -104,7 +109,7 @@ public class Robot extends CustomRobot {
             break;
 		}
 		
-		AutoModeBase autoMode = new TestMode();
+		AutoModeBase autoMode = new CargoShipLeftMode();
 
 		if (autoMode != null)
 			autoModeExecuter.setAutoMode(autoMode);
