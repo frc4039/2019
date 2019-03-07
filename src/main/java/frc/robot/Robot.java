@@ -45,6 +45,7 @@ public class Robot extends CustomRobot {
 	AutoModeBase autoMode;
     SendableChooser<String> autoChooser;
 	private AutoModeExecuter autoModeExecuter;
+	Boolean noAuto;
 
 	@Override
 	public void robotInit() {
@@ -105,7 +106,8 @@ public class Robot extends CustomRobot {
 			autoMode = new TestMode();
 			break;
         default:
-            autoMode = new DriverControlMode();
+			autoMode = new DriverControlMode();
+			noAuto = true;
             break;
 		}
 		
@@ -120,8 +122,12 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		while (isAutonomous() && isEnabled()) {
-			threadRateControl.doRateControl(100);
-			//threadRateControl.doRateControl(20);
+			if (noAuto == true){
+				threadRateControl.doRateControl(20);
+				oI.run();
+			} else {
+				threadRateControl.doRateControl(100);
+			}
 		}
 	}
 
