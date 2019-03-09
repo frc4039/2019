@@ -174,6 +174,9 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
 			if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
+				if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
+					hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
+				}
 			}
 			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
