@@ -240,15 +240,16 @@ public class Constants {
 
 	// Cargo
 	public static final int kCargoIntakeMotorId = 13;
-	public static final int kCargoShooterMotorId = 12;
+	public static final int kBCCargoIntakeMotorId = 0; //TODO: remove once practice bot matches compbot (VictorSP -> VictorSPX)
+	//public static final int kCargoShooterMotorId = 12;
 	public static final int kCargoIntakeMotorPDPChannel = 4;
-	public static final int kCargoShooterMotorPDPChannel = 5;
+	//public static final int kCargoShooterMotorPDPChannel = 5;
 
 	public static final int kCargoIntakeSolenoidOut = 2;
 	public static final int kCargoIntakeSolenoidIn = 3; 
 
 	// Climber
-	public static final int kClimberDriveMotorId = 11; //TODO: change
+	public static final int kClimberDriveMotorId = 11; //TODO: change?? when is this from, is it still a todo??
 	public static final int kClimberDriveMotorPDPChannel = 11;
 	public static final int kLeftClimberMotorId = 9;
 	public static final int kLeftClimberMotorPDPChannel = 0;

@@ -86,13 +86,7 @@ public class OI implements Runnable {
 
 		// Shoot
 		if (operatorJoystick.getRisingEdgeButton(Constants.CARGO_SHOOTER)) {
-			if (cargoSubsystem.getCargoSystemState() == "HOLDING") {
-				cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
-			} else if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
-				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
-			} else if (cargoSubsystem.getCargoSystemState() == "SHOOTING") {
-				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
-			}
+			cargoSubsystem.setCargoWantedState(CargoWantedState.WINDUP);
 		}
 
 		//Push
@@ -161,7 +155,7 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRawButton(Constants.VISION_ASSIST)){
 			table.getEntry("ledMode").setNumber(3); //Turns LED's on
 			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
-			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x));
+			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, 0));
 		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
 			driveBaseSubsystem.setDriveClimb();
 		} else {
@@ -174,11 +168,7 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.DRIVER_SCORE)) {
 			if (cargoSubsystem.getCargoSystemState() == "WINDINGUP") {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.SHOOT);
-				if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
-					hatchSubsystem.setHatchWantedState(HatchWantedState.HOLD);
-				}
-			}
-			if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
+			} else if (hatchSubsystem.getHatchSystemState() == "HOLDING") {
 				hatchSubsystem.setHatchWantedState(HatchWantedState.ACQUIRE);
 			}
 		}

@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.Utilities.Drivers.CANSpeedControllerBuilder;
@@ -44,7 +45,8 @@ public class Controllers {
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
 
 		cargoIntakeMotor = new VictorSPX(Constants.kCargoIntakeMotorId);
-		cargoShooterMotor = new CustomTalonSRX(Constants.kCargoShooterMotorId, Constants.kCargoShooterMotorPDPChannel);
+		CBcargoIntakeMotor = new VictorSP(Constants.kBCCargoIntakeMotorId); //TODO: remove once practice bot matches compbot
+		//cargoShooterMotor = new CustomTalonSRX(Constants.kCargoShooterMotorId, Constants.kCargoShooterMotorPDPChannel);
 		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
 
 		leftClimberMotor = new CANSparkMax(Constants.kLeftClimberMotorId, MotorType.kBrushless);
@@ -73,7 +75,8 @@ public class Controllers {
 
 	private CustomTalonSRX hatchMotor;
 	private VictorSPX cargoIntakeMotor;
-	private CustomTalonSRX cargoShooterMotor;
+	private VictorSP CBcargoIntakeMotor; //TODO: remove once practice bot matches compbot
+	//private CustomTalonSRX cargoShooterMotor;
 
 	private DoubleSolenoid cargoIntakeSolenoid;
 	private DoubleSolenoid hatchSolenoid;
@@ -101,9 +104,14 @@ public class Controllers {
 		return cargoIntakeMotor;
 	}
 
-	public CustomTalonSRX getCargoShooterMotor() {
-		return cargoShooterMotor;
+	//TODO: remove once practice bot matches compbot
+	public VictorSP getCBCargoIntakeMotor() {
+		return CBcargoIntakeMotor;
 	}
+
+	//public CustomTalonSRX getCargoShooterMotor() {
+	//	return cargoShooterMotor;
+	//}
 
 	public DoubleSolenoid getCargoIntakeSolenoid() {
 		return cargoIntakeSolenoid;

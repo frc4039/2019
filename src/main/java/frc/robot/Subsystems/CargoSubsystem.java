@@ -36,7 +36,8 @@ public class CargoSubsystem extends Subsystem {
 
     private final DoubleSolenoid mCargoIntakeSolenoid;
     private VictorSPX mCargoIntakeMotor;
-    private CustomTalonSRX mCargoShooterMotor;
+    private VictorSP mCBCargoIntakeMotor; //TODO: remove once practice bot matches compbot
+    //private CustomTalonSRX mCargoShooterMotor;
 
     private CargoWantedState mCargoWantedState;
     private CargoSystemState mCargoSystemState;
@@ -74,7 +75,8 @@ public class CargoSubsystem extends Subsystem {
 
         Controllers robotControllers = Controllers.getInstance();
         mCargoIntakeMotor = robotControllers.getCargoIntakeMotor();
-        mCargoShooterMotor = robotControllers.getCargoShooterMotor();
+        mCBCargoIntakeMotor = robotControllers.getCBCargoIntakeMotor(); //TODO: remove once practice bot matches compbot
+        //mCargoShooterMotor = robotControllers.getCargoShooterMotor();
         mCargoIntakeSolenoid = robotControllers.getCargoIntakeSolenoid();
 
         operatorJoystick = robotControllers.getOperatorJoystick();
@@ -85,14 +87,15 @@ public class CargoSubsystem extends Subsystem {
 
     public void init() {
         mCargoIntakeMotor.setInverted(true);
-		mCargoShooterMotor.setInverted(true);
+        mCBCargoIntakeMotor.setInverted(true); //TODO: remove once practice bot matches compbot
+		//mCargoShooterMotor.setInverted(true);
 
         setBrakeMode(false);
 
         boolean setSucceeded;
 		int retryCounter = 0;
 
-		do {
+		/*do {
 			setSucceeded = true;
 
 			setSucceeded &= mCargoShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.kTimeoutMs) == ErrorCode.OK;
@@ -103,7 +106,7 @@ public class CargoSubsystem extends Subsystem {
 
 		setSucceeded &= TalonHelper.setPIDGains(mCargoShooterMotor, 0, Constants.kCargoShooterVelocityKp, Constants.kCargoShooterVelocityKi, Constants.kCargoShooterVelocityKd, Constants.kCargoShooterVelocityKf, Constants.kCargoShooterVelocityRampRate, Constants.kCargoShooterVelocityIZone);
 		
-		mCargoShooterMotor.selectProfileSlot(0, 0);
+		mCargoShooterMotor.selectProfileSlot(0, 0);*/
     }
 
 
@@ -206,6 +209,7 @@ public class CargoSubsystem extends Subsystem {
 
     protected CargoSystemState handleIntaking(double timeInState) {
         mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoIntakingSpeed);
+        mCBCargoIntakeMotor.set(Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
         
         switch (mCargoWantedState) {
             case INTAKE:
@@ -213,6 +217,7 @@ public class CargoSubsystem extends Subsystem {
             case HOLD:
                 setIntakeUp();
                 mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
+                mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
                 return CargoSystemState.HOLDING;
             case PUSH:
                 setIntakeOut();
@@ -224,11 +229,13 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handlePushing(double timeInState) {
         mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
+        mCBCargoIntakeMotor.set(-Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
 
         switch (mCargoWantedState) {
         case HOLD:
             setIntakeUp();
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
+            mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
             return CargoSystemState.HOLDING;
         case INTAKE:
             return CargoSystemState.INTAKING;
@@ -251,6 +258,8 @@ public class CargoSubsystem extends Subsystem {
         case PUSH:
             setIntakeOut();
             return CargoSystemState.PUSHING;
+        case SHOOT:
+            return CargoSystemState.SHOOTING;
         default:
             return CargoSystemState.HOLDING;
         }
@@ -258,7 +267,7 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handleWindingUp(double timeInState)
     {
-        mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
+        //mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
         setCargoPositionOpenLoop();
 
 
@@ -267,16 +276,16 @@ public class CargoSubsystem extends Subsystem {
                 return CargoSystemState.WINDINGUP;
             case INTAKE:
                 setIntakeOut();
-                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+                //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.INTAKING;
             case HOLD:
-                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+                //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.HOLDING;
             case SHOOT:
                 return CargoSystemState.SHOOTING;
             case PUSH:
                 setIntakeOut();
-                mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+                //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             default:
                 return CargoSystemState.WINDINGUP;
         }
@@ -285,22 +294,27 @@ public class CargoSubsystem extends Subsystem {
     private CargoSystemState handleShooting(double timeInState) {
 
         mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoFeedingSpeed);
-        mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
+        mCBCargoIntakeMotor.set(Constants.kCargoFeedingSpeed); //TODO: remove once practice bot matches compbot
+        //mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
     
+        if (timeInState > 1.0) {
+            setCargoWantedState(CargoWantedState.HOLD);
+        }
+
         switch (mCargoWantedState) {
         case SHOOT:
             return CargoSystemState.SHOOTING;
         case INTAKE:
             setIntakeOut();
-            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+            //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.INTAKING;
         case HOLD:
-            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+            //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.HOLDING;
         case PUSH:
             setIntakeOut();
-            mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
+            //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.PUSHING;
         default:
             return CargoSystemState.SHOOTING;
@@ -348,14 +362,10 @@ public class CargoSubsystem extends Subsystem {
 
         double y = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.OPERATOR_X_AXIS), Constants.kJoystickDeadband);
 
-        mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y/2); //TODO: might have to be thirded or more
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y*y*y); 
+        mCBCargoIntakeMotor.set(y*y*y*y*y); //TODO: remove once practice bot matches compbot
 
     }
-
-    //this might help with a better way to do the above, so I'm leaving it in, just commented out
-    /* public void setOpenLoop(double percent) {
-        mHatchMotor.set(ControlMode.PercentOutput, percent);
-    } */
 
     public String getCargoSystemState() {
         
