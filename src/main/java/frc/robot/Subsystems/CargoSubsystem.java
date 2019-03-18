@@ -362,8 +362,8 @@ public class CargoSubsystem extends Subsystem {
 
         double y = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.OPERATOR_X_AXIS), Constants.kJoystickDeadband);
 
-        mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y*y*y); 
-        mCBCargoIntakeMotor.set(y*y*y*y*y); //TODO: remove once practice bot matches compbot
+        mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y*y*y/1.5); 
+        mCBCargoIntakeMotor.set(y*y*y*y*y/1.5); //TODO: remove once practice bot matches compbot
 
     }
 

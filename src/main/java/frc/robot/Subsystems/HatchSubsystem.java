@@ -208,7 +208,7 @@ public class HatchSubsystem extends Subsystem {
             setRetract();
         }
 
-        if (kHatchAcquired == false && mHatchMotor.getSelectedSensorPosition() == Constants.kHatchAcquiringPosition) {
+        if (kHatchAcquired == false && mHatchMotor.getSelectedSensorPosition() >= Constants.kHatchAcquiringPosition) {
             kHatchAcquired = true;
         }
 
