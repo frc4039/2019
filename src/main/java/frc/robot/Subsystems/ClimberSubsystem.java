@@ -56,6 +56,7 @@ public class ClimberSubsystem extends Subsystem {
 
     private static DigitalInput mClimberLimitSwitchBottom = new DigitalInput(Constants.kClimberLimitSwitchBottom);
     private static DigitalInput mClimberLimitSwitchTop = new DigitalInput(Constants.kClimberLimitSwitchTop);
+    private static DigitalInput mClimberLimitSwitchFront = new DigitalInput(Constants.kClimberLimitSwitchFront);
 
     private CANPIDController mClimber;
     private CANEncoder mClimberEncoder;
@@ -75,17 +76,19 @@ public class ClimberSubsystem extends Subsystem {
         HOLD,    //default
         RETRACT,
         DRIVE,
-        RESET,
-        INITIATE
+        INITIATE,
+        READY,
+        MANUAL
     }
 
     private enum ClimberSystemState {
         EXTENDING,
-        HOLDING, // gripper fully closed
-        RETRACTING, // gripper fully seperated
+        HOLDING, 
+        RETRACTING, 
         DRIVING,
-        RESETING,
-        INITIATING
+        INITIATING,
+        READYING,
+        MANUALING
     }
 
     private ClimberSubsystem() {
@@ -195,8 +198,11 @@ public class ClimberSubsystem extends Subsystem {
                 case INITIATING:
                     newState = handleInitiating(timeInState);
                     break;
-                case RESETING:
-                    newState = handleReseting(timeInState);
+                case READYING:
+                    newState = handleReadying(timeInState);
+                    break;
+                case MANUALING:
+                    newState = handleManualing(timeInState);
                     break;
                 default:
                     System.out.println("Unexpected climber system state: " + mClimberSystemState);
@@ -226,79 +232,6 @@ public class ClimberSubsystem extends Subsystem {
         enabledLooper.register(mLoop);
     }
 
-    private ClimberSystemState handleInitiating(double timeInState) {
-
-        if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostFirstLimitSwitch) {
-            mClimber.setReference(Constants.kClimberInitiateFast, ControlType.kDutyCycle);
-        } else if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberLimitSwitchTop) {
-            mClimber.setReference(Constants.kClimberInitiateSlow, ControlType.kDutyCycle);
-        } else if (getClimberLimitSwitchTop() == false) {
-            mClimber.setReference(0, ControlType.kDutyCycle);
-            mClimberEncoder.setPosition(0);
-            setClimberWantedState(ClimberWantedState.HOLD);
-        }
-
-        switch (mClimberWantedState) {
-            case INITIATE:
-
-                return ClimberSystemState.INITIATING;
-            case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
-            case RETRACT:
-    
-                return ClimberSystemState.RETRACTING;
-            case DRIVE:
-                
-                return ClimberSystemState.DRIVING;
-            case RESET:
-
-                return ClimberSystemState.RESETING;
-            default:
-    
-                return ClimberSystemState.HOLDING;
-        }
-    }
-
-    private ClimberSystemState handleExtending(double timeInState) {
-
-        if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostDown) {
-            mClimber.setReference(Constants.kClimberLiftFast, ControlType.kDutyCycle);
-        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() == Constants.kClimberDown) {
-            mClimber.setReference(Constants.kClimberLiftSlow, ControlType.kDutyCycle);
-        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == false){
-            mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
-            setClimberWantedState(ClimberWantedState.DRIVE);
-        }
-
-        switch (mClimberWantedState) {
-            case INITIATE:
-
-                return ClimberSystemState.INITIATING;
-            case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
-            case RETRACT:
-    
-                return ClimberSystemState.RETRACTING;
-            case DRIVE:
-                
-                return ClimberSystemState.DRIVING;
-            case RESET:
-
-                return ClimberSystemState.RESETING;
-            default:
-    
-                return ClimberSystemState.HOLDING;
-        }
-    }
-
     private ClimberSystemState handleHolding(double timeInState) {
 
         mClimber.setReference(0, ControlType.kDutyCycle);
@@ -308,131 +241,186 @@ public class ClimberSubsystem extends Subsystem {
             case INITIATE:
 
                 return ClimberSystemState.INITIATING;
-            case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
-            case RETRACT:
-    
-                return ClimberSystemState.RETRACTING;
-            case DRIVE:
-                
-                return ClimberSystemState.DRIVING;
-            case RESET:
+            case MANUAL:
 
-                return ClimberSystemState.RESETING;
+                return ClimberSystemState.MANUALING;
             default:
     
                 return ClimberSystemState.HOLDING;
         }
     }
 
-    private ClimberSystemState handleRetracting(double timeInState) {
-        //mLeftClimberMotor.set(Constants.kClimberHomePosition);
-        //if (getClimberLimitSwitchTop() == false) {
-            //setClimberRetract();
-            //setClimberDrive();
-            
-            mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
+    private ClimberSystemState handleInitiating(double timeInState) {
 
-        
-            if (mClimberEncoder.getPosition() > Constants.kClimberUp + 10){
-                mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
-            } else if (mClimberEncoder.getPosition() <= Constants.kClimberUp + 10) {
-                mClimber.setReference(0, ControlType.kSmartMotion);
-            }    
-            
-        //} else if (getClimberLimitSwitchTop() == true){
-        //    setClimberWantedState(ClimberWantedState.HOLD);
-        //}
+        //old code
+        /*if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostFirstLimitSwitch) {
+            mClimber.setReference(Constants.kClimberInitiateFast, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == true && mClimberEncoder.getPosition() < Constants.kClimberFirstLimitSwitch) {
+            mClimber.setReference(Constants.kClimberInitiateSlow, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == false) {
+            mClimber.setReference(0, ControlType.kDutyCycle);
+            mClimberEncoder.setPosition(0);
+            setClimberWantedState(ClimberWantedState.HOLD);
+        }*/
+
+        if (getClimberLimitSwitchTop() == true) {
+            mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
+            if (mClimberEncoder.getPosition() > Constants.kClimberFirstLimitSwitch){
+                mClimber.setReference(0, ControlType.kDutyCycle);
+                mClimberEncoder.setPosition(0);
+                setClimberWantedState(ClimberWantedState.READY);
+            }
+        } else if (getClimberLimitSwitchTop() == false) {
+            mClimber.setReference(0, ControlType.kDutyCycle);
+            mClimberEncoder.setPosition(0);
+            setClimberWantedState(ClimberWantedState.READY);
+        }
 
         switch (mClimberWantedState) {
-            case INITIATE:
-
-                return ClimberSystemState.INITIATING;
-            case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
-            case RETRACT:
-    
-                return ClimberSystemState.RETRACTING;
-            case DRIVE:
+            case READY:
                 
-                return ClimberSystemState.DRIVING;
-            case RESET:
+                mClimber.setReference(0, ControlType.kDutyCycle);
+                mClimberDriveMotor.set(ControlMode.PercentOutput, 0);
 
-                return ClimberSystemState.RESETING;
+                return ClimberSystemState.READYING;
+            case MANUAL:
+
+                return ClimberSystemState.MANUALING;
             default:
     
-                return ClimberSystemState.HOLDING;
+                return ClimberSystemState.INITIATING;
         }
     }
-    
-    private ClimberSystemState handleReseting(double timeInState) {
-        //mLeftClimberMotor.set(Constants.kClimberHomePosition);
-        //if (getClimberLimitSwitchTop() == false) {
-        setClimberExtend();
-            
-        //} else if (getClimberLimitSwitchTop() == true){
-        //    setClimberWantedState(ClimberWantedState.HOLD);
-        //}
 
+    private ClimberSystemState handleReadying(double timeInState) {
+           
         switch (mClimberWantedState) {
             case INITIATE:
 
                 return ClimberSystemState.INITIATING;
             case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
-            case RETRACT:
-    
-                return ClimberSystemState.RETRACTING;
-            case DRIVE:
-                
-                return ClimberSystemState.DRIVING;
-            case RESET:
 
-                return ClimberSystemState.RESETING;
+                return ClimberSystemState.EXTENDING;
+            case MANUAL:
+
+                return ClimberSystemState.MANUALING;
             default:
     
-                return ClimberSystemState.HOLDING;
+                return ClimberSystemState.READYING;
+        }
+    }
+
+    private ClimberSystemState handleExtending(double timeInState) {
+        /*
+        if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() < Constants.kClimberAlmostDown) {
+            mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == true && mClimberEncoder.getPosition() == Constants.kClimberDown) {
+            mClimber.setReference(Constants.kClimberDownSlow, ControlType.kDutyCycle);
+        } else if (getClimberLimitSwitchTop() == false && getClimberLimitSwitchBottom() == false){
+            mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
+            setClimberWantedState(ClimberWantedState.DRIVE);
+        }*/
+
+        if (getClimberLimitSwitchBottom() == false) {
+            setClimberWantedState(ClimberWantedState.DRIVE);
+        } else if (getClimberLimitSwitchBottom() == true) {
+            if (mClimberEncoder.getPosition() <= Constants.kClimberDown) {
+                setClimberWantedState(ClimberWantedState.DRIVE);
+            } else {
+                mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
+            }
+        }
+
+        switch (mClimberWantedState) {
+            case DRIVE:
+                
+                mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
+
+                return ClimberSystemState.DRIVING;
+            case MANUAL:
+
+                return ClimberSystemState.MANUALING;
+            default:
+    
+                return ClimberSystemState.EXTENDING;
         }
     }
 
     private ClimberSystemState handleDriving(double timeInState) {
-        mClimber.setReference(0, ControlType.kDutyCycle);
-        setClimberDrive();
-        //setClimberExtend();
-        switch (mClimberWantedState) {
-            case INITIATE:
+        
 
-                return ClimberSystemState.INITIATING;
-            case EXTEND:
-    
-                return ClimberSystemState.EXTENDING;
-            case HOLD:
-    
-                return ClimberSystemState.HOLDING;
+        if (getClimberLimitSwitchFront() == false) {
+            setClimberWantedState(ClimberWantedState.RETRACT);
+        } else {
+            setClimberDrive();
+            ////////////////////////////////////////////////////////////////
+            // function to drive forward with climber wheels and not fall //
+            ////////////////////////////////////////////////////////////////
+        }
+
+        switch (mClimberWantedState) {
             case RETRACT:
     
                 return ClimberSystemState.RETRACTING;
-            case DRIVE:
-                
-                return ClimberSystemState.DRIVING;
-            case RESET:
+            case MANUAL:
 
-                return ClimberSystemState.RESETING;
+                return ClimberSystemState.MANUALING;
             default:
     
+                return ClimberSystemState.DRIVING;
+        }
+    }
+
+    private ClimberSystemState handleRetracting(double timeInState) {
+        
+            
+        /*
+        mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
+
+
+        if (mClimberEncoder.getPosition() > Constants.kClimberUp + 10){
+            mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
+        } else if (mClimberEncoder.getPosition() <= Constants.kClimberUp + 10) {
+            mClimber.setReference(0, ControlType.kDutyCycle);
+        }    
+        */
+
+       
+
+        mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
+
+        if (mClimberEncoder.getPosition() > 0) {
+            mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
+        } else {
+            mClimber.setReference(0, ControlType.kDutyCycle);
+        }
+
+
+
+        switch (mClimberWantedState) {
+            case HOLD:
+    
                 return ClimberSystemState.HOLDING;
+            case MANUAL:
+                
+                return ClimberSystemState.MANUALING;
+            default:
+    
+                return ClimberSystemState.RETRACTING;
+        }
+    }
+    
+    private ClimberSystemState handleManualing(double timeInState) {
+        setClimberExtend();
+        setClimberDrive();
+
+        switch (mClimberWantedState) {
+            case HOLD:
+    
+                return ClimberSystemState.HOLDING;
+            default:
+    
+                return ClimberSystemState.MANUALING;
         }
     }
 
@@ -441,7 +429,11 @@ public class ClimberSubsystem extends Subsystem {
 
         double right = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
 
-        mClimber.setReference(right - left, ControlType.kDutyCycle);
+        if (getClimberLimitSwitchBottom() == false) {
+            mClimber.setReference(-left, ControlType.kDutyCycle);
+        } else {
+            mClimber.setReference(right - left, ControlType.kDutyCycle);
+        }
     }
 
     public void setClimberDrive() {
@@ -461,6 +453,10 @@ public class ClimberSubsystem extends Subsystem {
 
     public boolean getClimberLimitSwitchTop() {
         return mClimberLimitSwitchTop.get();
+    }
+
+    public boolean getClimberLimitSwitchFront() {
+        return mClimberLimitSwitchFront.get();
     }
 
     public synchronized void setClimberWantedState(ClimberWantedState wanted) {
@@ -502,8 +498,10 @@ public class ClimberSubsystem extends Subsystem {
                 return "DRIVING";
             case INITIATING:
                 return "INITIATING";
-            case RESETING:
-                return "RESETING";
+            case MANUALING:
+                return "MANUALING";
+            case READYING:
+                return "READYING";
             default: 
                 return "UNKNOWN";
         }

@@ -124,8 +124,8 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_RETRACT)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
 		}
-		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RESET)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.RESET);
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_MANUAL)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.MANUAL);
 		} else if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_HOLD)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.HOLD);
 		}
@@ -253,8 +253,8 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RETRACT)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
 		}
-		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_RESET)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.RESET);
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_MANUAL)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.MANUAL);
 		}
 		//////////////////////////////////////////////////////////////
 

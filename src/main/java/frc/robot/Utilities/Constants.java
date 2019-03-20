@@ -22,7 +22,7 @@ public class Constants {
 	//Driver control buttons
 	public static final int CLIMBER_RETRACT = 1; //A
 	public static final int CLIMB_HOLD = 2;	 //B
-	public static final int CLIMB_RESET = 3; //X
+	public static final int CLIMB_MANUAL = 3; //X
 	public static final int CLIMBER_EXTEND = 4; //Y
 	public static final int VISION_ASSIST = 5; //Left bumper
 	public static final int DRIVER_SCORE = 6; //Right bumper
@@ -119,6 +119,7 @@ public class Constants {
 
 	public static final int kClimberLimitSwitchBottom = 0;
 	public static final int kClimberLimitSwitchTop = 1;
+	public static final int kClimberLimitSwitchFront = 2;
 
 	public static final double kClimbDrivebasePercent = 0.25;
 	public static final double kClimbRetractTinyWheelsPercent = 0.40;
@@ -141,14 +142,12 @@ public class Constants {
 	public static final double kClimberUp = 0;
 	public static final double kClimberDown = 465; // 475
 	//public static final double kStartingPosition = 0.024;
-	public static final double kFirstLimitSwitch = 235; // 228.1
+	public static final double kClimberFirstLimitSwitch = 235; // 228.1
 	public static final double kClimberAlmostFirstLimitSwitch = 200;
 	public static final double kClimberAlmostDown = 450;
 
-	public static final double kClimberInitiateFast = 1.0;
-	public static final double kClimberInitiateSlow = 0.5;
-	public static final double kClimberLiftFast = 1.0;
-	public static final double kClimberLiftSlow = 0.5;
+	public static final double kClimberDownFast = 1.0;
+	public static final double kClimberDownSlow = 0.5;
 	public static final double kClimberRetractSpeed = -1.0;
 	public static final double kClimberHoldPositionSpeed = 0.01;
 
