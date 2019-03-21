@@ -155,7 +155,7 @@ public class OI implements Runnable {
 		if (driveJoystickThrottle.getRawButton(Constants.VISION_ASSIST)){
 			table.getEntry("ledMode").setNumber(3); //Turns LED's on
 			table.getEntry("camMode").setNumber(0); //Set camera to vision mode
-			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, 0));
+			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x/2));
 		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
 			driveBaseSubsystem.setDriveClimb();
 		} else {

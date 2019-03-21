@@ -470,6 +470,12 @@ public class ClimberSubsystem extends Subsystem {
 
     public void outputToSmartDashboard(){
         SmartDashboard.putString("Climber Subsystem State", getClimberSystemState());
+        
+        SmartDashboard.putBoolean("Climber Top Limit Switch", getClimberLimitSwitchTop());
+        SmartDashboard.putBoolean("Climber Bottom Limit Switch", getClimberLimitSwitchBottom());
+        SmartDashboard.putBoolean("Climber Front Limit Switch", getClimberLimitSwitchFront());
+
+        SmartDashboard.putNumber("Climber Encoder", mClimberEncoder.getPosition());
     }
 
     public void setBrakeMode(boolean brakeMode) {
