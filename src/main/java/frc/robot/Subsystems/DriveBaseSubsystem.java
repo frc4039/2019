@@ -288,9 +288,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
-        mPID.setDesiredValue(targetAngle);
+        mPID.setDesiredValue(0);
         //mPID.setDoneRange(0.02);
-        output = mPID.calcPID((targetAngle - mNavXBoard.getRawYawDegrees())/90);
+        output = mPID.calcPID((targetAngle - mNavXBoard.getRawYawDegrees()));
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
