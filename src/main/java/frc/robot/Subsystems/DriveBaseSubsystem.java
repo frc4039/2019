@@ -46,6 +46,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	private double limelightTargetX;
 
 	private double output = 0;
+	
+	private boolean turning;
 
 
 	public static DriveBaseSubsystem getInstance() {
@@ -280,8 +282,30 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		} 
 
 	}
+	
+	public void turnCalcs(double targetAngle) {
+
+	    mPID = new SimPID(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+            mPID.setMaxOutput(1);
+            mPID.setDesiredValue(0);
+            //mPID.setDoneRange(0.02);
+            output = mPID.calcPID((targetAngle - getGyroAngle())/90);
+		
+	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+	    //mPID.setDesiredValue(0);
+	    //mPID.setMaxOutput(1);
+
+	    if (output > 0) {
+                output += Constants.kVisionAssistF;
+	    } else if (output < 0) {
+	        output -= Constants.kVisionAssistF;
+	    } 
+
+	}
 
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
+		turning = false;
+		
 		setControlMode(DriveControlState.OPEN_LOOP);
 
 		d = arcadeDrive(d);
@@ -291,6 +315,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	}
 
 	public synchronized void setVisionAssist(DriveMotorValues d) {
+		turning = false;
+	
 		setControlMode(DriveControlState.OPEN_LOOP);		
 
 		d = arcadeDrive(d);
@@ -300,6 +326,38 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.set(ControlMode.PercentOutput, d.leftDrive - output);
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
 	}
+	
+	public synchronized void setTurnRight() {
+		setControlMode(DriveControlState.OPEN_LOOP);		
+		
+		if (turning == false) {
+		    targetAngle = getGyroAngle() + 90;
+		    turning = true;
+		} else if (getGyroAngle() < (targetAngle - 2) || getGyroAngle > (targetAngle + 2)) {
+		    turnCalcs(targetAngle);
+		} else if (getGyroAngle() >= (targetAngle - 2) && getGyroAngle <= (targetAngle + 2)) {
+		    
+		}
+
+		mLeftMaster.set(ControlMode.PercentOutput, -output);
+		mRightMaster.set(ControlMode.PercentOutput, +output);
+	}
+	
+	public synchronized void setTurnLeft() {
+		setControlMode(DriveControlState.OPEN_LOOP);		
+		
+		if (turning == false) {
+		    targetAngle = getGyroAngle() - 90;
+		    turning = true;
+		} else if (getGyroAngle() < (targetAngle - 2) || getGyroAngle > (targetAngle + 2)) {
+		    turnCalcs(targetAngle);
+		} else if (getGyroAngle() >= (targetAngle - 2) && getGyroAngle <= (targetAngle + 2)) {
+		    
+		}
+
+		mLeftMaster.set(ControlMode.PercentOutput, -output);
+		mRightMaster.set(ControlMode.PercentOutput, +output);
+	}
 
 	public synchronized void setDriveClimb() {
 		setControlMode(DriveControlState.OPEN_LOOP);
@@ -307,6 +365,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mLeftMaster.set(ControlMode.PercentOutput, Constants.kClimbDrivebasePercent);
 		mRightMaster.set(ControlMode.PercentOutput, Constants.kClimbDrivebasePercent);
 	}
+	
+	
 
 	public synchronized void setDriveVelocity(DriveMotorValues d) {
 		setDriveVelocity(d, true);
