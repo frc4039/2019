@@ -286,9 +286,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	
 	public void turnCalcs(double targetAngle) {
 
-	    mPID = new SimPID(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
+		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
-        mPID.setDesiredValue(0);
+        mPID.setDesiredValue(targetAngle);
         //mPID.setDoneRange(0.02);
         output = mPID.calcPID((targetAngle - mNavXBoard.getRawYawDegrees())/90);
 		
@@ -297,9 +297,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	    //mPID.setMaxOutput(1);
 
 	    if (output > 0) {
-                output += Constants.kVisionAssistF;
+                output += Constants.kTurnAssistF;
 	    } else if (output < 0) {
-	        output -= Constants.kVisionAssistF;
+	        output -= Constants.kTurnAssistF;
 	    } 
 
 	}
