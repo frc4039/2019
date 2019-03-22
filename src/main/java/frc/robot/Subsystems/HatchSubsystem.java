@@ -209,6 +209,9 @@ public class HatchSubsystem extends Subsystem {
         if (timeInState > Constants.kHatchEjectTime && kHatchEject == true) {
             setRetract();
         }
+	if (timeInState > Constants.kHatchEjectTime && mHatchMotor.getSelectedSensorPosition() > Constants.kHatchAcquiringPosition - 20) {
+	    setHatchWantedState(HatchWantedState.DETECTING);
+	}
         
         switch (mHatchWantedState) {
         case DETECT:
