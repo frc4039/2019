@@ -47,7 +47,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	private double output = 0;
 	
-	private boolean turning;
+	private boolean turning = false;
+	private double targetAngle = 0;
 
 
 	public static DriveBaseSubsystem getInstance() {
