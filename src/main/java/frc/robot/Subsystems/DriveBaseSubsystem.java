@@ -288,9 +288,9 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
-        mPID.setDesiredValue(0);
+        mPID.setDesiredValue(targetAngle);
         //mPID.setDoneRange(0.02);
-        output = mPID.calcPID((targetAngle - mNavXBoard.getRawYawDegrees()));
+        output = mPID.calcPID(mNavXBoard.getRawYawDegrees());
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
@@ -333,13 +333,15 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		
 		if (turning == false) {
 		    targetAngle = mNavXBoard.getRawYawDegrees() + 90;
-		    turning = true;
+			turning = true;
+			System.out.println("test1");
 		} else if ((mNavXBoard.getRawYawDegrees() < (targetAngle - 2)) || (mNavXBoard.getRawYawDegrees() > (targetAngle + 2))) {
+			System.out.println("test2");
 			turnCalcs(targetAngle);
 			mLeftMaster.set(ControlMode.PercentOutput, -output);
 			mRightMaster.set(ControlMode.PercentOutput, +output);
 		} else if ((mNavXBoard.getRawYawDegrees() >= (targetAngle - 2)) && (mNavXBoard.getRawYawDegrees() <= (targetAngle + 2))) {
-		    
+		    System.out.println("test3");
 		}
 
 		System.out.println("Current Angle: "+targetAngle);
