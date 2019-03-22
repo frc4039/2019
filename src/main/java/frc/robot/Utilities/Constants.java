@@ -86,7 +86,7 @@ public class Constants {
 	public static final double kHatchHomeTime = 2.5;
 	public static final double kHatchHoldTime = 2.0;
 
-	public static final double kHatchAutoHoldingPosition = 530;
+	public static final double kHatchAutoHoldingPosition = 520;
 	public static final double kHatchPositionKp = 4.0;
 	public static final double kHatchPositionKi = 0.0;
 	public static final double kHatchPositionKd = 150.0;
