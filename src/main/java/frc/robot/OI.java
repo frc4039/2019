@@ -181,6 +181,15 @@ public class OI implements Runnable {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 			}
 		}
+		
+		//turn 90 degrees
+		if (driveJoystickThrottle.getRawButton(Constants.TURN_RIGHT)) {
+			driveBaseSubsystem.setTurnRight();
+		}
+		if (driveJoystickThrottle.getRawButton(Constants.TURN_LEFT)) {
+			driveBaseSubsystem.setTurnLeft();
+		}
+			
 		//////////////////////////////////////////////////////////////
 
 		//TODO: Enable for new drivers maybe
