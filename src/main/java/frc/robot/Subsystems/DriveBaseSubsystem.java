@@ -290,7 +290,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
             mPID.setMaxOutput(1);
             mPID.setDesiredValue(0);
             //mPID.setDoneRange(0.02);
-            output = mPID.calcPID((targetAngle - getGyroAngle())/90);
+            output = mPID.calcPID((targetAngle - mNavXBoard.getRawYawDegrees())/90);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
@@ -332,11 +332,11 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		setControlMode(DriveControlState.OPEN_LOOP);		
 		
 		if (turning == false) {
-		    targetAngle = getGyroAngle() + 90;
+		    targetAngle = mNavXBoard.getRawYawDegrees() + 90;
 		    turning = true;
-		} else if (getGyroAngle() < (targetAngle - 2) || getGyroAngle > (targetAngle + 2)) {
+		} else if ((mNavXBoard.getRawYawDegrees() < (targetAngle - 2)) || (mNavXBoard.getRawYawDegrees() > (targetAngle + 2))) {
 		    turnCalcs(targetAngle);
-		} else if (getGyroAngle() >= (targetAngle - 2) && getGyroAngle <= (targetAngle + 2)) {
+		} else if ((mNavXBoard.getRawYawDegrees() >= (targetAngle - 2)) && (mNavXBoard.getRawYawDegrees() <= (targetAngle + 2))) {
 		    
 		}
 
@@ -348,11 +348,11 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		setControlMode(DriveControlState.OPEN_LOOP);		
 		
 		if (turning == false) {
-		    targetAngle = getGyroAngle() - 90;
+		    targetAngle = mNavXBoard.getRawYawDegrees() - 90;
 		    turning = true;
-		} else if (getGyroAngle() < (targetAngle - 2) || getGyroAngle > (targetAngle + 2)) {
+		} else if ((mNavXBoard.getRawYawDegrees() < (targetAngle - 2)) || (mNavXBoard.getRawYawDegrees() > (targetAngle + 2))) {
 		    turnCalcs(targetAngle);
-		} else if (getGyroAngle() >= (targetAngle - 2) && getGyroAngle <= (targetAngle + 2)) {
+		} else if ((mNavXBoard.getRawYawDegrees() >= (targetAngle - 2)) && (mNavXBoard.getRawYawDegrees() <= (targetAngle + 2))) {
 		    
 		}
 
