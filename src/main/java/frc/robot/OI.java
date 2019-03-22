@@ -183,10 +183,10 @@ public class OI implements Runnable {
 		}
 		
 		//turn 90 degrees
-		if (driveJoystickThrottle.getRawButton(Constants.TURN_RIGHT)) {
+		if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
 			driveBaseSubsystem.setTurnRight();
 		}
-		if (driveJoystickThrottle.getRawButton(Constants.TURN_LEFT)) {
+		if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
 			driveBaseSubsystem.setTurnLeft();
 		}
 			
