@@ -332,6 +332,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		setControlMode(DriveControlState.OPEN_LOOP);		
 
 		if (turning == false) {
+			mNavXBoard.reset();
 		    targetAngle = mNavXBoard.getRawYawDegrees() - 90;
 		    turning = true;
 		} else {
