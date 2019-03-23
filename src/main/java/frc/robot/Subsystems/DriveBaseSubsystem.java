@@ -335,13 +335,11 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		    targetAngle = mNavXBoard.getRawYawDegrees() + 90;
 			turning = true;
 			System.out.println("test1");
-		} else if ((mNavXBoard.getRawYawDegrees() < (targetAngle - 2)) || (mNavXBoard.getRawYawDegrees() > (targetAngle + 2))) {
+		} else {
 			System.out.println("test2");
 			turnCalcs(targetAngle);
 			mLeftMaster.set(ControlMode.PercentOutput, -output);
 			mRightMaster.set(ControlMode.PercentOutput, +output);
-		} else if ((mNavXBoard.getRawYawDegrees() >= (targetAngle - 2)) && (mNavXBoard.getRawYawDegrees() <= (targetAngle + 2))) {
-		    System.out.println("test3");
 		}
 
 		System.out.println("Current Angle: "+targetAngle);
