@@ -49,6 +49,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 	
 	private boolean turning;
 	private double targetAngle;
+	private double startAngle;
 
 
 	public static DriveBaseSubsystem getInstance() {
@@ -290,7 +291,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
         mPID.setMaxOutput(1);
         mPID.setDesiredValue(targetAngle);
         //mPID.setDoneRange(0.02);
-        output = mPID.calcPID(mNavXBoard.getRawYawDegrees());
+        output = mPID.calcPID( mNavXBoard.getRawYawDegrees() - startAngle);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
@@ -328,11 +329,12 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mRightMaster.set(ControlMode.PercentOutput, d.rightDrive + output);
 	}
 	
-	public synchronized void setTurnRight() {
+	public synchronized void setTurnToAngle(double target) {
 		setControlMode(DriveControlState.OPEN_LOOP);		
 
 		if (turning == false) {
-		    targetAngle = mNavXBoard.getRawYawDegrees() - 90;
+			targetAngle = target;
+	 		startAngle = mNavXBoard.getRawYawDegrees();
 		    turning = true;
 		} else {
 		    turnCalcs(targetAngle);
@@ -342,20 +344,6 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		
 		System.out.println("target: "+targetAngle);
 		System.out.println("current: "+mNavXBoard.getRawYawDegrees());
-	}
-	
-	public synchronized void setTurnLeft() {
-		setControlMode(DriveControlState.OPEN_LOOP);		
-		
-		if (turning == false) {
-		    targetAngle = mNavXBoard.getRawYawDegrees() + 90;
-		    turning = true;
-		} else {
-		    turnCalcs(targetAngle);
-			mLeftMaster.set(ControlMode.PercentOutput, -output);
-			mRightMaster.set(ControlMode.PercentOutput, +output);
-		}
-
 	}
 
 	public synchronized void setDriveClimb() {

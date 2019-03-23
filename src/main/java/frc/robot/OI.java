@@ -159,10 +159,10 @@ public class OI implements Runnable {
 		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
 			driveBaseSubsystem.setDriveClimb();
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
-			driveBaseSubsystem.setTurnRight();
+			driveBaseSubsystem.setTurnToAngle(-90);
 			System.out.println("hi noah");
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
-			driveBaseSubsystem.setTurnLeft();
+			driveBaseSubsystem.setTurnToAngle(90);
 			System.out.println("hi noah2");
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
