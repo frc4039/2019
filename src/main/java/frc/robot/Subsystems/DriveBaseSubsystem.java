@@ -345,6 +345,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		System.out.println("Current Angle: "+targetAngle);
 		System.out.println("Actual Angle: "+mNavXBoard.getRawYawDegrees());
 		System.out.println("output: "+output);
+		System.out.println("this should say true: "+turning);
 
 	}
 	
