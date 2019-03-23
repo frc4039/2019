@@ -158,6 +158,10 @@ public class OI implements Runnable {
 			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x/2));
 		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
 			driveBaseSubsystem.setDriveClimb();
+		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
+			driveBaseSubsystem.setTurnRight();
+		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
+			driveBaseSubsystem.setTurnLeft();
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
 			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
@@ -183,12 +187,7 @@ public class OI implements Runnable {
 		}
 		
 		//turn 90 degrees
-		if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
-			driveBaseSubsystem.setTurnRight();
-		}
-		if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
-			driveBaseSubsystem.setTurnLeft();
-		}
+		
 			
 		//////////////////////////////////////////////////////////////
 
