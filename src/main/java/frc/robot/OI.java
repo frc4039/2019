@@ -160,8 +160,10 @@ public class OI implements Runnable {
 			driveBaseSubsystem.setDriveClimb();
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
 			driveBaseSubsystem.setTurnRight();
+			System.out.println("hi noah");
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
 			driveBaseSubsystem.setTurnLeft();
+			System.out.println("hi noah2");
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
 			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
