@@ -285,20 +285,20 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	}
 	
-	public void turnCalcs(double targetAngle) {
+	public void turnCalcs(double start, double target) {
 
 		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
-        mPID.setDesiredValue(targetAngle);
+        mPID.setDesiredValue(target);
         //mPID.setDoneRange(0.02);
-        output = mPID.calcPID( mNavXBoard.getRawYawDegrees() - startAngle);
+        output = mPID.calcPID(mNavXBoard.getRawYawDegrees() - start);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
 	    //mPID.setMaxOutput(1);
 
 	    if (output > 0) {
-                output += Constants.kTurnAssistF;
+            output += Constants.kTurnAssistF;
 	    } else if (output < 0) {
 	        output -= Constants.kTurnAssistF;
 	    } 
@@ -335,15 +335,22 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		if (turning == false) {
 			targetAngle = target;
 	 		startAngle = mNavXBoard.getRawYawDegrees();
-		    turning = true;
+			turning = true;
+			System.out.println();
+			System.out.println("-------------------------------------------------------");
+			System.out.println();
+			System.out.println("Start of turn");
+			System.out.println();
 		} else {
-		    turnCalcs(targetAngle);
+		    turnCalcs(startAngle, targetAngle);
 			mLeftMaster.set(ControlMode.PercentOutput, -output);
 			mRightMaster.set(ControlMode.PercentOutput, +output);
 		}
 		
+		System.out.println("start: "+startAngle);
 		System.out.println("target: "+targetAngle);
 		System.out.println("current: "+mNavXBoard.getRawYawDegrees());
+		System.out.println();
 	}
 
 	public synchronized void setDriveClimb() {

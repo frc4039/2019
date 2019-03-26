@@ -76,6 +76,8 @@ public class Constants {
 	public static final double kHatchAcquiringPosition = 535;
 	public static final double kHatchHoldingPosition = 0; 
 	public static final double kHatchEjectPosition = 182; 
+	public static final double kHatchAutoHoldingPosition = 475;
+
 	public static final double kHatchAcquiringPercentage = 0.05;
 	public static final double kHatchHomingPercentage = -0.30;
 	public static final double kHatchSuperHold = -1;
@@ -86,7 +88,6 @@ public class Constants {
 	public static final double kHatchHomeTime = 2.5;
 	public static final double kHatchHoldTime = 2.0;
 
-	public static final double kHatchAutoHoldingPosition = 520;
 	public static final double kHatchPositionKp = 4.0;
 	public static final double kHatchPositionKi = 0.0;
 	public static final double kHatchPositionKd = 150.0;
@@ -247,7 +248,7 @@ public class Constants {
 
 	// Cargo
 	public static final int kCargoIntakeMotorId = 13;
-	public static final int kBCCargoIntakeMotorId = 0; //TODO: remove once practice bot matches compbot (VictorSP -> VictorSPX)
+	//public static final int kBCCargoIntakeMotorId = 0; //TODO: remove once practice bot matches compbot (VictorSP -> VictorSPX)
 	//public static final int kCargoShooterMotorId = 12;
 	public static final int kCargoIntakeMotorPDPChannel = 4;
 	//public static final int kCargoShooterMotorPDPChannel = 5;
@@ -256,7 +257,7 @@ public class Constants {
 	public static final int kCargoIntakeSolenoidIn = 3; 
 
 	// Climber
-	public static final int kClimberDriveMotorId = 11; //TODO: change?? when is this from, is it still a todo??
+	public static final int kClimberDriveMotorId = 11; //TODO: change?? <-when is this from, is it still a todo??
 	public static final int kClimberDriveMotorPDPChannel = 11;
 	public static final int kLeftClimberMotorId = 9;
 	public static final int kLeftClimberMotorPDPChannel = 0;

@@ -118,16 +118,16 @@ public class OI implements Runnable {
 
 		//driver
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_EXTEND)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.EXTEND);
-
+			climberSubsystem.setClimberWantedState(ClimberWantedState.EXTEND);		//starts climb sequence
 		}
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_RETRACT)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT);
+			climberSubsystem.setClimberWantedState(ClimberWantedState.RETRACT); 	//goes to retracting climber after drive (if no limit switch)
 		}
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_MANUAL)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.MANUAL);
-		} else if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_HOLD)) {
-			climberSubsystem.setClimberWantedState(ClimberWantedState.HOLD);
+			climberSubsystem.setClimberWantedState(ClimberWantedState.MANUAL);		//manual mode
+		} 
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMB_HOLD)) {
+			climberSubsystem.setClimberWantedState(ClimberWantedState.HOLD);		//stops climb in it's tracks. Can only go to manual from here
 		}
 		//////////////////////////////////////////////////////////////
 
@@ -160,10 +160,8 @@ public class OI implements Runnable {
 			driveBaseSubsystem.setDriveClimb();
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
 			driveBaseSubsystem.setTurnToAngle(-90);
-			System.out.println("hi noah");
 		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
 			driveBaseSubsystem.setTurnToAngle(90);
-			System.out.println("hi noah2");
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off
 			table.getEntry("camMode").setNumber(1); //Set camera to camera mode
@@ -187,9 +185,7 @@ public class OI implements Runnable {
 				cargoSubsystem.setCargoWantedState(CargoWantedState.HOLD);
 			}
 		}
-		
-		//turn 90 degrees
-		
+			
 			
 		//////////////////////////////////////////////////////////////
 

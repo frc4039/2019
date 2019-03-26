@@ -352,10 +352,13 @@ public class ClimberSubsystem extends Subsystem {
         if (getClimberLimitSwitchFront() == false) {
             setClimberWantedState(ClimberWantedState.RETRACT);
         } else {
+            //TODO: needs 3rd limit switch to move on in climb
             setClimberDrive();
-            ////////////////////////////////////////////////////////////////
-            // function to drive forward with climber wheels and not fall //
-            ////////////////////////////////////////////////////////////////
+            /*if (timeInState < 1) {
+                mClimberDriveMotor.set(ControlMode.PercentOutput, timeInState*0.4);
+            } else {
+                mClimberDriveMotor.set(ControlMode.PercentOutput, 0.4);
+            }*/
         }
 
         switch (mClimberWantedState) {
@@ -437,9 +440,9 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     public void setClimberDrive() {
-        double right = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.RIGHT_TRIGGER), Constants.kTriggerDeadband);
+        double yLeftStick = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kTriggerDeadband);
 
-        mClimberDriveMotor.set(ControlMode.PercentOutput, -right);
+        mClimberDriveMotor.set(ControlMode.PercentOutput, -yLeftStick);
     }
 
     public void setClimberInitiate() {

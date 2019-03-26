@@ -45,7 +45,7 @@ public class Controllers {
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
 
 		cargoIntakeMotor = new VictorSPX(Constants.kCargoIntakeMotorId);
-		CBcargoIntakeMotor = new VictorSP(Constants.kBCCargoIntakeMotorId); //TODO: remove once practice bot matches compbot
+		//CBcargoIntakeMotor = new VictorSP(Constants.kBCCargoIntakeMotorId); //TODO: remove once practice bot matches compbot
 		//cargoShooterMotor = new CustomTalonSRX(Constants.kCargoShooterMotorId, Constants.kCargoShooterMotorPDPChannel);
 		cargoIntakeSolenoid = new DoubleSolenoid(Constants.kCargoIntakeSolenoidOut, Constants.kCargoIntakeSolenoidIn);
 
@@ -75,7 +75,7 @@ public class Controllers {
 
 	private CustomTalonSRX hatchMotor;
 	private VictorSPX cargoIntakeMotor;
-	private VictorSP CBcargoIntakeMotor; //TODO: remove once practice bot matches compbot
+	//private VictorSP CBcargoIntakeMotor; //TODO: remove once practice bot matches compbot
 	//private CustomTalonSRX cargoShooterMotor;
 
 	private DoubleSolenoid cargoIntakeSolenoid;
@@ -105,9 +105,9 @@ public class Controllers {
 	}
 
 	//TODO: remove once practice bot matches compbot
-	public VictorSP getCBCargoIntakeMotor() {
-		return CBcargoIntakeMotor;
-	}
+	//public VictorSP getCBCargoIntakeMotor() {
+	//	return CBcargoIntakeMotor;
+	//}
 
 	//public CustomTalonSRX getCargoShooterMotor() {
 	//	return cargoShooterMotor;

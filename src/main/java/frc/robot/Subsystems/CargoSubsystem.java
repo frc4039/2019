@@ -36,7 +36,7 @@ public class CargoSubsystem extends Subsystem {
 
     private final DoubleSolenoid mCargoIntakeSolenoid;
     private VictorSPX mCargoIntakeMotor;
-    private VictorSP mCBCargoIntakeMotor; //TODO: remove once practice bot matches compbot
+    //private VictorSP mCBCargoIntakeMotor; //TODO: remove once practice bot matches compbot
     //private CustomTalonSRX mCargoShooterMotor;
 
     private CargoWantedState mCargoWantedState;
@@ -75,7 +75,7 @@ public class CargoSubsystem extends Subsystem {
 
         Controllers robotControllers = Controllers.getInstance();
         mCargoIntakeMotor = robotControllers.getCargoIntakeMotor();
-        mCBCargoIntakeMotor = robotControllers.getCBCargoIntakeMotor(); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor = robotControllers.getCBCargoIntakeMotor(); //TODO: remove once practice bot matches compbot
         //mCargoShooterMotor = robotControllers.getCargoShooterMotor();
         mCargoIntakeSolenoid = robotControllers.getCargoIntakeSolenoid();
 
@@ -87,7 +87,7 @@ public class CargoSubsystem extends Subsystem {
 
     public void init() {
         mCargoIntakeMotor.setInverted(true);
-        mCBCargoIntakeMotor.setInverted(true); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor.setInverted(true); //TODO: remove once practice bot matches compbot
 		//mCargoShooterMotor.setInverted(true);
 
         setBrakeMode(false);
@@ -209,7 +209,7 @@ public class CargoSubsystem extends Subsystem {
 
     protected CargoSystemState handleIntaking(double timeInState) {
         mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoIntakingSpeed);
-        mCBCargoIntakeMotor.set(Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor.set(Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
         
         switch (mCargoWantedState) {
             case INTAKE:
@@ -217,7 +217,7 @@ public class CargoSubsystem extends Subsystem {
             case HOLD:
                 setIntakeUp();
                 mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
-                mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
+                //mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
                 return CargoSystemState.HOLDING;
             case PUSH:
                 setIntakeOut();
@@ -229,13 +229,13 @@ public class CargoSubsystem extends Subsystem {
 
     private CargoSystemState handlePushing(double timeInState) {
         mCargoIntakeMotor.set(ControlMode.PercentOutput, -Constants.kCargoIntakingSpeed);
-        mCBCargoIntakeMotor.set(-Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor.set(-Constants.kCargoIntakingSpeed); //TODO: remove once practice bot matches compbot
 
         switch (mCargoWantedState) {
         case HOLD:
             setIntakeUp();
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
-            mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
+            //mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
             return CargoSystemState.HOLDING;
         case INTAKE:
             return CargoSystemState.INTAKING;
@@ -294,7 +294,7 @@ public class CargoSubsystem extends Subsystem {
     private CargoSystemState handleShooting(double timeInState) {
 
         mCargoIntakeMotor.set(ControlMode.PercentOutput, Constants.kCargoFeedingSpeed);
-        mCBCargoIntakeMotor.set(Constants.kCargoFeedingSpeed); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor.set(Constants.kCargoFeedingSpeed); //TODO: remove once practice bot matches compbot
         //mCargoShooterMotor.set(ControlMode.Velocity, Constants.kCargoShootingVelocity);
     
         if (timeInState > 1.0) {
@@ -363,7 +363,7 @@ public class CargoSubsystem extends Subsystem {
         double y = QuickMaths.normalizeJoystickWithDeadband(-operatorJoystick.getRawAxis(Constants.OPERATOR_X_AXIS), Constants.kJoystickDeadband);
 
         mCargoIntakeMotor.set(ControlMode.PercentOutput, y*y*y*y*y/1.5); 
-        mCBCargoIntakeMotor.set(y*y*y*y*y/1.5); //TODO: remove once practice bot matches compbot
+        //mCBCargoIntakeMotor.set(y*y*y*y*y/1.5); //TODO: remove once practice bot matches compbot
 
     }
 
