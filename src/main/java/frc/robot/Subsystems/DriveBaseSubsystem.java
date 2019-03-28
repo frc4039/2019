@@ -290,7 +290,15 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
         mPID.setDesiredValue(target);
-        //mPID.setDoneRange(0.02);
+		//mPID.setDoneRange(0.02);
+		double current = mNavXBoard.getRawYawDegrees();
+		
+		if (target - current > 180) {
+			current = 360 + current;
+		} else if (target - current < -180) {
+			current = 360 - current;
+		}
+
         output = mPID.calcPID(mNavXBoard.getRawYawDegrees() - start);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
@@ -307,6 +315,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		turning = false;
+		System.out.println(turning);
 		
 		setControlMode(DriveControlState.OPEN_LOOP);
 
@@ -318,6 +327,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	public synchronized void setVisionAssist(DriveMotorValues d) {
 		turning = false;
+		System.out.println(turning);
 	
 		setControlMode(DriveControlState.OPEN_LOOP);		
 
@@ -350,7 +360,8 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		System.out.println("start: "+startAngle);
 		System.out.println("target: "+targetAngle);
 		System.out.println("current: "+mNavXBoard.getRawYawDegrees());
-		System.out.println();
+		System.out.println("adjusted: "+(mNavXBoard.getRawYawDegrees()-startAngle));
+		System.out.println("_________");
 	}
 
 	public synchronized void setDriveClimb() {

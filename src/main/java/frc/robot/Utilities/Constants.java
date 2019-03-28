@@ -166,10 +166,10 @@ public class Constants {
 	public static final double kVisionAssistF = 0.0;
 	public static final double kVisionAssistEpsilon = 0;
 
-	public static final double kTurnAssistP = 0.04;
+	public static final double kTurnAssistP = 0.01;
 	public static final double kTurnAssistI = 0;
 	public static final double kTurnAssistD = 10;
-	public static final double kTurnAssistF = 0.12;
+	public static final double kTurnAssistF = 0.10;
 	public static final double kTurnAssistEpsilon = 0;
 
 	// Wheels
