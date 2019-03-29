@@ -10,10 +10,11 @@ public class CRampReverseFrontSide_1 implements PathContainer {
 	@Override
 	public Path buildPath() {
 		ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
-		sWaypoints.add(new Waypoint(70,185,0,0));
-        sWaypoints.add(new Waypoint(120,185,20,30));
-        sWaypoints.add(new Waypoint(160,173,20,30));
+		sWaypoints.add(new Waypoint(70,173,0,0));
         sWaypoints.add(new Waypoint(208,173,0,30));
+        //sWaypoints.add(new Waypoint(120,185,20,30));
+        //sWaypoints.add(new Waypoint(160,173,20,30));
+        //sWaypoints.add(new Waypoint(208,173,0,30));
 
 		return PathBuilder.buildPathFromWaypoints(sWaypoints);
 	}

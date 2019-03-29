@@ -13,6 +13,7 @@ import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.TestMode;
 import frc.robot.Autonomous.Modes.CRampReverseFrontSide;
+import frc.robot.Autonomous.Modes.LRampDoubleSide;
 import frc.robot.Autonomous.Modes.DriverControlMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
@@ -73,10 +74,8 @@ public class Robot extends CustomRobot {
 
 		autoChooser = new SendableChooser<String>();
         autoChooser.addDefault("Driver Control", "DriverControl");
-        autoChooser.addObject("Cargoship Left", "CargoShipLeftMode");
-		autoChooser.addObject("Cargoship Front", "CargoShipFrontMode");
-		autoChooser.addObject("Cargoship Right", "CargoShipBlueRightMode");
-		autoChooser.addObject("Test", "TestMode");
+		autoChooser.addObject("Center Reverse Front to Side", "Center Reverse Front to Side");
+		autoChooser.addObject("Left Ramp Double Side","LRampDoubleSide");
 
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
 		
@@ -92,8 +91,13 @@ public class Robot extends CustomRobot {
         System.out.println(selectedAuto);
         switch (selectedAuto) {
         case "Center Reverse Front to Side":
-            autoMode = new CRampReverseFrontSide();
-            break;
+			autoMode = new CRampReverseFrontSide();
+			noAuto = false;
+			break;
+		case "LRampDoubleSide":
+			autoMode = new LRampDoubleSide();
+			noAuto = false;
+			break;
         default:
 			autoMode = new DriverControlMode();
 			noAuto = true;
@@ -107,6 +111,8 @@ public class Robot extends CustomRobot {
 	
 		autoModeExecuter.start();
 		threadRateControl.start(true);
+
+		noAuto = true;
 
 		while (isAutonomous() && isEnabled()) {
 			if (noAuto == true){

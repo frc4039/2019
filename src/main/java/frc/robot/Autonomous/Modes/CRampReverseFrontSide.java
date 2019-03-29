@@ -29,9 +29,9 @@ public class CRampReverseFrontSide extends AutoModeBase {
 		runAction(new DrivePathAction(pathContainer));
         runAction(new WaitAction(3));
         ////runAction(new IntakeOutAction());
-        runAction(new ParallelAction(Arrays.asList(new DrivePathAction(new CRampReverseFrontSide_2()),
-				new SeriesAction(Arrays.asList(new WaitForPathMarkerAction("IntakeUp"),
-						new IntakeInAction())))));
+        //runAction(new ParallelAction(Arrays.asList(new DrivePathAction(new CRampReverseFrontSide_2()),
+		//		new SeriesAction(Arrays.asList(new WaitForPathMarkerAction("IntakeUp"),
+		//				new IntakeInAction())))));
         //runAction(new DrivePathAction(new CRampReverseFrontSide_2()));
         //runAction(new IntakeInAction());
         //runAction(new GrabHatchAction());

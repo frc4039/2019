@@ -281,6 +281,8 @@ public class ClimberSubsystem extends Subsystem {
             case MANUAL:
 
                 return ClimberSystemState.MANUALING;
+            case HOLD: 
+                return ClimberSystemState.HOLDING;
             default:
     
                 return ClimberSystemState.INITIATING;
@@ -331,6 +333,8 @@ public class ClimberSubsystem extends Subsystem {
             case MANUAL:
 
                 return ClimberSystemState.MANUALING;
+            case HOLD:
+                return ClimberSystemState.HOLDING;
             default:
     
                 return ClimberSystemState.EXTENDING;
@@ -359,6 +363,8 @@ public class ClimberSubsystem extends Subsystem {
             case MANUAL:
 
                 return ClimberSystemState.MANUALING;
+            case HOLD:
+                return ClimberSystemState.HOLDING;
             default:
     
                 return ClimberSystemState.DRIVING;
