@@ -158,9 +158,13 @@ public class OI implements Runnable {
 			driveBaseSubsystem.setVisionAssist(new DriveMotorValues(y, x/2));
 		} else if (climberSubsystem.getClimberSystemState() == "DRIVING" || climberSubsystem.getClimberSystemState() == "RETRACTING") {
 			driveBaseSubsystem.setDriveClimb();
-		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_RIGHT) {
-			driveBaseSubsystem.setTurnToAngle(-90);
-		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_LEFT) {
+		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_0) {
+			driveBaseSubsystem.setTurnToAngle(0);
+		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_90) {
+			driveBaseSubsystem.setTurnToAngle(270);
+		}else if (driveJoystickThrottle.getPOV()==Constants.TURN_180) {
+			driveBaseSubsystem.setTurnToAngle(180);
+		} else if (driveJoystickThrottle.getPOV()==Constants.TURN_270) {
 			driveBaseSubsystem.setTurnToAngle(90);
 		} else {
 			table.getEntry("ledMode").setNumber(1); //Turns LED's off

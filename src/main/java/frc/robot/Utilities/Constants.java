@@ -27,8 +27,10 @@ public class Constants {
 	public static final int VISION_ASSIST = 5; //Left bumper
 	public static final int DRIVER_SCORE = 6; //Right bumper
 	public static final int DRIVER_INTAKE = 9; //Left stick click
-	public static final int TURN_RIGHT = 90;
-	public static final int TURN_LEFT = 270;
+	public static final int TURN_0 = 0;
+	public static final int TURN_90 = 90;
+	public static final int TURN_180 = 180;
+	public static final int TURN_270 = 270;
  
 
 	//Operator controller axis

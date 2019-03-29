@@ -293,13 +293,11 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		//mPID.setDoneRange(2);
 		double current = mNavXBoard.getRawYawDegrees();
 		
-		if (target - current > 180) {
+		if (target != 0 && current < 0){
 			current = 360 + current;
-		} else if (target - current < -180) {
-			current = 360 - current;
-		}
+		}		
 
-        output = mPID.calcPID(current - start);
+        output = mPID.calcPID(current);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
@@ -309,13 +307,17 @@ public class DriveBaseSubsystem implements CustomSubsystem {
             output += Constants.kTurnAssistF;
 	    } else if (output < 0) {
 	        output -= Constants.kTurnAssistF;
-	    } 
+		} 
+		
+		SmartDashboard.putNumber("start: ",startAngle);
+		SmartDashboard.putNumber("target: ",targetAngle);
+		SmartDashboard.putNumber("current: ",current);
+		SmartDashboard.putNumber("actual: ",(mNavXBoard.getRawYawDegrees()));
 
 	}
 
 	public synchronized void setDriveOpenLoop(DriveMotorValues d) {
 		turning = false;
-		System.out.println(turning);
 		
 		setControlMode(DriveControlState.OPEN_LOOP);
 
@@ -327,7 +329,6 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 	public synchronized void setVisionAssist(DriveMotorValues d) {
 		turning = false;
-		System.out.println(turning);
 	
 		setControlMode(DriveControlState.OPEN_LOOP);		
 
@@ -344,24 +345,15 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		if (turning == false) {
 			targetAngle = target;
-	 		startAngle = mNavXBoard.getRawYawDegrees();
+			startAngle = mNavXBoard.getRawYawDegrees();
 			turning = true;
-			System.out.println();
-			System.out.println("-------------------------------------------------------");
-			System.out.println();
-			System.out.println("Start of turn");
-			System.out.println();
 		} else {
 		    turnCalcs(startAngle, targetAngle);
 			mLeftMaster.set(ControlMode.PercentOutput, -output);
 			mRightMaster.set(ControlMode.PercentOutput, +output);
 		}
 		
-		System.out.println("start: "+startAngle);
-		System.out.println("target: "+targetAngle);
-		System.out.println("current: "+mNavXBoard.getRawYawDegrees());
-		System.out.println("adjusted: "+(mNavXBoard.getRawYawDegrees()-startAngle));
-		System.out.println("_________");
+		
 	}
 
 	public synchronized void setDriveClimb() {
