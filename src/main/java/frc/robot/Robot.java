@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.TestMode;
-import frc.robot.Autonomous.Modes.CargoShipLeftMode;
-import frc.robot.Autonomous.Modes.CargoShipFrontMode;
-import frc.robot.Autonomous.Modes.CargoShipBlueRightMode;
+import frc.robot.Autonomous.Modes.CRampReverseFrontSide;
 import frc.robot.Autonomous.Modes.DriverControlMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
@@ -93,25 +91,14 @@ public class Robot extends CustomRobot {
 		String selectedAuto = (String) autoChooser.getSelected();
         System.out.println(selectedAuto);
         switch (selectedAuto) {
-        case "CargoShipLeftMode":
-            autoMode = new CargoShipLeftMode();
+        case "Center Reverse Front to Side":
+            autoMode = new CRampReverseFrontSide();
             break;
-        case "CargoShipFrontMode":
-            autoMode = new CargoShipFrontMode();
-			break;
-		case "CargoShipBlueRightMode":
-			autoMode = new CargoShipBlueRightMode();
-			break;
-		case "TestMode":
-			autoMode = new TestMode();
-			break;
         default:
 			autoMode = new DriverControlMode();
 			noAuto = true;
             break;
 		}
-		
-		AutoModeBase autoMode = new CargoShipLeftMode();
 
 		if (autoMode != null)
 			autoModeExecuter.setAutoMode(autoMode);

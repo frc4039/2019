@@ -321,13 +321,13 @@ public class CargoSubsystem extends Subsystem {
         }
     }
 
-    private void setIntakeOut() {
+    public void setIntakeOut() {
         kIntakeOut = true;
         kIntakeIn = !kIntakeOut;
         mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
-    private void setIntakeUp() {
+    public void setIntakeUp() {
         kIntakeOut = false;
         kIntakeIn = !kIntakeOut;
         mCargoIntakeSolenoid.set(DoubleSolenoid.Value.kForward);

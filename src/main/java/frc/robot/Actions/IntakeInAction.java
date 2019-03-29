@@ -2,8 +2,8 @@ package frc.robot.Actions;
 
 import frc.robot.Actions.Framework.Action;
 import frc.robot.Subsystems.DriveBaseSubsystem;
-import frc.robot.Subsystems.HatchSubsystem;
-import frc.robot.Subsystems.HatchSubsystem.HatchWantedState;
+import frc.robot.Subsystems.CargoSubsystem;
+import frc.robot.Subsystems.CargoSubsystem.CargoWantedState;
 import frc.robot.Utilities.TrajectoryFollowingMotion.Path;
 import frc.robot.Utilities.TrajectoryFollowingMotion.PathContainer;
 
@@ -15,12 +15,12 @@ import frc.robot.Utilities.TrajectoryFollowingMotion.PathContainer;
 
  
 
-public class GrabHatchAction implements Action {
+public class IntakeInAction implements Action {
 
-    private HatchSubsystem hatchSubsystem;    
+    private CargoSubsystem cargoSubsystem;    
 
-    public GrabHatchAction() {
-        hatchSubsystem = HatchSubsystem.getInstance();
+    public IntakeInAction() {
+        cargoSubsystem = CargoSubsystem.getInstance();
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class GrabHatchAction implements Action {
 	@Override
 	public void start() {
 
-		hatchSubsystem.setHatchWantedState(HatchWantedState.SUPERHOLD);
+		cargoSubsystem.setIntakeUp();
 
 	}
 }
