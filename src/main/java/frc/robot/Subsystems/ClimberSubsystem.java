@@ -265,11 +265,6 @@ public class ClimberSubsystem extends Subsystem {
 
         if (getClimberLimitSwitchTop() == true) {
             mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
-            if (mClimberEncoder.getPosition() > Constants.kClimberFirstLimitSwitch){
-                mClimber.setReference(0, ControlType.kDutyCycle);
-                mClimberEncoder.setPosition(0);
-                setClimberWantedState(ClimberWantedState.READY);
-            }
         } else if (getClimberLimitSwitchTop() == false) {
             mClimber.setReference(0, ControlType.kDutyCycle);
             mClimberEncoder.setPosition(0);
@@ -324,11 +319,7 @@ public class ClimberSubsystem extends Subsystem {
         if (getClimberLimitSwitchBottom() == false) {
             setClimberWantedState(ClimberWantedState.DRIVE);
         } else if (getClimberLimitSwitchBottom() == true) {
-            if (mClimberEncoder.getPosition() <= Constants.kClimberDown) {
-                mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
-            } else {
-                setClimberWantedState(ClimberWantedState.DRIVE);
-            }
+            mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
         }
 
         switch (mClimberWantedState) {
@@ -392,7 +383,7 @@ public class ClimberSubsystem extends Subsystem {
 
         mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
 
-        if (mClimberEncoder.getPosition() > 0) {
+        if (mClimberEncoder.getPosition() > 100) {
             mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
         } else {
             mClimber.setReference(0, ControlType.kDutyCycle);
