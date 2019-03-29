@@ -145,8 +145,8 @@ public class HatchSubsystem extends Subsystem {
         @Override
         public void onStart(double timestamp) {
             synchronized (HatchSubsystem.this) {
-                mHatchSystemState = HatchSystemState.HOLDING;
-                mHatchWantedState = HatchWantedState.HOLD;
+                mHatchSystemState = HatchSystemState.HOMING;
+                mHatchWantedState = HatchWantedState.HOME;
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }

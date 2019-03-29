@@ -325,9 +325,9 @@ public class ClimberSubsystem extends Subsystem {
             setClimberWantedState(ClimberWantedState.DRIVE);
         } else if (getClimberLimitSwitchBottom() == true) {
             if (mClimberEncoder.getPosition() <= Constants.kClimberDown) {
-                setClimberWantedState(ClimberWantedState.DRIVE);
-            } else {
                 mClimber.setReference(Constants.kClimberDownFast, ControlType.kDutyCycle);
+            } else {
+                setClimberWantedState(ClimberWantedState.DRIVE);
             }
         }
 
@@ -442,7 +442,7 @@ public class ClimberSubsystem extends Subsystem {
     public void setClimberDrive() {
         double yLeftStick = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y_AXIS), Constants.kTriggerDeadband);
 
-        mClimberDriveMotor.set(ControlMode.PercentOutput, -yLeftStick);
+        mClimberDriveMotor.set(ControlMode.PercentOutput, yLeftStick);
     }
 
     public void setClimberInitiate() {

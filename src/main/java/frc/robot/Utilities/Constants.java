@@ -81,7 +81,7 @@ public class Constants {
 	public static final double kHatchAcquiringPercentage = 0.05;
 	public static final double kHatchHomingPercentage = -0.30;
 	public static final double kHatchSuperHold = -1;
-	public static final double kHatchVoltageLimit = 0.4;
+	public static final double kHatchVoltageLimit = 0.3;
 	public static final double kHatchVoltageUnlimited = 1.0;
 
 	public static final double kHatchEjectTime = 0.25;

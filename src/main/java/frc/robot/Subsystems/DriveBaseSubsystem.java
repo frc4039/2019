@@ -290,7 +290,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 		mPID = new SimPID(Constants.kTurnAssistP, Constants.kTurnAssistI, Constants.kTurnAssistD);
         mPID.setMaxOutput(1);
         mPID.setDesiredValue(target);
-		//mPID.setDoneRange(0.02);
+		//mPID.setDoneRange(2);
 		double current = mNavXBoard.getRawYawDegrees();
 		
 		if (target - current > 180) {
@@ -299,7 +299,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 			current = 360 - current;
 		}
 
-        output = mPID.calcPID(mNavXBoard.getRawYawDegrees() - start);
+        output = mPID.calcPID(current - start);
 		
 	    //mPID.setConstants(Constants.kVisionAssistP, Constants.kVisionAssistI, Constants.kVisionAssistD);
 	    //mPID.setDesiredValue(0);
