@@ -21,7 +21,7 @@ public class CRampReverseFrontSide_1 implements PathContainer {
 
 	@Override
 	public RigidTransform2d getStartPose() {
-		return new RigidTransform2d(new Translation2d(70, 185), Rotation2d.fromDegrees(0));
+		return new RigidTransform2d(new Translation2d(70, 173), Rotation2d.fromDegrees(0));
 	}
 
 	@Override
