@@ -238,6 +238,8 @@ public class CargoSubsystem extends Subsystem {
             //mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
             return CargoSystemState.HOLDING;
         case INTAKE:
+            setIntakeUp();
+            mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.INTAKING;
         default:
             return CargoSystemState.PUSHING;
