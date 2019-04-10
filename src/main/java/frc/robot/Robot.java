@@ -146,14 +146,14 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		Controllers.getInstance().getCompressor().start();
-		//Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+		Controllers.getInstance().getCompressor().setClosedLoopControl(true);
 		
 		
 
 		while (isOperatorControl() && isEnabled()) {
 
 			if ((climberSubsystem.getClimberSystemState() == "HOLDING") || (climberSubsystem.getClimberSystemState() == "READYING")){
-				Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+				
 			} else {
 				Controllers.getInstance().getCompressor().setClosedLoopControl(false);
 			}
