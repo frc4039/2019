@@ -153,7 +153,7 @@ public class Robot extends CustomRobot {
 		while (isOperatorControl() && isEnabled()) {
 
 			if ((climberSubsystem.getClimberSystemState() == "HOLDING") || (climberSubsystem.getClimberSystemState() == "READYING")){
-				
+				Controllers.getInstance().getCompressor().setClosedLoopControl(true);
 			} else {
 				Controllers.getInstance().getCompressor().setClosedLoopControl(false);
 			}
