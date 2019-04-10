@@ -326,8 +326,6 @@ public class ClimberSubsystem extends Subsystem {
 
         switch (mClimberWantedState) {
             case DRIVE:
-                
-                mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
 
                 return ClimberSystemState.DRIVING;
             case MANUAL:
@@ -354,6 +352,12 @@ public class ClimberSubsystem extends Subsystem {
             } else {
                 mClimberDriveMotor.set(ControlMode.PercentOutput, 0.4);
             }*/
+        }
+
+        if (getClimberLimitSwitchBottom() == false){
+            mClimber.setReference(0, ControlType.kDutyCycle);
+        } else {
+            mClimber.setReference(Constants.kClimberHoldPositionSpeed, ControlType.kDutyCycle);
         }
 
         switch (mClimberWantedState) {

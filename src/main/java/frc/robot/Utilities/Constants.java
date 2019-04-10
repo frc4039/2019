@@ -155,7 +155,7 @@ public class Constants {
 	public static final double kClimberDownFast = 1.0;
 	public static final double kClimberDownSlow = 0.5;
 	public static final double kClimberRetractSpeed = -1.0;
-	public static final double kClimberHoldPositionSpeed = 0.01;
+	public static final double kClimberHoldPositionSpeed = 0.05;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
