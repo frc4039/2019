@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.TestMode;
+import frc.robot.Autonomous.Modes.CLVisionFrontSide;
 import frc.robot.Autonomous.Modes.CRampReverseFrontSide;
 import frc.robot.Autonomous.Modes.LRampDoubleSide;
+import frc.robot.Autonomous.Modes.LVisionLeftLeft;
 import frc.robot.Autonomous.Modes.DriverControlMode;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
@@ -73,9 +75,13 @@ public class Robot extends CustomRobot {
 		CameraServer.getInstance().startAutomaticCapture(0);
 
 		autoChooser = new SendableChooser<String>();
-        autoChooser.addDefault("Driver Control", "DriverControl");
+		autoChooser.addDefault("Driver Control", "DriverControl");
+		
 		autoChooser.addObject("Center Reverse Front to Side", "Center Reverse Front to Side");
 		autoChooser.addObject("Left Ramp Double Side","LRampDoubleSide");
+		
+		autoChooser.addObject("Vision Left","LVisionLeftLeft");
+		autoChooser.addObject("Vision Center (left)","CLVisionFrontSide");
 
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
 		
@@ -90,12 +96,20 @@ public class Robot extends CustomRobot {
 		String selectedAuto = (String) autoChooser.getSelected();
         System.out.println(selectedAuto);
         switch (selectedAuto) {
-        case "Center Reverse Front to Side":
+		case "Center Reverse Front to Side":
 			autoMode = new CRampReverseFrontSide();
 			noAuto = false;
 			break;
 		case "LRampDoubleSide":
 			autoMode = new LRampDoubleSide();
+			noAuto = false;
+			break;
+		case "LVisionLeftLeft":
+			autoMode = new LVisionLeftLeft();
+			noAuto = false;
+			break;
+		case "CLVisionFrontSide":
+			autoMode = new CLVisionFrontSide();
 			noAuto = false;
 			break;
         default:
@@ -120,6 +134,7 @@ public class Robot extends CustomRobot {
 				oI.run();
 			} else {
 				threadRateControl.doRateControl(100);
+				noAuto = oI.autoCancel();
 			}
 		}
 	}
@@ -131,9 +146,18 @@ public class Robot extends CustomRobot {
 		threadRateControl.start(true);
 
 		Controllers.getInstance().getCompressor().start();
-		Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+		//Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+		
+		
 
 		while (isOperatorControl() && isEnabled()) {
+
+			if ((climberSubsystem.getClimberSystemState() == "HOLDING") || (climberSubsystem.getClimberSystemState() == "READYING")){
+				Controllers.getInstance().getCompressor().setClosedLoopControl(true);
+			} else {
+				Controllers.getInstance().getCompressor().setClosedLoopControl(false);
+			}
+
 			oI.run();
 			threadRateControl.doRateControl(20);
 		}

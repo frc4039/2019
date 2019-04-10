@@ -45,6 +45,7 @@ public class Constants {
 	public static final int CARGO_INTAKE = 5; //Left bumper
 	public static final int CARGO_HOLD = 6; //Right bumper
 	public static final int CARGO_SHOOTER = 7; //Left tiny button
+	public static final int AUTO_RESET = 8; //Right tiny button??
 	public static final int RESET_ENCODER = 10; //Left stick click
 	public static final int CARGO_PUSH = 9; //Fake button? To be reassigned
 
@@ -167,6 +168,8 @@ public class Constants {
 	public static final double kVisionAssistD = 10;
 	public static final double kVisionAssistF = 0.0;
 	public static final double kVisionAssistEpsilon = 0;
+
+	public static final double kAutoDriveVision = 0.2; //forward percent value for camera auto
 
 	public static final double kTurnAssistP = 0.01;
 	public static final double kTurnAssistI = 0;

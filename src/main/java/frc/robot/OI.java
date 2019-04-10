@@ -15,6 +15,7 @@ import frc.robot.Utilities.Drivers.CustomJoystick;
 import frc.robot.Utilities.TrajectoryFollowingMotion.Util;
 
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class OI implements Runnable {
 	private static OI instance = null;
@@ -58,6 +59,14 @@ public class OI implements Runnable {
 
 	@Override
 	public void run() {
+
+		if (hatchSubsystem.getHatchSystemState() == "SUPERHOLDING"){
+			operatorJoystick.setRumble(RumbleType.kLeftRumble, 1);
+			operatorJoystick.setRumble(RumbleType.kRightRumble, 1);
+		} else {
+			operatorJoystick.setRumble(RumbleType.kLeftRumble, 0);
+			operatorJoystick.setRumble(RumbleType.kRightRumble, 0);
+		}
 		//////////////////////////////////////////////////////////////
 		//Hatch Control
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_PICKUP)) {
@@ -274,5 +283,13 @@ public class OI implements Runnable {
 		double x = QuickMaths.normalizeJoystickWithDeadband(driveJoystickThrottle.getRawAxis(Constants.DRIVE_X), Constants.kJoystickDeadband);
 		double y = QuickMaths.normalizeJoystickWithDeadband(-driveJoystickThrottle.getRawAxis(Constants.DRIVE_Y), Constants.kJoystickDeadband);
 		//////////////////////////////////////////////////////////////
+	}
+
+	public boolean autoCancel() {
+		if (operatorJoystick.getRisingEdgeButton(Constants.AUTO_RESET)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
