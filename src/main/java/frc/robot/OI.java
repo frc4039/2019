@@ -293,4 +293,14 @@ public class OI implements Runnable {
 			return false;
 		}
 	}
+
+	public void turnOnLimeLight() {
+		table.getEntry("ledMode").setNumber(3); //Turns LED's on
+		table.getEntry("camMode").setNumber(0); //Set camera to vision mode
+	}
+
+	public void turnOffLimeLight() {
+		table.getEntry("ledMode").setNumber(1); //Turns LED's off
+		table.getEntry("camMode").setNumber(1); //Set camera to camera mode
+	}
 }

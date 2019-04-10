@@ -128,6 +128,8 @@ public class Robot extends CustomRobot {
 
 		noAuto = true;
 
+		oI.turnOnLimeLight();
+
 		while (isAutonomous() && isEnabled()) {
 			if (noAuto == true){
 				threadRateControl.doRateControl(20);
