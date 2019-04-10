@@ -389,7 +389,7 @@ public class ClimberSubsystem extends Subsystem {
 
         mClimberDriveMotor.set(ControlMode.PercentOutput, -Constants.kClimbRetractTinyWheelsPercent);
 
-        if (mClimberEncoder.getPosition() > -100) {
+        if (mClimberEncoder.getPosition() > -50) {
             mClimber.setReference(Constants.kClimberRetractSpeed, ControlType.kDutyCycle);
         } else {
             mClimber.setReference(0, ControlType.kDutyCycle);
