@@ -31,24 +31,13 @@ public class LVisionLeftLeft extends AutoModeBase {
 		runAction(new DrivePathAction(pathContainer));
 		runAction(new AutoVisionAction());
 		runAction(new ScoreHatchAction());
-		runAction(new DrivePathAction(new LVisionLeftLeft_2()));
-		runAction(new DrivePathAction(new LVisionLeftLeft_3()));
-		runAction(new AutoVisionAction());
-		runAction(new GrabHatchAction());
-		runAction(new DrivePathAction(new LVisionLeftLeft_4()));
-		runAction(new AutoVisionAction());
-		runAction(new ScoreHatchAction());
-        ////runAction(new IntakeOutAction());
-        //runAction(new ParallelAction(Arrays.asList(new DrivePathAction(new CRampReverseFrontSide_2()),
-		//		new SeriesAction(Arrays.asList(new WaitForPathMarkerAction("IntakeUp"),
-		//				new IntakeInAction())))));
-        //runAction(new DrivePathAction(new CRampReverseFrontSide_2()));
-        //runAction(new IntakeInAction());
-        //runAction(new GrabHatchAction());
-		//runAction(new WaitAction(3));
-        //runAction(new DrivePathAction(new CRampReverseFrontSide_3()));
-		//runAction(new WaitAction(3));
-        //runAction(new DrivePathAction(new CRampReverseFrontSide_4()));  
-        //runAction(new ScoreHatchAction()); 
+		//runAction(new DrivePathAction(new LVisionLeftLeft_2()));
+		//runAction(new DrivePathAction(new LVisionLeftLeft_3()));
+		//runAction(new AutoVisionAction());
+		//runAction(new GrabHatchAction());
+		//runAction(new DrivePathAction(new LVisionLeftLeft_4()));
+		//runAction(new AutoVisionAction());
+		//runAction(new ScoreHatchAction());
+        
 	}
 }
