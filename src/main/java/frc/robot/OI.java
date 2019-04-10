@@ -61,11 +61,11 @@ public class OI implements Runnable {
 	public void run() {
 
 		if (hatchSubsystem.getHatchSystemState() == "SUPERHOLDING"){
-			operatorJoystick.setRumble(RumbleType.kLeftRumble, 1);
-			operatorJoystick.setRumble(RumbleType.kRightRumble, 1);
+			driveJoystickThrottle.setRumble(RumbleType.kLeftRumble, 1);
+			driveJoystickThrottle.setRumble(RumbleType.kRightRumble, 1);
 		} else {
-			operatorJoystick.setRumble(RumbleType.kLeftRumble, 0);
-			operatorJoystick.setRumble(RumbleType.kRightRumble, 0);
+			driveJoystickThrottle.setRumble(RumbleType.kLeftRumble, 0);
+			driveJoystickThrottle.setRumble(RumbleType.kRightRumble, 0);
 		}
 		//////////////////////////////////////////////////////////////
 		//Hatch Control
