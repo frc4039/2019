@@ -120,10 +120,11 @@ public class OI implements Runnable {
 		//operator
 		if (operatorJoystick.getRisingEdgeButton(Constants.CLIMBER_INITIATE)) {
 			climberSubsystem.setClimberWantedState(ClimberWantedState.INITIATE);
+			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
-		if (operatorJoystick.getRisingEdgeButton(Constants.RESET_ENCODER)) {
-			climberSubsystem.subsystemHome();
-		}
+		//if (operatorJoystick.getRisingEdgeButton(Constants.RESET_ENCODER)) {
+		//	climberSubsystem.subsystemHome();
+		//}
 
 		//driver
 		if (driveJoystickThrottle.getRisingEdgeButton(Constants.CLIMBER_EXTEND)) {
