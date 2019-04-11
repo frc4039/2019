@@ -11,7 +11,7 @@ public class CLVisionFrontSide_3 implements PathContainer {
 	public Path buildPath() {
 		ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
 		sWaypoints.add(new Waypoint(180,295,0,0));
-		sWaypoints.add(new Waypoint(80,295,0,30));
+		sWaypoints.add(new Waypoint(120,295,0,30));
         
 
 		return PathBuilder.buildPathFromWaypoints(sWaypoints);

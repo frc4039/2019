@@ -169,7 +169,7 @@ public class Constants {
 	public static final double kVisionAssistF = 0.0;
 	public static final double kVisionAssistEpsilon = 0;
 
-	public static final double kAutoDriveVision = 0.2; //forward percent value for camera auto
+	public static final double kAutoDriveVision = 0.25; //forward percent value for camera auto
 
 	public static final double kTurnAssistP = 0.01;
 	public static final double kTurnAssistI = 0;

@@ -29,6 +29,7 @@ public class LVisionLeftLeft extends AutoModeBase {
 		PathContainer pathContainer = new LVisionLeftLeft_1();
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
+		runAction(new WaitAction(2));
 		runAction(new AutoVisionAction());
 		runAction(new ScoreHatchAction());
 		//runAction(new DrivePathAction(new LVisionLeftLeft_2()));

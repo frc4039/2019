@@ -126,7 +126,7 @@ public class Robot extends CustomRobot {
 		autoModeExecuter.start();
 		threadRateControl.start(true);
 
-		noAuto = true;
+		//noAuto = true;
 
 		oI.turnOnLimeLight();
 

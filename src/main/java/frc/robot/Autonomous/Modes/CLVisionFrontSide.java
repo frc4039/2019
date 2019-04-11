@@ -29,10 +29,12 @@ public class CLVisionFrontSide extends AutoModeBase {
 		PathContainer pathContainer = new CLVisionFrontSide_1();
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
+		//runAction(new WaitAction(0));
 		runAction(new AutoVisionAction());
 		runAction(new ScoreHatchAction());
-		//runAction(new DrivePathAction(new CLVisionFrontSide_2()));
-		//runAction(new DrivePathAction(new CLVisionFrontSide_3()));
+		//runAction(new WaitAction(1));
+		runAction(new DrivePathAction(new CLVisionFrontSide_2()));
+		runAction(new DrivePathAction(new CLVisionFrontSide_3()));
 		//runAction(new AutoVisionAction());
 		//runAction(new GrabHatchAction());
 		//runAction(new DrivePathAction(new CLVisionFrontSide_4()));

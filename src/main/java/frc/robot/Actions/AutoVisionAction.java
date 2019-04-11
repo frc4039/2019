@@ -12,12 +12,17 @@ public class AutoVisionAction implements Action {
 
     private DriveBaseSubsystem mDrive = DriveBaseSubsystem.getInstance();
 
+    public boolean check = false;
+
     public AutoVisionAction() {
     }
 
     @Override
     public boolean isFinished() {
-        if ((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) < 0.5) {
+        if ((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) > 0.5) {
+            check = true;
+        }
+        if (((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) < 0.5) && check == true) {
             return true;
         } else {
             return false;

@@ -349,6 +349,7 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		mLeftMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision - output);
 		mRightMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision + output);
+		
 	}
 	
 	public synchronized void setTurnToAngle(double target) {
