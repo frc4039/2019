@@ -50,6 +50,8 @@ public class ClimberSubsystem extends Subsystem {
     private CANSparkMax mRightClimberMotor;
     private VictorSPX mClimberDriveMotor;
 
+    public DoubleSolenoid mClimberCylinderSolenoid;
+
     private ClimberWantedState mClimberWantedState;
     private ClimberSystemState mClimberSystemState;
     //private double mThresholdStart;
@@ -63,6 +65,8 @@ public class ClimberSubsystem extends Subsystem {
 
     private boolean mPrevBrakeModeVal;
     private boolean mHomeSuccess;
+    public static boolean kClimberCylinderIn;
+    public static boolean kClimberCylinderOut;
 
     public static ClimberSubsystem getInstance() {
         if (mInstance == null) {
@@ -161,6 +165,7 @@ public class ClimberSubsystem extends Subsystem {
             synchronized (ClimberSubsystem.this) {
                 mClimberSystemState = ClimberSystemState.HOLDING;
                 mClimberWantedState = ClimberWantedState.HOLD;
+                setCylinderIn();
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -170,6 +175,7 @@ public class ClimberSubsystem extends Subsystem {
             synchronized (ClimberSubsystem.this) {
                 mClimberSystemState = ClimberSystemState.HOLDING;
                 mClimberWantedState = ClimberWantedState.HOLD;
+                setCylinderIn();
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -461,6 +467,24 @@ public class ClimberSubsystem extends Subsystem {
 
     public boolean getClimberLimitSwitchFront() {
         return mClimberLimitSwitchFront.get();
+    }
+
+    public void setCylinderOut() {
+        kClimberCylinderOut = true;
+        kClimberCylinderIn = !kClimberCylinderOut;
+        mClimberCylinderSolenoid.set(DoubleSolenoid.Value.kReverse); //kForward
+    }
+
+    public void setCylinderIn() {
+        kClimberCylinderOut = false;
+        kClimberCylinderIn = !kClimberCylinderOut;
+        mClimberCylinderSolenoid.set(DoubleSolenoid.Value.kForward); //kReverse
+    }
+
+    public void setCylinderNeutral() {
+        kClimberCylinderOut = false;
+        kClimberCylinderIn = false;
+        mClimberCylinderSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
     public synchronized void setClimberWantedState(ClimberWantedState wanted) {

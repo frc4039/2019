@@ -52,6 +52,7 @@ public class Controllers {
 		leftClimberMotor = new CANSparkMax(Constants.kLeftClimberMotorId, MotorType.kBrushless);
 		rightClimberMotor = new CANSparkMax(Constants.kRightClimberMotorId, MotorType.kBrushless);
 		climberDriveMotor = new VictorSPX(Constants.kClimberDriveMotorId);
+		climberSolenoid = new DoubleSolenoid(Constants.kClimberSolenoidOut, Constants.kClimberSolenoidIn);
 
 		compressor = new Compressor();
 
@@ -80,6 +81,7 @@ public class Controllers {
 
 	private DoubleSolenoid cargoIntakeSolenoid;
 	private DoubleSolenoid hatchSolenoid;
+	private DoubleSolenoid climberSolenoid;
 
 	private CANSparkMax leftClimberMotor;
 	private CANSparkMax rightClimberMotor;
@@ -131,6 +133,10 @@ public class Controllers {
 
 	public VictorSPX getClimberDriveMotor() {
 		return climberDriveMotor;
+	}
+
+	public DoubleSolenoid getClimberCylinder() {
+		return climberSolenoid;
 	}
   
 ////////// Drive Motors

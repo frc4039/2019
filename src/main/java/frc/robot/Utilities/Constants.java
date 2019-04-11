@@ -269,6 +269,9 @@ public class Constants {
 	public static final int kRightClimberMotorId = 10;
 	public static final int kRightClimberMotorPDPChannel = 15;
 
+	public static final int kClimberSolenoidOut = 4;
+	public static final int kClimberSolenoidIn = 5;
+
 
 	// Drive
 	public static final int kLeftDriveMasterId = 2; // left back
