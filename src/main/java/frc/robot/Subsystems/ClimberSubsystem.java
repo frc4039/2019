@@ -50,7 +50,7 @@ public class ClimberSubsystem extends Subsystem {
     private CANSparkMax mRightClimberMotor;
     private VictorSPX mClimberDriveMotor;
 
-    public DoubleSolenoid mClimberCylinderSolenoid;
+    public final DoubleSolenoid mClimberCylinderSolenoid;
 
     private ClimberWantedState mClimberWantedState;
     private ClimberSystemState mClimberSystemState;
@@ -100,6 +100,8 @@ public class ClimberSubsystem extends Subsystem {
         mLeftClimberMotor = robotControllers.getLeftClimberMotor();
         mRightClimberMotor = robotControllers.getRightClimberMotor();
         mClimberDriveMotor = robotControllers.getClimberDriveMotor();
+
+        mClimberCylinderSolenoid = robotControllers.getClimberCylinder();
 
         driveJoystickThrottle = robotControllers.getDriveJoystickThrottle();
         operatorJoystick = robotControllers.getOperatorJoystick();
@@ -165,7 +167,6 @@ public class ClimberSubsystem extends Subsystem {
             synchronized (ClimberSubsystem.this) {
                 mClimberSystemState = ClimberSystemState.HOLDING;
                 mClimberWantedState = ClimberWantedState.HOLD;
-                setCylinderIn();
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -175,7 +176,6 @@ public class ClimberSubsystem extends Subsystem {
             synchronized (ClimberSubsystem.this) {
                 mClimberSystemState = ClimberSystemState.HOLDING;
                 mClimberWantedState = ClimberWantedState.HOLD;
-                setCylinderIn();
             }
             mCurrentStateStartTime = Timer.getFPGATimestamp();
         }
@@ -239,6 +239,7 @@ public class ClimberSubsystem extends Subsystem {
     }
 
     private ClimberSystemState handleHolding(double timeInState) {
+        
 
         mClimber.setReference(0, ControlType.kDutyCycle);
         mClimberDriveMotor.set(ControlMode.PercentOutput, 0);
@@ -251,7 +252,7 @@ public class ClimberSubsystem extends Subsystem {
 
                 return ClimberSystemState.MANUALING;
             default:
-    
+                setCylinderIn();
                 return ClimberSystemState.HOLDING;
         }
     }

@@ -126,7 +126,7 @@ public class OI implements Runnable {
 		//	climberSubsystem.subsystemHome();
 		//}
 		if (operatorJoystick.getRisingEdgeButton(Constants.AUTO_RESET) && climberSubsystem.getClimberSystemState() != "HOLDING") {
-			climberSubsystem.setCylinderOut();
+			climberSubsystem.setCylinderOut();			
 		}
 
 		//driver

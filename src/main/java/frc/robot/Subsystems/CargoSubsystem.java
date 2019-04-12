@@ -238,7 +238,7 @@ public class CargoSubsystem extends Subsystem {
             //mCBCargoIntakeMotor.set(0); //TODO: remove once practice bot matches compbot
             return CargoSystemState.HOLDING;
         case INTAKE:
-            setIntakeNeutral();
+            setIntakeOut();
             mCargoIntakeMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.INTAKING;
         default:
@@ -253,7 +253,7 @@ public class CargoSubsystem extends Subsystem {
         case HOLD:
             return CargoSystemState.HOLDING;
         case INTAKE:
-            setIntakeNeutral();
+            setIntakeOut();
             return CargoSystemState.INTAKING;
         case WINDUP:
             return CargoSystemState.WINDINGUP;
@@ -277,7 +277,7 @@ public class CargoSubsystem extends Subsystem {
             case WINDUP:
                 return CargoSystemState.WINDINGUP;
             case INTAKE:
-                setIntakeNeutral();
+                setIntakeOut();
                 //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
                 return CargoSystemState.INTAKING;
             case HOLD:
@@ -307,7 +307,7 @@ public class CargoSubsystem extends Subsystem {
         case SHOOT:
             return CargoSystemState.SHOOTING;
         case INTAKE:
-            setIntakeNeutral();
+            setIntakeOut();
             //mCargoShooterMotor.set(ControlMode.PercentOutput, 0);
             return CargoSystemState.INTAKING;
         case HOLD:
