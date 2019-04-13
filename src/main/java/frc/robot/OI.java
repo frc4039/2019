@@ -78,6 +78,12 @@ public class OI implements Runnable {
 		if (operatorJoystick.getRisingEdgeButton(Constants.HATCH_ZERO)) {
 			hatchSubsystem.setHatchWantedState(HatchWantedState.HOME);
 		}
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.HATCH_UP)) {
+			hatchSubsystem.setHatchUp();
+		}
+		if (driveJoystickThrottle.getRisingEdgeButton(Constants.HATCH_DOWN)) {
+			hatchSubsystem.setHatchDown();
+		}
 		//////////////////////////////////////////////////////////////
 
 

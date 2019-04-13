@@ -43,6 +43,7 @@ public class Controllers {
 
 		hatchMotor = CANSpeedControllerBuilder.createDefaultTalonSRX(Constants.kHatchMotorId, Constants.kHatchMotorPDPChannel);
 		hatchSolenoid = new DoubleSolenoid(Constants.kHatchSolenoidOut, Constants.kHatchSolenoidIn);
+		hatchMechSolenoid = new DoubleSolenoid(Constants.kHatchMechUp, Constants.kHatchMechDown);
 
 		cargoIntakeMotor = new VictorSPX(Constants.kCargoIntakeMotorId);
 		//CBcargoIntakeMotor = new VictorSP(Constants.kBCCargoIntakeMotorId); //TODO: remove once practice bot matches compbot
@@ -82,6 +83,7 @@ public class Controllers {
 	private DoubleSolenoid cargoIntakeSolenoid;
 	private DoubleSolenoid hatchSolenoid;
 	private DoubleSolenoid climberSolenoid;
+	private DoubleSolenoid hatchMechSolenoid;
 
 	private CANSparkMax leftClimberMotor;
 	private CANSparkMax rightClimberMotor;
@@ -137,6 +139,10 @@ public class Controllers {
 
 	public DoubleSolenoid getClimberCylinder() {
 		return climberSolenoid;
+	}
+
+	public DoubleSolenoid getHatchMechSolenoid() {
+		return hatchMechSolenoid;
 	}
   
 ////////// Drive Motors

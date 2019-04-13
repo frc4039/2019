@@ -40,9 +40,12 @@ public class HatchSubsystem extends Subsystem {
     private HatchWantedState mHatchWantedState;
     private HatchSystemState mHatchSystemState;
     //private double mThresholdStart;
+    private final DoubleSolenoid mHatchMechSolenoid;
 
     public static boolean kHatchEject = false;
     public static boolean kHatchRetract = !kHatchEject;
+    public static boolean kHatchUp = false;
+    public static boolean kHatchDown = !kHatchUp;
 
     private boolean kHatchAcquired = false;
     private boolean kHatchVoltageLimit = false;
@@ -77,6 +80,7 @@ public class HatchSubsystem extends Subsystem {
         Controllers robotControllers = Controllers.getInstance();
         mHatchMotor = robotControllers.getHatchMotor();
         mHatchSolenoid = robotControllers.getHatchSolenoid();
+        mHatchMechSolenoid = robotControllers.getHatchMechSolenoid();
 
         mPrevBrakeModeVal = false;
 		setBrakeMode(true);
@@ -327,6 +331,18 @@ public class HatchSubsystem extends Subsystem {
         kHatchEject = false;
         kHatchRetract = false;
         mHatchSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+
+    public void setHatchUp() {
+        kHatchUp = true;
+        kHatchDown = !kHatchUp;
+        mHatchMechSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void setHatchDown() {
+        kHatchUp = false;
+        kHatchDown = !kHatchUp;
+        mHatchMechSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public synchronized void setHatchWantedState(HatchWantedState wanted) {
