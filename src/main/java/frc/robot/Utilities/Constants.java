@@ -254,8 +254,8 @@ public class Constants {
 	public static final int kHatchSolenoidOut = 0;
 	public static final int kHatchSolenoidIn = 1;
 
-	public static final int kHatchMechUp = 6;
-	public static final int kHatchMechDown = 7;
+	public static final int kHatchMechUp = 7;
+	public static final int kHatchMechDown = 6;
 
 	// Cargo
 	public static final int kCargoIntakeMotorId = 13;
