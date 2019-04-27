@@ -5,12 +5,12 @@ import frc.robot.Utilities.TrajectoryFollowingMotion.PathBuilder.Waypoint;
 
 import java.util.ArrayList;
 
-public class LVisionLeftLeft_1 implements PathContainer {
+public class LLvl2VisionLeftLeft_1 implements PathContainer {
     
     @Override
     public Path buildPath() {
         ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
-        sWaypoints.add(new Waypoint(72,207,0,0));
+        sWaypoints.add(new Waypoint(32,207,0,0));
         sWaypoints.add(new Waypoint(150,207,40,30));
         sWaypoints.add(new Waypoint(263,225,10,30));
         sWaypoints.add(new Waypoint(263,250,0,30));
@@ -20,7 +20,7 @@ public class LVisionLeftLeft_1 implements PathContainer {
     
     @Override
     public RigidTransform2d getStartPose() {
-        return new RigidTransform2d(new Translation2d(72, 207), Rotation2d.fromDegrees(0)); 
+        return new RigidTransform2d(new Translation2d(32, 207), Rotation2d.fromDegrees(0)); 
     }
 
     @Override

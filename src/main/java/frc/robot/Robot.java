@@ -13,10 +13,13 @@ import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeExecuter;
 import frc.robot.Autonomous.Modes.TestMode;
 import frc.robot.Autonomous.Modes.CLVisionFrontSide;
+import frc.robot.Autonomous.Modes.CRVisionFrontSide;
 import frc.robot.Autonomous.Modes.LVisionLeftLeft;
+import frc.robot.Autonomous.Modes.RVisionRightRight;
 import frc.robot.Autonomous.Modes.CRampReverseFrontSide;
 import frc.robot.Autonomous.Modes.LRampDoubleSide;
 import frc.robot.Autonomous.Modes.DriverControlMode;
+import frc.robot.Autonomous.Modes.LLvl2VisionLeftLeft;
 import frc.robot.Subsystems.DriveBaseSubsystem;
 import frc.robot.Subsystems.HatchSubsystem;
 import frc.robot.Subsystems.CargoSubsystem;
@@ -76,12 +79,12 @@ public class Robot extends CustomRobot {
 
 		autoChooser = new SendableChooser<String>();
 		autoChooser.addDefault("Driver Control", "DriverControl");
-		
-		autoChooser.addObject("Center Reverse Front to Side", "Center Reverse Front to Side");
-		autoChooser.addObject("Left Ramp Double Side","LRampDoubleSide");
-		
+		autoChooser.addObject("Test", "test");		
 		autoChooser.addObject("Vision Left","LVisionLeftLeft");
 		autoChooser.addObject("Vision Center (left)","CLVisionFrontSide");
+		autoChooser.addObject("Vision Right","RVisionRightRight");
+		autoChooser.addObject("Vision Center (right)","CRVisionFrontSide");
+		autoChooser.addObject("Vision Lvl 2? (left)","LLvl2VisionLeftLeft");
 
         SmartDashboard.putData("Autonomous Chooser", autoChooser);
 		
@@ -96,12 +99,12 @@ public class Robot extends CustomRobot {
 		String selectedAuto = (String) autoChooser.getSelected();
         System.out.println(selectedAuto);
         switch (selectedAuto) {
-		case "Center Reverse Front to Side":
-			autoMode = new CRampReverseFrontSide();
+		case "test":
+			autoMode = new TestMode();
 			noAuto = false;
 			break;
-		case "LRampDoubleSide":
-			autoMode = new LRampDoubleSide();
+		case "RVisionRightRight":
+			autoMode = new RVisionRightRight();
 			noAuto = false;
 			break;
 		case "LVisionLeftLeft":
@@ -110,6 +113,14 @@ public class Robot extends CustomRobot {
 			break;
 		case "CLVisionFrontSide":
 			autoMode = new CLVisionFrontSide();
+			noAuto = false;
+			break;
+		case "CRVisionFrontSide":
+			autoMode = new CRVisionFrontSide();
+			noAuto = false;
+			break;
+		case "LLvl2VisionLeftLeft":
+			autoMode = new LLvl2VisionLeftLeft();
 			noAuto = false;
 			break;
         default:
@@ -126,9 +137,10 @@ public class Robot extends CustomRobot {
 		autoModeExecuter.start();
 		threadRateControl.start(true);
 
-		//noAuto = true;
+		noAuto = true;
 
 		oI.turnOnLimeLight();
+		hatchSubsystem.setHatchUp();
 
 		while (isAutonomous() && isEnabled()) {
 			if (noAuto == true){

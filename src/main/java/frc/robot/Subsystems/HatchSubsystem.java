@@ -234,6 +234,7 @@ public class HatchSubsystem extends Subsystem {
         mHatchMotor.set(ControlMode.PercentOutput, 0);
         
         if (mHatchMotor.getSelectedSensorPosition()<=Constants.kHatchAutoHoldingPosition){
+            System.out.println("Hatch Detected");
             setHatchWantedState(HatchWantedState.SUPERHOLD);
         }
         

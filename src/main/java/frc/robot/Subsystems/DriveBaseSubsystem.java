@@ -347,9 +347,11 @@ public class DriveBaseSubsystem implements CustomSubsystem {
 
 		visionCalcs();
 
-		mLeftMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision - output);
-		mRightMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision + output);
-		
+		//mLeftMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision - output);
+		//mRightMaster.set(ControlMode.PercentOutput, Constants.kAutoDriveVision + output);
+
+		mLeftMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(Constants.kDriveHighGearMaxSetpoint *(Constants.kAutoDriveVision-output))));
+		mRightMaster.set(ControlMode.Velocity, Util.convertRPMToNativeUnits(inchesPerSecondToRpm(Constants.kDriveHighGearMaxSetpoint *(Constants.kAutoDriveVision+output))));
 	}
 	
 	public synchronized void setTurnToAngle(double target) {

@@ -13,32 +13,32 @@ import frc.robot.Actions.Framework.SeriesAction;
 import frc.robot.Actions.Framework.WaitForPathMarkerAction;
 import frc.robot.Autonomous.Framework.AutoModeBase;
 import frc.robot.Autonomous.Framework.AutoModeEndedException;
-import frc.robot.Autonomous.Paths.LVisionLeftLeft_1;
-import frc.robot.Autonomous.Paths.LVisionLeftLeft_2;
-import frc.robot.Autonomous.Paths.LVisionLeftLeft_3;
-import frc.robot.Autonomous.Paths.LVisionLeftLeft_4;
+import frc.robot.Autonomous.Paths.CRVisionFrontSide_1;
+import frc.robot.Autonomous.Paths.CRVisionFrontSide_2;
+import frc.robot.Autonomous.Paths.CRVisionFrontSide_3;
+import frc.robot.Autonomous.Paths.CRVisionFrontSide_4;
 import frc.robot.Utilities.TrajectoryFollowingMotion.PathContainer;
 
 import java.util.Arrays;
 
-public class LVisionLeftLeft extends AutoModeBase {
+public class CRVisionFrontSide extends AutoModeBase {
 
 	@Override
 	protected void routine() throws AutoModeEndedException {
 
-		PathContainer pathContainer = new LVisionLeftLeft_1();
+		PathContainer pathContainer = new CRVisionFrontSide_1();
 		runAction(new ResetPoseFromPathAction(pathContainer));
 		runAction(new DrivePathAction(pathContainer));
-		//runAction(new WaitAction(2));
+		runAction(new WaitAction(0.1));
 		runAction(new AutoVisionAction());
 		runAction(new ScoreHatchAction());
-		//runAction(new DrivePathAction(new LVisionLeftLeft_2()));
-		//runAction(new DrivePathAction(new LVisionLeftLeft_3()));
+		//runAction(new WaitAction(1));
+		runAction(new DrivePathAction(new CRVisionFrontSide_2()));
+		runAction(new DrivePathAction(new CRVisionFrontSide_3()));
 		//runAction(new AutoVisionAction());
 		//runAction(new GrabHatchAction());
-		//runAction(new DrivePathAction(new LVisionLeftLeft_4()));
+		//runAction(new DrivePathAction(new CRVisionFrontSide_4()));
 		//runAction(new AutoVisionAction());
-		//runAction(new ScoreHatchAction());
-        
+		//runAction(new ScoreHatchAction()); 
 	}
 }

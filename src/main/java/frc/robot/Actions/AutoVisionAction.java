@@ -19,10 +19,10 @@ public class AutoVisionAction implements Action {
 
     @Override
     public boolean isFinished() {
-        if ((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) > 0.5) {
+        if ((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) > 2.0) {
             check = true;
         }
-        if (((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) < 0.5) && check == true) {
+        if (((mDrive.getLeftVelocityInchesPerSec() + mDrive.getRightVelocityInchesPerSec()) < 1.0) && check == true) {
             return true;
         } else {
             return false;
@@ -42,5 +42,6 @@ public class AutoVisionAction implements Action {
     @Override
     public void start() {
         mDrive.setAutoVisionAssist();
+        System.out.println("driving");
     }
 }
